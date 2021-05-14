@@ -1,0 +1,34 @@
+<!--suppress HtmlUnknownTarget, BadExpressionStatementJS -->
+<template>
+    <div class="container">
+        <img class="kf-learn-banner" alt="" src={kfLearnBanner} />
+        <div class="kf-learn-text">{label.KFSellLearning}</div>
+        <div class="kf-learn-symbol">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div class="slds-p-around_small" style="position: relative; text-align: left">
+            <label style="color: black; font-size:16px">
+                {label.ReviewConcept}
+            </label>
+        </div>
+        <div
+            style="position: relative; display: flex; flex-direction: row; padding-left: 0.75rem; padding-right: 0.75rem"
+        >
+            <div style="flex: 2; align-items: center; text-align: left">
+                <a id="kfLearnLink" title={label.OpenKFLearn} href="#" onclick={openKFLearn} style="font-size: 16px">
+                    {label.VisitKFLibrary}
+                </a>
+            </div>
+
+            <div style="flex: 1; align-items: center; text-align: right">
+                <a
+                    id="kfPrivacyLink"
+                    title={label.SeeKFPrivacyPolicy}
+                    href="#"
+                    onclick={openKfPrivacy}
+                    style="font-size: 12px"
+                >
+                    {label.KornFerryPrivacyPolicy}
+                </a>
+            </div>
+        </div>
+    </div>
+</template>

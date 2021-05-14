@@ -1,0 +1,29 @@
+<template>
+    <div class="slds-box" style="background-color: #fafafa;">
+        <div class="slds-p-top_xx-small slds-p-around_medium" style="position:relative;margin-left:-21px;top:-20px;">
+            <div style="margin-right:-21px;">
+                <img style="width:100%;" src={imageLink} />
+            </div>
+            <div class="slds-p-around_medium" style="position: relative;top:15px;width:106%;left:-16px;">
+                <label style="font-size:19px;">{label.ScorecardRequiredField}</label><br />
+                <div style="position: relative;top:6px;">
+                    <label>{label.LoremIpsumDolor}</label><br />
+                    <label>{label.CurabiturEgestas}</label>
+                </div>
+            </div>
+            <div style="position: relative;bottom:-39px;left:-8px;">
+                <lightning-button
+                    label={label.CreateNow}
+                    title="Non-primary action"
+                    class="slds-m-left_x-small"
+                ></lightning-button>
+                <lightning-button
+                    variant="base"
+                    label={label.Ignore}
+                    title={label.LooksLikeALink}
+                    class="slds-m-left_x-small"
+                ></lightning-button>
+            </div>
+        </div>
+    </div>
+</template>

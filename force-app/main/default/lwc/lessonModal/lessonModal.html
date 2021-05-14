@@ -1,0 +1,47 @@
+<template>
+    <div class="slds-modal slds-fade-in-open slds-backdrop">
+        <div class="slds-modal__container">
+            <div class="slds-modal__content slds-p-around_medium">
+                <div class="slds-p-left_small slds-p-right_small">
+                    <div class="slds-grid slds-p-bottom_small">
+                        <lightning-button variant="base" label={allLabels.backToLesson} onclick={nevigateToComponent}>
+                        </lightning-button>
+                    </div>
+                    <div class="slds-grid slds-p-bottom_medium">
+                        <div class="lesson-title">{lessonrecord.lessonTitle}</div>
+                    </div>
+                    <div class="slds-grid slds-p-bottom_medium lesson-desc">
+                        <lightning-formatted-rich-text
+                            value={lessonrecord.lessonLongDesc}
+                        ></lightning-formatted-rich-text>
+                    </div>
+                    <div class="slds-p-bottom_small">
+                        <!--module component-->
+                        <template for:each={moduleList} for:item="item">
+                            <div key={item.Id}>
+                                <c-modules
+                                    lesson-id={currentLessonId}
+                                    module-record={item}
+                                    onreloadlessons={reloadLesson}
+                                    onhidelessonmat={hideLessonAndWelcomMat}
+                                ></c-modules>
+                            </div>
+                        </template>
+                    </div>
+                    <div>
+                        <!--disabled={isLessonNotComplete}-->
+                        <lightning-button
+                            variant="brand"
+                            label={allLabels.completeLesson}
+                            onclick={markLessonasComplete}
+                            disabled={isLessonNotComplete}
+                            class="slds-float_left slds-p-bottom_small
+                            "
+                        >
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

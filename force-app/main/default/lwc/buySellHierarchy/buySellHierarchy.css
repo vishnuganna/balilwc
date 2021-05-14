@@ -1,0 +1,13 @@
+.erroMsg {
+    color: red;
+    font-size: 12px;
+}
+.flag-size {
+    width: 5%;
+    padding: 0%;
+}
+.title {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+}

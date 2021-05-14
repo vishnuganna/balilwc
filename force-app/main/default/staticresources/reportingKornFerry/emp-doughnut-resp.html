@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Employee Doughnut Chart | Top Responsibilities</title>
+	<script src="js/Chart.bundle.min.js"></script>
+	<script src="js/utils.js"></script>
+	<style>
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div style="width: 100%">
+		<canvas id="canvas"></canvas>
+	</div>
+	<script>
+		//Rando Math Maker
+		var randomScalingFactor = function () {
+			return Math.round(Math.random() * 10);
+		};
+		//Chart JS Doughnut chart configuration
+		var config = {
+			type: 'doughnut',
+			data: {
+				datasets: [{
+					data: [
+						6,
+						12,
+						8,
+					],
+					backgroundColor: [
+						'#0070D2',
+						'#16325C',
+						'#d8edff',
+					],
+					label: 'Top Responsibility'
+				}],
+				labels: [
+					'Budgeting & Costing',
+					'Building Capability ',
+					'Data Collection & Analysis',
+				]
+			},
+			options: {
+				responsive: true,
+				cutoutPercentage: 75,
+				legend: {
+					position: 'right',
+				},
+				title: {
+					display: false,
+					text: 'Chart Title Here'
+				},
+				tooltips: {
+					position: 'nearest'
+				},
+				animation: {
+					animateScale: true,
+					animateRotate: true
+				},
+			}
+		};
+
+		//Small function to get the sum of the data array
+		function getSum(total, num) {
+			return total + num;
+		};
+		
+		window.onload = function () {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			Chart.defaults.global.defaultFontFamily = "'Proxima Nova', 'Salesforce Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+			window.myDoughnut = new Chart(ctx, config);
+		};
+
+	</script>
+</body>
+
+</html>

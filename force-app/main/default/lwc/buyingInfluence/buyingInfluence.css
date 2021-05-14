@@ -1,0 +1,102 @@
+﻿.THIS .icn svg {
+    fill: #e6e6e6;
+}
+
+.divClass {
+    background-color: #f0f0f0;
+    border-top: 1px solid #dcdcdc;
+}
+
+.erroMsg {
+    color: red;
+    font-size: 12px;
+}
+
+/*rating CSS followed*/
+.negativefive {
+    width: 35px;
+    height: 30px;
+    background-color: blue;
+    text-align: center;
+    border-radius: 2px 0px 0px 2px;
+    float: left;
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+    border-left: 1px solid gainsboro;
+    border-right: 0px;
+}
+.midnum {
+    height: 30px;
+    background-color: white;
+    text-align: center;
+    border-left: 1px solid gainsboro;
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+    border-right: 1px solid gainsboro;
+    font-size: small;
+}
+.midnumSelected {
+    height: 30px;
+    background-color: #c2dfff;
+    text-align: center;
+    border-left: 1px solid gainsboro;
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+    border-right: 1px solid gainsboro;
+    font-size: small;
+}
+
+.positivefive {
+    width: 35px;
+    height: 30px;
+    background-color: white;
+    text-align: center;
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+    border-left: 1px solid gainsboro;
+    border-right: 1px solid gainsboro;
+    border-radius: 0px 3px 3px 0px;
+    float: left;
+}
+.spinner {
+    position: relative;
+    display: inline-block;
+    width: 51px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.selectedbutton {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: 1px solid #dddbda;
+    -webkit-transition: border 0.15s linear;
+    transition: border 0.15s linear;
+    background-color: #c2dfff;
+    border-color: #c2dfff;
+    color: black;
+}
+
+.marginCard {
+    margin-top: 16px !important;
+}
+
+.buttonsLabelsGap {
+    margin-bottom: 3px;
+}
+
+.buttonsWidthRole {
+    width: 95px;
+}
+
+.textAreaWidth {
+    width: 393px;
+}
+
+.ratingButtonsWidth {
+    width: 10%;
+}

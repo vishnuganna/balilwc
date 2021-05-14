@@ -1,0 +1,172 @@
+<template>
+    <template if:true={categoryPersp}>
+        <div class="slds-card__body margin0">
+            <article class={maincontainer}>
+                <div>
+                    <article if:true={isExpandableViewPerspective}>
+                        <div class="slds-grid slds-m-left_small">
+                            <div
+                                class="slds-grid slds-size_2-of-3 slds-m-top_small slds-m-bottom_small slds-text-title_bold"
+                            >
+                                <span
+                                    >{label.CustomizeAlerts}
+                                    <lightning-icon
+                                        style="color: black"
+                                        icon-name="utility:chevrondown"
+                                        size="small"
+                                        onclick={handleTogglePerspective}
+                                    >
+                                    </lightning-icon>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-m-left_small">
+                            <div>
+                                <div class="slds-grid slds-p-around_x-small">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class="slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 ">
+                                        <div class="slds-m-left_small">{label.AlertText}</div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-p-around_x-small">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div>{label.Insights}<span class="error" if:true={active}>*</span></div>
+                                    </div>
+                                    <div class="slds-col slds-size_2-of-2 ">
+                                        <div class="slds-m-left_small">
+                                            <lightning-input
+                                                required={isPerspectiveInputRequired}
+                                                class="slds-m-top--xxx-small"
+                                                variant="label-hidden"
+                                                aria-label="hidden"
+                                                name="insightsTextPersp"
+                                                label=""
+                                                max-length="256"
+                                                value={insightsAlertTextPersp}
+                                                onchange={handleInsightsTextPersp}
+                                            ></lightning-input>
+                                        </div>
+                                        <template if:true={showMaxLimitErrorInsightsAlertTextPersp}
+                                            ><div class="slds-text-color_error slds-align_absolute-center">
+                                                {label.Scorecard_Template_Name_Max_Char_Limit}
+                                            </div></template
+                                        >
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-p-around_x-small">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div>{label.InsightsLink}</div>
+                                    </div>
+                                    <div class="slds-col slds-size_2-of-2 ">
+                                        <div class="slds-m-left_small">
+                                            <lightning-input
+                                                class="slds-m-top--xxx-small"
+                                                variant="label-hidden"
+                                                aria-label="hidden"
+                                                name="insightsLinkPersp"
+                                                label=""
+                                                max-length="256"
+                                                value={insightsLinkTextPersp}
+                                                onchange={handleInsightsLinkTextPersp}
+                                            ></lightning-input>
+                                        </div>
+                                        <template if:true={showMaxLimitErrorInsightsLinkTextPersp}
+                                            ><div class="slds-text-color_error slds-align_absolute-center">
+                                                {label.Scorecard_Template_Name_Max_Char_Limit}
+                                            </div></template
+                                        >
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-p-around_x-small">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div>{label.InsightsDisplayLinkAs}</div>
+                                    </div>
+                                    <div class="slds-col slds-size_2-of-2 ">
+                                        <div class="slds-m-left_small">
+                                            <lightning-input
+                                                required={isDisplayLinkAsRequired}
+                                                class="slds-m-top--xxx-small"
+                                                variant="label-hidden"
+                                                aria-label="hidden"
+                                                name="insightsDisplayLinkAs"
+                                                label=""
+                                                max-length="256"
+                                                value={insightsDisplayLinkASText}
+                                                onchange={handleInsightsDisplayLinkAs}
+                                            ></lightning-input>
+                                        </div>
+                                        <template if:true={showMaxLimitErrorInsightsDisplayLinkAs}
+                                            ><div class="slds-text-color_error slds-align_absolute-center">
+                                                {label.Scorecard_Template_Name_Max_Char_Limit}
+                                            </div></template
+                                        >
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-p-around_x-small">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <label for="textarea-id-01">{label.InsightsIndustry}</label>
+                                    </div>
+                                    <div class="slds-col .slds-size_4-of-6 ">
+                                        <div class="slds-m-left_small">
+                                            <template if:true={hasValuesinIndustryField}>
+                                                <lightning-combobox
+                                                    name="insightPerIndustry"
+                                                    label=""
+                                                    value={selectedIndustryField}
+                                                    placeholder={label.InsightsIndustrySelectToolTip}
+                                                    options={industryPicklistValues}
+                                                    onchange={handleIndustryFieldChange}
+                                                    variant="label-hidden"
+                                                >
+                                                </lightning-combobox>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid slds-p-around_x-small">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <label for="textarea-id-01">{label.InsightsOpportunityType}</label>
+                                    </div>
+                                    <div class="slds-col .slds-size_4-of-6 ">
+                                        <div class="slds-m-left_small">
+                                            <template if:true={hasValuesinOptyTypeField}>
+                                                <lightning-combobox
+                                                    name="insightPerOppType"
+                                                    label=""
+                                                    value={selectedOptyTypeField}
+                                                    placeholder={label.InsightsOpportunityTypeSelectToolTip}
+                                                    options={opportunityTypePicklistValues}
+                                                    onchange={handleOptyTypeFieldChange}
+                                                    variant="label-hidden"
+                                                >
+                                                </lightning-combobox>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <div if:false={isExpandableViewPerspective}>
+                        <div class="slds-grid slds-m-left_small">
+                            <div class="slds-grid slds-size_2-of-3 slds-m-top_small slds-m-bottom_small">
+                                <span
+                                    >{label.CustomizeAlerts}
+                                    <lightning-icon
+                                        style="color: black"
+                                        icon-name="utility:chevronright"
+                                        size="small"
+                                        onclick={handleTogglePerspective}
+                                    >
+                                    </lightning-icon>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </template>
+</template>

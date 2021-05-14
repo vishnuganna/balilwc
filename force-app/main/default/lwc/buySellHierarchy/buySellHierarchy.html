@@ -1,0 +1,549 @@
+<template>
+    <div class="slds-p-left_medium slds-p-right_medium slds-grid slds-gutters">
+        <article class="slds-card slds-card_boundary slds-m-bottom_large slds-size_1-of-1">
+            <!--Create View<lightning-card class="slds-m-around_none slds-p-around_none">-->
+            <div slot="title" class="slds-grid slds-card__header slds-grid_vertical-align-center cardheader-goldsheet">
+                <div class="slds-col slds-size_2-of-3">
+                    <span class="cardlabels-goldsheet"
+                        >{allLabels.BuySellHierarchyLabel}
+                        <c-info-navigation nav-url={allLabels.BuySellStrategicPlayerURL}></c-info-navigation>
+                    </span>
+                </div>
+
+                <div class="slds-col slds-size_1-of-3">
+                    <template if:true={hasBuySellHierarchyData}>
+                        <div class="slds-clearfix slds-float_right">
+                            <template if:true={showEditButton}>
+                                <lightning-button
+                                    label={allLabels.Edit}
+                                    title={allLabels.Edit}
+                                    onclick={handleEdit}
+                                ></lightning-button>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <div class="slds-m-top_x-small slds-m-bottom_x-small" style="border-top: 1px solid #dcdcdc">
+                <!-- Read Only State Start-->
+
+                <template if:true={showSavedState}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.BuySellHierarchyView}>
+                                        {allLabels.BuySellHierarchyView}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.BuySellHierarchyLastYear}>
+                                        {allLabels.BuySellHierarchyLastYear}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.BuySellHierarchyThisYear}>
+                                        {allLabels.BuySellHierarchyThisYear}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.BuySellHierarchyNextYear}>
+                                        {allLabels.BuySellHierarchyNextYear}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.BuySellHierarchyCustomYear}>
+                                        <template if:true={buySellHierarchyData.buySellhierarchyDate}>
+                                            {buySellHierarchyData.buySellhierarchyDateString}
+                                        </template>
+                                        <template if:false={buySellHierarchyData.buySellhierarchyDate}>
+                                            <p class="slds-text-body_regular">-</p>
+                                        </template>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="slds-hint-parent">
+                                <td data-label="Field Of Play">
+                                    <div class="slds-truncate">{allLabels.FieldOfPlay}</div>
+                                </td>
+                                <td data-label="Last year" class="slds-p-left--none">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-p-left_small flag-size">
+                                            <c-strength-redflag
+                                                rfs-data={rfsDetails.fieldOfPlayLastYear}
+                                                read-only-view="true"
+                                            ></c-strength-redflag>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12 slds-p-left--none">
+                                            <template if:true={buySellHierarchyData.fieldOfPlayLastYear}>
+                                                <p class="slds-text-body_regular slds-cell-wrap">
+                                                    {buySellHierarchyData.fieldOfPlayLastYear}
+                                                </p>
+                                            </template>
+                                            <template if:false={buySellHierarchyData.fieldOfPlayLastYear}>
+                                                <p class="slds-text-body_regular">-</p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td data-label="This year">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-p-left_small flag-size">
+                                            <c-strength-redflag
+                                                rfs-data={rfsDetails.fieldOfPlayThisYear}
+                                                read-only-view="true"
+                                            ></c-strength-redflag>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12 slds-p-left--none">
+                                            <template if:true={buySellHierarchyData.fieldOfPlayThisYear}>
+                                                <p class="slds-text-body_regular slds-cell-wrap">
+                                                    {buySellHierarchyData.fieldOfPlayThisYear}
+                                                </p>
+                                            </template>
+                                            <template if:false={buySellHierarchyData.fieldOfPlayThisYear}>
+                                                <p class="slds-text-body_regular">-</p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td data-label="Next year">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-p-left_small flag-size">
+                                            <c-strength-redflag
+                                                rfs-data={rfsDetails.fieldOfPlayNextYear}
+                                                read-only-view="true"
+                                            ></c-strength-redflag>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12 slds-p-left--none">
+                                            <template if:true={buySellHierarchyData.fieldOfPlayNextYear}>
+                                                <p class="slds-text-body_regular slds-cell-wrap">
+                                                    {buySellHierarchyData.fieldOfPlayNextYear}
+                                                </p>
+                                            </template>
+                                            <template if:false={buySellHierarchyData.fieldOfPlayNextYear}>
+                                                <p class="slds-text-body_regular">-</p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td data-label="Custom year">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-p-left_small flag-size">
+                                            <c-strength-redflag
+                                                rfs-data={rfsDetails.fieldOfPlayCustomYear}
+                                                read-only-view="true"
+                                            ></c-strength-redflag>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12 slds-p-left--none">
+                                            <template if:true={buySellHierarchyData.fieldOfPlayCustomYear}>
+                                                <p class="slds-text-body_regular slds-cell-wrap">
+                                                    {buySellHierarchyData.fieldOfPlayCustomYear}
+                                                </p>
+                                            </template>
+                                            <template if:false={buySellHierarchyData.fieldOfPlayCustomYear}>
+                                                <p class="slds-text-body_regular">-</p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="slds-hint-parent">
+                                <td data-label="Field Of Play">
+                                    <div class="slds-truncate">{allLabels.BuySellHierarchyUs}</div>
+                                </td>
+
+                                <td data-label="Last year" class="slds-p-left--none">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-p-left_small flag-size">
+                                            <c-strength-redflag
+                                                rfs-data={rfsDetails.usLastYear}
+                                                read-only-view="true"
+                                            ></c-strength-redflag>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12 slds-p-left--none">
+                                            <template if:true={buySellHierarchyData.usLastYear}>
+                                                <p class="slds-text-body_regular slds-cell-wrap">
+                                                    {buySellHierarchyData.usLastYear}
+                                                </p>
+                                            </template>
+                                            <template if:false={buySellHierarchyData.usLastYear}>
+                                                <p class="slds-text-body_regular">-</p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td data-label="This year">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-p-left_small flag-size">
+                                            <c-strength-redflag
+                                                rfs-data={rfsDetails.usThisYear}
+                                                read-only-view="true"
+                                            ></c-strength-redflag>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12 slds-p-left--none">
+                                            <template if:true={buySellHierarchyData.usThisYear}>
+                                                <p class="slds-text-body_regular slds-cell-wrap">
+                                                    {buySellHierarchyData.usThisYear}
+                                                </p>
+                                            </template>
+                                            <template if:false={buySellHierarchyData.usThisYear}>
+                                                <p class="slds-text-body_regular">-</p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td data-label="Next year">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-p-left_small flag-size">
+                                            <c-strength-redflag
+                                                rfs-data={rfsDetails.usNextYear}
+                                                read-only-view="true"
+                                            ></c-strength-redflag>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12 slds-p-left--none">
+                                            <template if:true={buySellHierarchyData.usNextYear}>
+                                                <p class="slds-text-body_regular slds-cell-wrap">
+                                                    {buySellHierarchyData.usNextYear}
+                                                </p>
+                                            </template>
+                                            <template if:false={buySellHierarchyData.usNextYear}>
+                                                <p class="slds-text-body_regular">-</p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td data-label="Custom year">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-p-left_small flag-size">
+                                            <c-strength-redflag
+                                                rfs-data={rfsDetails.usCustomYear}
+                                                read-only-view="true"
+                                            ></c-strength-redflag>
+                                        </div>
+                                        <div class="slds-col slds-size_11-of-12 slds-p-left--none">
+                                            <template if:true={buySellHierarchyData.usCustomYear}>
+                                                <p class="slds-text-body_regular slds-cell-wrap">
+                                                    {buySellHierarchyData.usCustomYear}
+                                                </p>
+                                            </template>
+                                            <template if:false={buySellHierarchyData.usCustomYear}>
+                                                <p class="slds-text-body_regular">-</p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </template>
+
+                <!-- Read Only State End-->
+
+                <!--Create and Edit State-->
+
+                <template if:true={showCreateEditState}>
+                    <table class="slds-table slds-table_cell-buffer">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.BuySellHierarchyView}>
+                                        {allLabels.BuySellHierarchyView}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.BuySellHierarchyLastYear}>
+                                        {allLabels.BuySellHierarchyLastYear}
+                                    </div>
+                                </th>
+
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.BuySellHierarchyThisYear}>
+                                        {allLabels.BuySellHierarchyThisYear}
+                                    </div>
+                                </th>
+
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.BuySellHierarchyNextYear}>
+                                        {allLabels.BuySellHierarchyNextYear}
+                                    </div>
+                                </th>
+
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.BuySellHierarchyCustomYear}>
+                                        <template if:true={dateRequired}>
+                                            <abbr class="slds-required" title="required">*</abbr>
+                                        </template>
+                                        <lightning-input
+                                            type="date"
+                                            label=""
+                                            value={customDate}
+                                            variant="label-hidden"
+                                            onchange={handleCustomDate}
+                                        ></lightning-input>
+                                        <template if:true={dateRequired}>
+                                            <div class="erroMsg">{allLabels.BuySellHierarchyCustomDateError}</div>
+                                        </template>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr class="slds-hint-parent" style="height: 100px">
+                                <td data-label="Field Of Play">
+                                    <div class="slds-truncate" title={allLabels.FieldOfPlayBR}>
+                                        {allLabels.FieldOfPlay}
+                                    </div>
+                                </td>
+
+                                <td data-label="Last year">
+                                    <label class="slds-m-left_small"
+                                        ><c-strength-redflag
+                                            rfs-data={rfsDetails.fieldOfPlayLastYear}
+                                            onvalueselected={handleMarkerChange}
+                                            class="slds-clearfix slds-float_right"
+                                        ></c-strength-redflag
+                                    ></label>
+                                    <div>
+                                        <lightning-combobox
+                                            name="Last Year"
+                                            label=""
+                                            value={fOPLastYear}
+                                            placeholder={allLabels.SelectLevel}
+                                            variant="label-hidden"
+                                            options={picklistOptions}
+                                            onchange={handleFOPLastYearSelected}
+                                            class="picklist"
+                                        >
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+
+                                <td data-label="This year">
+                                    <label class="slds-m-left_small"
+                                        ><c-strength-redflag
+                                            rfs-data={rfsDetails.fieldOfPlayThisYear}
+                                            onvalueselected={handleMarkerChange}
+                                            class="slds-clearfix slds-float_right"
+                                        ></c-strength-redflag
+                                    ></label>
+                                    <div>
+                                        <lightning-combobox
+                                            name="This year"
+                                            label=""
+                                            value={fOPThisYear}
+                                            variant="label-hidden"
+                                            placeholder={allLabels.SelectLevel}
+                                            options={picklistOptions}
+                                            onchange={handleFOPThisYearSelected}
+                                            class="picklist"
+                                        >
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+
+                                <td data-label="Next year">
+                                    <label class="slds-m-left_small"
+                                        ><c-strength-redflag
+                                            rfs-data={rfsDetails.fieldOfPlayNextYear}
+                                            onvalueselected={handleMarkerChange}
+                                            class="slds-clearfix slds-float_right"
+                                        ></c-strength-redflag
+                                    ></label>
+
+                                    <div>
+                                        <lightning-combobox
+                                            name="Next year"
+                                            label=""
+                                            variant="label-hidden"
+                                            value={fOPNextYear}
+                                            placeholder={allLabels.SelectLevel}
+                                            options={picklistOptions}
+                                            onchange={handleFOPNextYearSelected}
+                                            class="picklist"
+                                        >
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+
+                                <td data-label="Custom year">
+                                    <label class="slds-m-left_small"
+                                        ><c-strength-redflag
+                                            rfs-data={rfsDetails.fieldOfPlayCustomYear}
+                                            onvalueselected={handleMarkerChange}
+                                            class="slds-clearfix slds-float_right"
+                                        ></c-strength-redflag
+                                    ></label>
+
+                                    <div>
+                                        <lightning-combobox
+                                            name="Custom year"
+                                            label=""
+                                            value={fOPCustomYear}
+                                            placeholder={allLabels.SelectLevel}
+                                            options={picklistOptions}
+                                            variant="label-hidden"
+                                            onchange={handleFOPCustomYearSelected}
+                                            class="picklist"
+                                        >
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="slds-hint-parent" style="height: 100px">
+                                <td data-label="Field Of Play">
+                                    <div>{allLabels.BuySellHierarchyUs}</div>
+                                </td>
+
+                                <td data-label="Last year">
+                                    <label class="slds-m-left_small"
+                                        ><c-strength-redflag
+                                            rfs-data={rfsDetails.usLastYear}
+                                            onvalueselected={handleMarkerChange}
+                                            class="slds-clearfix slds-float_right"
+                                        ></c-strength-redflag
+                                    ></label>
+
+                                    <div>
+                                        <lightning-combobox
+                                            name="Us Last year"
+                                            label=""
+                                            value={usLastYear}
+                                            placeholder={allLabels.SelectLevel}
+                                            variant="label-hidden"
+                                            options={picklistOptions}
+                                            onchange={handleUSLastYearSelected}
+                                            class="picklist"
+                                        >
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+
+                                <td data-label="This year">
+                                    <label class="slds-m-left_small">
+                                        <c-strength-redflag
+                                            rfs-data={rfsDetails.usThisYear}
+                                            onvalueselected={handleMarkerChange}
+                                            class="slds-clearfix slds-float_right"
+                                        ></c-strength-redflag>
+                                    </label>
+
+                                    <div>
+                                        <lightning-combobox
+                                            name="us This year"
+                                            label=""
+                                            value={usThisYear}
+                                            placeholder={allLabels.SelectLevel}
+                                            options={picklistOptions}
+                                            variant="label-hidden"
+                                            onchange={handleUSThisYearSelected}
+                                            class="picklist"
+                                        >
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+
+                                <td data-label="Next year">
+                                    <label class="slds-m-left_small"
+                                        ><c-strength-redflag
+                                            rfs-data={rfsDetails.usNextYear}
+                                            onvalueselected={handleMarkerChange}
+                                            class="slds-clearfix slds-float_right"
+                                        ></c-strength-redflag
+                                    ></label>
+                                    <div>
+                                        <lightning-combobox
+                                            name="Us Next year"
+                                            label=""
+                                            value={usNextYear}
+                                            placeholder={allLabels.SelectLevel}
+                                            options={picklistOptions}
+                                            variant="label-hidden"
+                                            onchange={handleUSNextYearSelected}
+                                            class="picklist"
+                                        >
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+
+                                <td data-label="Custom year">
+                                    <div>
+                                        <label class="slds-m-left_small"
+                                            ><c-strength-redflag
+                                                rfs-data={rfsDetails.usCustomYear}
+                                                onvalueselected={handleMarkerChange}
+                                                class="slds-clearfix slds-float_right"
+                                            ></c-strength-redflag
+                                        ></label>
+
+                                        <lightning-combobox
+                                            name="us Custom year"
+                                            label=""
+                                            value={usCustomYear}
+                                            placeholder={allLabels.SelectLevel}
+                                            variant="label-hidden"
+                                            options={picklistOptions}
+                                            onchange={handleUSCustomYearSelected}
+                                            class="picklist"
+                                        >
+                                        </lightning-combobox>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="slds-align_absolute-center slds-m-top_large">
+                        <lightning-button
+                            label={allLabels.Cancel}
+                            class="slds-p-right_x-small slds-text-small"
+                            variant="neutral"
+                            onclick={handleCancel}
+                        ></lightning-button>
+                        <lightning-button
+                            label={allLabels.Save}
+                            class="slds-text-small"
+                            aria-disabled={isSaveDisabled}
+                            disabled={isSaveDisabled}
+                            variant="brand"
+                            onclick={handleSave}
+                        ></lightning-button>
+                    </div>
+                </template>
+
+                <!--Create and Edit State End-->
+
+                <template if:false={hasBuySellHierarchyData}>
+                    <template if:true={showCreateButton}>
+                        <div class="slds-m-top_small">
+                            <lightning-button
+                                variant="brand"
+                                label={allLabels.AddBuySellHierarchy}
+                                class="slds-m-left_medium pointer"
+                                onclick={handleCreate}
+                            ></lightning-button>
+                        </div>
+                    </template>
+
+                    <template if:false={hasEditAccess}>
+                        <div class="slds-p-bottom_x-small">
+                            <c-summary-view-no-data></c-summary-view-no-data>
+                        </div>
+                    </template>
+                </template>
+            </div>
+            <!-- </lightning-card> -->
+        </article>
+    </div>
+</template>

@@ -1,0 +1,87 @@
+<template>
+    <div class="slds-grid">
+        <div class=" slds-col slds-size_6-of-12 slds-p-around_small">
+            <div class="slds-grid slds-size_12-of-12">
+                <div class="slds-col slds-size_6-of-12">
+                    <div class="labelcolor">{label.revenue}</div>
+                    <template if:true={revenue}>
+                        <p>
+                            <lightning-formatted-number
+                                value={revenue}
+                                format-style="currency"
+                                currency-code="USD"
+                            ></lightning-formatted-number>
+                        </p>
+                    </template>
+
+                    <template if:false={revenue}>
+                        -
+                    </template>
+                </div>
+                <div class=" slds-col slds-size_6-of-12">
+                    <div class="labelcolor">{label.place_in_sales_funnel}</div>
+                    <template if:true={place_in_sales}>
+                        {place_in_sales}
+                    </template>
+
+                    <template if:false={place_in_sales}>
+                        -
+                    </template>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-m-top_small">
+                <div class="labelcolor">{label.csoPDF}</div>
+                <template if:true={Customer_Timing_for_Priorities}>
+                    <c-show-more-show-less-line
+                        class="slds-var-p-top_small "
+                        description={Customer_Timing_for_Priorities}
+                        no-of-lines="5"
+                    ></c-show-more-show-less-line>
+                </template>
+
+                <template if:false={Customer_Timing_for_Priorities}>
+                    -
+                </template>
+            </div>
+        </div>
+
+        <div class=" slds-col slds-size_6-of-12 slds-p-around_small">
+            <div class=" slds-grid">
+                <div class=" slds-col slds-size_6-of-12">
+                    <div class="labelcolor">{label.closeDate}</div>
+                    <template if:true={closedate}>
+                        {closedate}
+                    </template>
+
+                    <template if:false={closedate}>
+                        -
+                    </template>
+                </div>
+                <div class="slds-col slds-size_6-of-12">
+                    <div class="labelcolor">{label.Customer_Timing_for_Priorities}</div>
+                    <template if:true={customer_timing_status}>
+                        {customer_timing_status}
+                    </template>
+
+                    <template if:false={customer_timing_status}>
+                        -
+                    </template>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-m-top_small">
+                <div class="labelcolor">{label.Evaluation_of_Objective}</div>
+                <template if:true={evaluationobj}>
+                    <c-show-more-show-less-line
+                        class="slds-var-p-top_small "
+                        description={evaluationobj}
+                        no-of-lines="5"
+                    ></c-show-more-show-less-line>
+                </template>
+
+                <template if:false={evaluationobj}>
+                    -
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

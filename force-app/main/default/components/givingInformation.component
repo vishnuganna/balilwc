@@ -1,0 +1,149 @@
+<apex:component controller="GreenSheetGettingGivingInformationPDF" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <div class="margintop15" style="padding-right: 70px">
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.giving_Info_Giving_Information}" />
+        </div>
+
+        <div class="margintop10">
+            <apex:repeat rendered="{!NOT(greenSheetPDFWrapper.givingInformation.empty)}"
+                value="{!greenSheetPDFWrapper.givingInformation}"
+                var="giObj"
+            >
+                <div class="margintop12">
+                    <table style="width:100%; margin-left: -2px;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 50%;text-align: left;">
+                                    <span class="boldfont font9">
+                                        <table style="margin-left: -2px;">
+                                            <tr>
+                                                <td class="data-bold-view font16" style="vertical-align: top">
+                                                    <apex:pageBlock rendered="{! If(giObj.title != null ,true,false) }">
+                                                        <div class="boldfont capitalword font9 marginleft15">
+                                                            {!giObj.title}
+                                                        </div>
+                                                    </apex:pageBlock>
+                                                </td>
+                                                <td style="vertical-align: top">
+                                                    <apex:repeat value="{!giObj.rfsMarkerPdfWrapper}" var="title">
+                                                        <span>
+                                                            <apex:image style="width: 15px;height: 15px"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((title=='strengthTitle'),IF(giObj.rfsMarkerPdfWrapper['strengthTitle']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((title=='strengthTitle'),IF(giObj.rfsMarkerPdfWrapper['strengthTitle']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- <apex:pageBlock rendered="{! If(giObj.title != null ,true,false) }">
+                                            <div class="boldfont capitalword font9 marginleft15">
+                                                {!giObj.title}
+                                            </div>
+                                        </apex:pageBlock> -->
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="linegray marginbottom12" style="width: 100% "></div>
+                <div>
+                    <table style="width:100%; margin-left: -1px">
+                        <tbody>
+                            <tr>
+                                <td class="boldfont colorgray font9" style="width: 33%;text-align: left;">
+                                    <div class="font9 semibold">
+                                        <apex:outputLabel value="{!$Label.giving_Info_Description}" />
+                                    </div>
+
+                                    <apex:pageBlock rendered="{! If(giObj.description ==null ,true,false) }">
+                                        -
+                                    </apex:pageBlock>
+
+                                    <apex:pageBlock rendered="{! If(giObj.description !=null ,true,false) }">
+                                        <div
+                                            class="margintop5 data-bold-view-normal"
+                                            style="width: 33%;text-align: left;"
+                                        >
+                                            {!giObj.description}
+                                        </div>
+                                    </apex:pageBlock>
+                                </td>
+
+                                <td class="boldfont colorgray font9" style="width: 33%;text-align: left;">
+                                    <div class="font9 semibold">
+                                        <apex:outputLabel value="{!$Label.giving_Info_So_What}" />
+                                    </div>
+
+                                    <apex:pageBlock rendered="{! If(giObj.soWhat ==null ,true,false) }">
+                                        -
+                                    </apex:pageBlock>
+
+                                    <apex:pageBlock rendered="{! If(giObj.soWhat !=null ,true,false) }">
+                                        <div
+                                            class="margintop5 data-bold-view-normal"
+                                            style="width: 33%;text-align: left;"
+                                        >
+                                            {!giObj.soWhat}
+                                        </div>
+                                    </apex:pageBlock>
+                                </td>
+                                <td class="boldfont colorgray font9" style="width: 34%;text-align: left;">
+                                    <div class="font9 semibold">
+                                        <apex:outputLabel value="{!$Label.giving_Info_ProveIt}" />
+                                    </div>
+
+                                    <apex:pageBlock rendered="{! If(giObj.proveIt ==null ,true,false) }">
+                                        -
+                                    </apex:pageBlock>
+
+                                    <apex:pageBlock rendered="{! If(giObj.proveIt !=null ,true,false) }">
+                                        <div
+                                            class="margintop5 data-bold-view-normal"
+                                            style="width: 34%;text-align: left;"
+                                        >
+                                            {!giObj.proveIt}
+                                        </div>
+                                    </apex:pageBlock>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="boldfont colorgray font9" style="width: 67%;text-align: left;">
+                                    <div class="font9 semibold">
+                                        <apex:outputLabel value="{!$Label.giving_Info_Perspective}" />
+                                    </div>
+
+                                    <apex:pageBlock rendered="{! If(giObj.perspective ==null ,true,false) }">
+                                        -
+                                    </apex:pageBlock>
+
+                                    <apex:pageBlock rendered="{! If(giObj.perspective !=null ,true,false) }">
+                                        <div
+                                            class="margintop5 data-bold-view-normal"
+                                            style="width: 67%;text-align: left;"
+                                        >
+                                            {!giObj.perspective}
+                                        </div>
+                                    </apex:pageBlock>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </apex:repeat>
+            <apex:pageBlock rendered="{!(greenSheetPDFWrapper.givingInformation.empty)}">
+                <div class="margintop10 semibold">
+                    <apex:outputLabel value="{!$Label.NodataAdded}" />
+                </div>
+            </apex:pageBlock>
+        </div>
+    </div>
+</apex:component>

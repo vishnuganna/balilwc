@@ -1,0 +1,70 @@
+<template>
+    <div class="slds-box container">
+        <div class="slds-m-bottom_small">
+            <img class="blueSheetBanner" alt={label.Bluesheet_Progress_Navigation_Label} src={kfBlueSheetBanner} />
+            <div>
+                <img class="blueSheetSymbol img-to-fit" alt="" src={blueSheetLogo} />
+                <div class="blueSheetText">
+                    {label.Bluesheet_Progress_Navigation_Label}
+                </div>
+                <template if:true={toogleAccordion}>
+                    <lightning-icon
+                        class="blueSheetIcon"
+                        icon-name="utility:chevrondown"
+                        variant="inverse"
+                        size="xx-small"
+                        title={label.Warning}
+                        onclick={handleToogleAccordion}
+                    ></lightning-icon>
+                </template>
+                <template if:false={toogleAccordion}>
+                    <lightning-icon
+                        class="blueSheetIcon"
+                        icon-name="utility:chevronright"
+                        variant="inverse"
+                        size="xx-small"
+                        title={label.Warning}
+                        onclick={handleToogleAccordion}
+                    ></lightning-icon>
+                </template>
+            </div>
+        </div>
+
+        <template if:true={toogleAccordion}>
+            <div class="slds-m-top_x-small toggleAccordion">
+                <template if:false={showNorecordState}>
+                    <template for:each={BluesheetElements} for:item="item">
+                        <div key={item.Name} class="divEachItem">
+                            <lightning-layout horizontal-align="space" class="slds-p-around_small">
+                                <lightning-layout-item size="1">
+                                    <lightning-icon
+                                        class="slds-icon-utility-user slds-m-right_x-small slds-line-height_reset slds-icon_container"
+                                        icon-name={item.utilIcon}
+                                        alternative-text={label.Error}
+                                        size="x-small"
+                                        variant={item.varient}
+                                    ></lightning-icon>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="8">
+                                    <div class="slds-clearfix slds-float_left eachItemColor elementName">
+                                        {item.Name}
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="3">
+                                    <div class="slds-clearfix slds-float_right eachItemColor elementStatus">
+                                        {item.Status}
+                                    </div>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </div>
+                    </template>
+                </template>
+                <template if:true={showNorecordState}>
+                    <div class="defaultMessageClass">
+                        {label.Progress_Navigation_Widget_Massage}
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

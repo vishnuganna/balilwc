@@ -1,0 +1,128 @@
+<template>
+    <div class="slds-p-around_xx-small">
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_1-of-1">
+                <span class="slds-float_left slds-text-title slds-m-top_xx-small slds-m-bottom_xx-small">
+                    {allLabel.STRENGTHS}<c-info-navigation
+                        nav-url={allLabel.sumPositionStrengthURL}
+                    ></c-info-navigation>
+                </span>
+            </div>
+        </div>
+
+        <!--ReadOnlyandEditScreen-->
+        <template if:true={strenghtData}>
+            <template for:each={strenghtData} for:item="item">
+                <div key={item.Id}>
+                    <c-strengths-data-page
+                        item={item}
+                        onrefreshscreen={handleRefresh}
+                        parentid={getIdFromParent}
+                    ></c-strengths-data-page>
+                </div>
+            </template>
+        </template>
+        <!--/ReadOnlyandEditScreen-->
+
+        <!--Create New Record Screen-->
+        <template if:true={newRecordScreenFlag}>
+            <div class="slds-card__body">
+                <article class="slds-card slds-card_boundary item">
+                    <div class="slds-p-left_x-small slds-m-top_small">
+                        <svg
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="18"
+                            height="20"
+                            style="float:left;margin-right:8px"
+                        >
+                            <g class="nc-icon-wrapper" fill="#ffffff">
+                                <g stroke="none" stroke-width="1">
+                                    <path
+                                        fill="#00b386"
+                                        d="M17.571 6c.237 0 .429.192.429.429V17.57a.429.429 0 0 1-.429.429h-.857a.429.429 0 0 1-.428-.429v-4.714H7.714v4.714a.429.429 0 0 1-.428.429h-.857A.429.429 0 0 1 6 17.571V6.43C6 6.192 6.192 6 6.429 6h.857c.236 0 .428.192.428.429v4.714h8.572V6.429c0-.237.192-.429.428-.429h.857zM4.625 8c.207 0 .375.201.375.45v8.1c0 .249-.168.45-.375.45h-.75c-.207 0-.375-.201-.375-.45V13.4H2.375c-.207 0-.375-.201-.375-.45v-.9c0-.249.168-.45.375-.45H3.5V8.45c0-.249.168-.45.375-.45h.75zM22.5 11.6c.276 0 .5.201.5.45v.9c0 .249-.224.45-.5.45H21v3.15c0 .249-.224.45-.5.45h-1c-.276 0-.5-.201-.5-.45v-8.1c0-.249.224-.45.5-.45h1c.276 0 .5.201.5.45v3.15h1.5z"
+                                    ></path>
+                                </g>
+                            </g>
+                        </svg>
+                        <b> <span class="slds-text-heading_small">{allLabel.AddNewStrength}</span></b>
+                    </div>
+                    <lightning-card class="slds-text-heading_small item">
+                        <lightning-layout horizontal-align="spread">
+                            <lightning-layout-item padding="around-small" size="6">
+                                <lightning-input
+                                    name="summary"
+                                    label={allLabel.Summary}
+                                    required
+                                    max-length="256"
+                                    onchange={handleSummaryChange}
+                                ></lightning-input>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout>
+                            <h3 class="slds-p-bottom_xx-small slds-text-title slds-m-left_small">
+                                {allLabel.Description}
+                            </h3>
+                        </lightning-layout>
+                        <lightning-layout>
+                            <lightning-layout-item class="slds-p-left_small slds-p-right_small" size="12">
+                                <textarea
+                                    rows="5"
+                                    name="Description"
+                                    onkeyup={handleMaxLimitError}
+                                    onchange={handleDescChange}
+                                    class="slds-textarea"
+                                    maxlength="32000"
+                                    style="color: black;"
+                                ></textarea>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout>
+                            <template if:true={showMaxLimitError}>
+                                <div class="slds-text-color_error slds-m-left_small">
+                                    {allLabel.ErrorMax32kCharacters}
+                                </div>
+                            </template>
+                        </lightning-layout>
+                        <!--Button Section-->
+                        <div class="slds-m-top_large slds-align_absolute-center">
+                            <lightning-button
+                                label={allLabel.cancel}
+                                class="slds-p-right_x-small"
+                                variant="neutral"
+                                onclick={handleCancelClick}
+                                style="text-decoration: none;font-size:small;"
+                            ></lightning-button>
+                            <lightning-button
+                                label={allLabel.save}
+                                variant="brand"
+                                onclick={handleSaveClick}
+                                style="font-size:small;"
+                                disabled={saveDisableFlag}
+                            >
+                            </lightning-button>
+                        </div>
+                        <!--/Button Section-->
+                    </lightning-card>
+                </article>
+            </div>
+        </template>
+        <!--/Create New Record Screen-->
+
+        <div class="slds-grid slds-gutters slds-m-top_x-small">
+            <div class="slds-col slds-size_1-of-1">
+                <template if:true={isCreateable}>
+                    <span class="slds-float_left">
+                        <lightning-button
+                            disabled={newRecordScreenFlag}
+                            name="addNewStrength"
+                            label={allLabel.AddNewStrength}
+                            variant="brand"
+                            onclick={handleCreateNewRec}
+                        ></lightning-button>
+                    </span>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

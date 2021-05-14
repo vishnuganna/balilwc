@@ -1,0 +1,57 @@
+.divClass {
+    background-color: #f0f0f0;
+    border-top: 1px solid #dcdcdc;
+}
+
+.blueSheetBackground {
+    background-color: #ffffff;
+}
+
+.fopDatatableClass {
+    max-height: 220px;
+    overflow-y: auto;
+}
+.oppDatatableClass {
+    height: 190px;
+}
+
+.strategicPlayerDatatableClass {
+    min-height: 89px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+.text-position-top {
+    vertical-align: baseline;
+}
+
+td,
+th {
+    vertical-align: baseline;
+    outline: none !important;
+    border-color: none !important;
+    box-shadow: none !important;
+}
+
+.action-display-set {
+    display: table-caption;
+    margin-right: 9px;
+}
+.action-buttion-position {
+    padding-right: 25px !important;
+    padding-left: 0px;
+    margin-left: 0px;
+}
+
+.cardlabels-goldsheet {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.cardheader-goldsheet {
+    height: 58px;
+}
+.KFSellDashBoardDatatableClass {
+    max-height: 270px;
+    overflow-y: auto;
+}

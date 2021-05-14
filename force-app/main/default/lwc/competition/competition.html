@@ -1,0 +1,377 @@
+<template>
+    <template if:true={moduleData}>
+        <c-go-to-bluesheet-prompts
+            module-data={moduleData}
+            module-learning-completed={moduleLearningCompleted}
+            module-section={moduleSection}
+        ></c-go-to-bluesheet-prompts>
+    </template>
+    <article
+        if:false={checkNoDataAndReadOnlyAccess}
+        class="slds-card slds-card_boundary divClass"
+        style="text-decoration: none !important; background-color: #f0f0f0;"
+    >
+        <lightning-card variant="Narrow" style="color: black;" class="slds-m-top_xx-large">
+            <div slot="title">
+                <b>{label.competitionLabel}</b
+                ><c-info-navigation nav-url={label.CompetitionHeaderURL}></c-info-navigation>
+            </div>
+
+            <div class=" slds-m-bottom_x-small divClassForNonBorder" style="background-color: #f0f0f0;">
+                <div class="slds-m-top_x-small divClass">
+                    <c-custom-insights
+                        showon-bs={showonbs}
+                        get-id-from-parent={getIdFromParent}
+                        type={label.categoryCompetitor}
+                    >
+                    </c-custom-insights>
+                </div>
+                <template if:true={hasCompetitorData}>
+                    <br />
+                    <template for:each={competitorData} for:item="item">
+                        <div key={item.Id}>
+                            <c-competitor-Data
+                                item={item}
+                                parentid={optyId}
+                                oneditclicked={handleEdit}
+                                onenablebutton={handleEnableButton}
+                                ondeleterecord={handlerefresh}
+                                onupdateprogressfromchild={handleProgress}
+                            ></c-competitor-Data>
+                        </div>
+                    </template>
+                </template>
+                <!--Create View-->
+                <template if:true={showCreateView}>
+                    <br />
+                    <div class="slds-card__body slds-card__body_inner item">
+                        <article class="slds-card slds-card_boundary item">
+                            <lightning-card class="slds-text-heading_small item">
+                                <div class="slds-p-left_x-small item" style="margin-bottom: 2px;">
+                                    <lightning-layout horizontal-align="spread">
+                                        <lightning-layout-item padding="around-small" size="6">
+                                            <div>
+                                                <label class="slds-form-element__label" for="textarea-id-01"
+                                                    ><abbr title="required" class="slds-required">*</abbr
+                                                    >{label.competitior}</label
+                                                >
+                                                <c-strength-redflag
+                                                    rfs-data={rfsDetails.competitor}
+                                                    class="slds-clearfix slds-float_right"
+                                                    onvalueselected={handleMarkerChange}
+                                                ></c-strength-redflag>
+                                            </div>
+                                            <template if:true={showLookUp}>
+                                                <!-- <div class="custom-box">
+                                                    <c-lookup-component
+                                                        class="lookupcomp"
+                                                        field-label={label.Competitor}
+                                                        child-object-api-name={objectForLookup}
+                                                        target-field-api-name={lookuptargetField}
+                                                        required={isRequired}
+                                                        placeholder="Search Competitor"
+                                                        onvalueselected={handleValueSelcted}
+                                                        style="font-size: small;"
+                                                    ></c-lookup-component>
+                                                </div>-->
+                                                <div class="custom-box">
+                                                    <c-competitor-account-lookup
+                                                        class="lookupcomp"
+                                                        lookup-label={label.Competitor}
+                                                        searchfield="Name"
+                                                        iconname="standard:account"
+                                                        onrecordselection={handleValueSelcted}
+                                                        selectedvalue={selectedvalue}
+                                                        required={isRequired}
+                                                        placeholder="Search Competitor"
+                                                        style="font-size: small;"
+                                                    ></c-competitor-account-lookup>
+                                                </div>
+                                            </template>
+                                            <template if:false={showLookUp}>
+                                                <div class="custom-box">
+                                                    <lightning-input
+                                                        type="text"
+                                                        label={label.competitior}
+                                                        variant="label-hidden"
+                                                        required={isRequired}
+                                                        onchange={handleCompetitiorName}
+                                                        disabled
+                                                        value={competitorName}
+                                                        placeholder="Competitor Name"
+                                                        style="font-size: small;"
+                                                    ></lightning-input>
+                                                </div>
+                                            </template>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item padding="around-small">
+                                            <div class="custom-box"></div>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                    <lightning-layout
+                                        horizontal-align="spread"
+                                        class="slds-border_top slds-border_bottom slds-grid-align_left"
+                                    >
+                                        <lightning-layout-item padding="around-small" size="6">
+                                            <div class="custom-box">
+                                                <label class="slds-form-element__label" for="textarea-id-01"
+                                                    >{label.competitionTypeLabel}</label
+                                                >
+                                                <div class="slds-p-top_xx-small" style="font-size: small;">
+                                                    <button
+                                                        value="Buying from Someone Else"
+                                                        data-target-id="buyfromelse"
+                                                        onclick={handleCompetativeType}
+                                                        class="slds-button slds-button_neutral slds-col slds-m-bottom_x-small slds-text-align_left slds-size_1-of-1 competitorTypeButtons"
+                                                    >
+                                                        {label.buyingFromSomeOneElse}
+                                                    </button>
+                                                </div>
+                                                <div class="slds-p-top_xx-small" style="font-size: small;">
+                                                    <button
+                                                        value="Using Budget for Something Else"
+                                                        onclick={handleCompetativeType}
+                                                        class="slds-button slds-button_neutral slds-col slds-m-bottom_x-small slds-text-align_left slds-size_1-of-1 competitorTypeButtons"
+                                                    >
+                                                        {label.usingBudgetforSomething}
+                                                    </button>
+                                                </div>
+                                                <div class="slds-p-top_xx-small" style="font-size: small;">
+                                                    <button
+                                                        value="Using Internal Resource"
+                                                        onclick={handleCompetativeType}
+                                                        class="slds-button slds-button_neutral slds-col slds-m-bottom_x-small slds-text-align_left slds-size_1-of-1 competitorTypeButtons"
+                                                    >
+                                                        {label.usingInternalResource}
+                                                    </button>
+                                                </div>
+                                                <div class="slds-p-top_xx-small" style="font-size: small;">
+                                                    <button
+                                                        value="Doing Nothing"
+                                                        onclick={handleCompetativeType}
+                                                        class="slds-button slds-button_neutral slds-col slds-m-bottom_x-small slds-text-align_left slds-size_1-of-1 competitorTypeButtons"
+                                                    >
+                                                        {label.doingNothing}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item padding="around-small" size="6">
+                                            <div class="custom-box">
+                                                <label class="slds-form-element__label slds-wrap" for="textarea-id-01"
+                                                    >{label.myPositionvsCompetitior}<c-info-navigation
+                                                        nav-url={label.myPosVsCompetitionURL}
+                                                    ></c-info-navigation
+                                                ></label>
+                                                <div class="slds-p-top_xx-small" style="font-size: small;">
+                                                    <button
+                                                        value="Only Alternative"
+                                                        onclick={handleMyPositionVsCompetitor}
+                                                        class="slds-button slds-button_neutral slds-col slds-m-bottom_x-small slds-text-align_left slds-size_1-of-1 competitorpositionButtons"
+                                                    >
+                                                        <div>
+                                                            <span>
+                                                                <svg
+                                                                    viewBox="0 0 19 19"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    version="1.1"
+                                                                    width="16px"
+                                                                    height="15px"
+                                                                >
+                                                                    <g transform="matrix(1 0 0 1 -511 -1435 )">
+                                                                        <path
+                                                                            d="M 14.5024 8.17777777777777  C 14.4768 8.23111111111111  10.9696 12.1511111111111  9.1008 14.2044444444444  C 8.4864 14.8711111111111  7.488 14.8711111111111  6.8736 14.2044444444444  C 5.0304 12.1511111111111  1.4976 8.23111111111111  1.4976 8.20444444444444  C -0.0896000000000015 6.47111111111111  -0.0896000000000015 3.61777777777778  1.4976 1.88444444444444  C 2.2656 1.03111111111111  3.2896 0.577777777777775  4.3904 0.577777777777775  C 5.4912 0.577777777777775  6.5152 1.03111111111111  7.2832 1.88444444444444  L 7.5904 2.28444444444444  C 7.7952 2.55111111111111  8.2048 2.55111111111111  8.4096 2.28444444444444  L 8.6656 1.93777777777777  L 8.7168 1.88444444444444  C 9.5104 1.00444444444444  10.5344 0.551111111111109  11.6096 0.551111111111109  C 12.7104 0.551111111111109  13.7344 1.00444444444444  14.5024 1.85777777777777  C 16.0896 3.59111111111111  16.0896 6.44444444444444  14.5024 8.17777777777777  Z "
+                                                                            fill-rule="nonzero"
+                                                                            fill="#4bca81"
+                                                                            stroke="none"
+                                                                            transform="matrix(1 0 0 1 511 1435 )"
+                                                                        ></path>
+                                                                    </g>
+                                                                </svg>
+                                                            </span>
+                                                            <span> {label.onlyAlternative}</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                                <div class="slds-p-top_xx-small" style="font-size: small;">
+                                                    <button
+                                                        value="Front Runner"
+                                                        onclick={handleMyPositionVsCompetitor}
+                                                        class="slds-button slds-button_neutral slds-col slds-m-bottom_x-small slds-text-align_left slds-size_1-of-1 competitorpositionButtons"
+                                                    >
+                                                        <div>
+                                                            <span>
+                                                                <svg
+                                                                    viewBox="0 0 19 19"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    version="1.1"
+                                                                    width="16px"
+                                                                    height="16px"
+                                                                >
+                                                                    <g transform="matrix(1 0 0 1 -511 -1474 )">
+                                                                        <path
+                                                                            d="M 4.928 10.5088  L 4.928 7.4112  C 4.928 7.2064  4.672 7.0784  4.5184 7.2064  L 0.934399999999999 9.9712  C 0.550399999999999 10.2528  0.32 10.7136  0.32 11.2  L 0.32 12.2496  C 0.32 12.4288  0.4992 12.5568  0.6528 12.48  L 4.5952 10.9952  C 4.8 10.9184  4.928 10.7392  4.928 10.5088  Z M 11.072 15.4496  C 11.072 15.0912  10.8672 14.784  10.5856 14.5792  L 9.536 13.888  L 9.536 2.2656  C 9.536 1.5744  8.7936 0.8064  8.3072 0.4224  C 8.128 0.2688  7.8464 0.2688  7.6672 0.4224  C 7.2064 0.8064  6.4384 1.5744  6.4384 2.2656  L 6.4384 13.888  L 5.2608 14.656  C 5.056 14.8096  4.9024 15.04  4.9024 15.296  L 4.9024 15.4496  C 4.9024 15.5776  5.0048 15.68  5.1328 15.68  L 10.7904 15.68  C 10.9184 15.68  11.072 15.5776  11.072 15.4496  Z M 15.68 11.2256  C 15.68 10.7136  15.4496 10.2528  15.0656 9.9712  L 11.4816 7.2064  C 11.3024 7.0784  11.072 7.2064  11.072 7.4112  L 11.072 10.5344  C 11.072 10.7392  11.2 10.944  11.4048 11.0208  L 15.3472 12.5056  C 15.5264 12.5568  15.68 12.4544  15.68 12.2752  L 15.68 11.2256  Z "
+                                                                            fill-rule="nonzero"
+                                                                            fill="#02a7f0"
+                                                                            stroke="none"
+                                                                            transform="matrix(1 0 0 1 511 1474 )"
+                                                                        ></path>
+                                                                    </g>
+                                                                </svg>
+                                                            </span>
+                                                            <span> {label.frontRunner}</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                                <div
+                                                    class="slds-p-top_xx-small slds-col slds-size_1-of-1"
+                                                    style="font-size: small;"
+                                                >
+                                                    <span>
+                                                        <button
+                                                            value="Shared"
+                                                            onclick={handleMyPositionVsCompetitor}
+                                                            class="slds-button slds-button_neutral slds-m-bottom_x-small slds-text-align_left slds-size_1-of-1 competitorpositionButtons"
+                                                        >
+                                                            <div>
+                                                                <span>
+                                                                    <svg
+                                                                        viewBox="0 0 19 19"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        version="1.1"
+                                                                        width="15px"
+                                                                        height="16px"
+                                                                    >
+                                                                        <g transform="matrix(1 0 0 1 -511 -1514 )">
+                                                                            <path
+                                                                                d="M 14.5760869565217 7.31428571428572  C 14.5108695652174 6.98775510204082  14.1521739130435 6.82448979591837  13.8586956521739 6.98775510204082  L 7.17391304347826 10.6775510204082  C 6.71739130434783 10.9061224489796  6.19565217391304 10.5795918367347  6.19565217391304 10.0897959183673  L 6.19565217391304 2.08979591836735  C 6.19565217391304 1.76326530612245  5.8695652173913 1.50204081632653  5.57608695652174 1.6  C 2.31521739130435 2.51428571428572  -0.0326086956521732 5.68163265306123  0.358695652173914 9.30612244897959  C 0.717391304347826 12.6040816326531  3.35869565217391 15.2816326530612  6.68478260869565 15.6408163265306  C 11.0217391304348 16.0979591836735  14.6739130434783 12.734693877551  14.6739130434783 8.48979591836735  C 14.6739130434783 8.09795918367347  14.6413043478261 7.70612244897959  14.5760869565217 7.31428571428572  Z M 7.5 8.16326530612245  C 7.5 8.45714285714286  7.79347826086956 8.62040816326531  8.05434782608696 8.48979591836735  L 14.4782608695652 5.06122448979592  C 14.8695652173913 4.86530612244898  15 4.34285714285714  14.7391304347826 3.98367346938775  C 13.2717391304348 1.95918367346939  10.9891304347826 0.489795918367347  8.38043478260869 0.0653061224489794  C 7.92391304347826 -0.03265306122449  7.5 0.326530612244898  7.5 0.783673469387755  L 7.5 8.16326530612245  Z "
+                                                                                fill-rule="nonzero"
+                                                                                fill="#f59a23"
+                                                                                stroke="none"
+                                                                                transform="matrix(1 0 0 1 511 1514 )"
+                                                                            ></path>
+                                                                        </g>
+                                                                    </svg>
+                                                                </span>
+                                                                <span> {label.shared}</span>
+                                                            </div>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                                <div
+                                                    class="slds-p-top_xx-small slds-text-align_left"
+                                                    style="font-size: small;"
+                                                >
+                                                    <button
+                                                        value="Zero"
+                                                        onclick={handleMyPositionVsCompetitor}
+                                                        class="slds-button slds-button_neutral slds-col slds-m-bottom_x-small slds-text-align_left slds-size_1-of-1 competitorpositionButtons"
+                                                    >
+                                                        <div>
+                                                            <span>
+                                                                <svg
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 19 19"
+                                                                    version="1.1"
+                                                                    width="16px"
+                                                                    height="16px"
+                                                                >
+                                                                    <g transform="matrix(1 0 0 1 -1012 -1891 )">
+                                                                        <path
+                                                                            d="M 10.1052631578947 8.33684210526315  C 9.93684210526316 8.16842105263158  9.93684210526316 7.91578947368421  10.1052631578947 7.74736842105263  L 15.5789473684211 2.23157894736842  C 15.8315789473684 1.97894736842105  15.8315789473684 1.6  15.5789473684211 1.34736842105263  L 14.7368421052632 0.463157894736842  C 14.4842105263158 0.210526315789474  14.1052631578947 0.210526315789474  13.8526315789474 0.463157894736842  L 8.33684210526316 5.97894736842105  C 8.16842105263158 6.14736842105263  7.91578947368421 6.14736842105263  7.74736842105263 5.97894736842105  L 2.23157894736842 0.421052631578947  C 1.97894736842105 0.168421052631579  1.6 0.168421052631579  1.34736842105263 0.421052631578947  L 0.463157894736842 1.30526315789474  C 0.210526315789474 1.55789473684211  0.210526315789474 1.93684210526316  0.463157894736842 2.18947368421053  L 5.97894736842105 7.70526315789474  C 6.14736842105263 7.87368421052631  6.14736842105263 8.12631578947368  5.97894736842105 8.29473684210526  L 0.421052631578947 13.8526315789474  C 0.168421052631579 14.1052631578947  0.168421052631579 14.4842105263158  0.421052631578947 14.7368421052632  L 1.30526315789474 15.6210526315789  C 1.55789473684211 15.8736842105263  1.93684210526316 15.8736842105263  2.18947368421053 15.6210526315789  L 7.70526315789474 10.1052631578947  C 7.87368421052631 9.93684210526316  8.12631578947368 9.93684210526316  8.29473684210526 10.1052631578947  L 13.8105263157895 15.6210526315789  C 14.0631578947368 15.8736842105263  14.4421052631579 15.8736842105263  14.6947368421053 15.6210526315789  L 15.5789473684211 14.7368421052632  C 15.8315789473684 14.4842105263158  15.8315789473684 14.1052631578947  15.5789473684211 13.8526315789474  L 10.1052631578947 8.33684210526315  Z "
+                                                                            fill-rule="nonzero"
+                                                                            fill="#c23934"
+                                                                            stroke="none"
+                                                                            transform="matrix(1 0 0 1 1012 1891 )"
+                                                                        ></path>
+                                                                    </g>
+                                                                </svg>
+                                                            </span>
+                                                            <span> {label.zero}</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                    <div class="slds-m-right_small">
+                                        <c-strength-redflag
+                                            rfs-data={rfsDetails.competitiveDetail}
+                                            class="slds-clearfix slds-float_right"
+                                            onvalueselected={handleMarkerChange}
+                                        ></c-strength-redflag>
+                                        <lightning-textarea
+                                            name="input1"
+                                            label={label.competitiveDetail}
+                                            placeholder={label.competitiveDetails}
+                                            value={competitiveDetail}
+                                            onblur={handleCompDetailUpdate}
+                                            class="slds-m-top_small textAreaPosition"
+                                            max-length="32000"
+                                            message-when-too-long="32K Charecters allowed"
+                                            style="font-size: small;"
+                                            onkeyup={handleMaxLimitError}
+                                        ></lightning-textarea>
+                                    </div>
+
+                                    <template if:true={showMaxLimitError}>
+                                        <div class="erroMsg">{label.maxLimitErrorLabel}</div>
+                                    </template>
+                                    <div class="slds-m-left_xx_large slds-m-top_x-small slds-grid-align_center">
+                                        <lightning-button
+                                            label={label.cancel}
+                                            class="slds-p-right_x-small"
+                                            variant="neutral"
+                                            onclick={handleCancelClick}
+                                            style="text-decoration: none; font-size: small;"
+                                        ></lightning-button>
+                                        <lightning-button
+                                            label={label.save}
+                                            variant="brand"
+                                            disabled={showSaveButton}
+                                            onclick={handleSave}
+                                            style="font-size: small;"
+                                        >
+                                        </lightning-button>
+                                    </div>
+                                </div>
+                            </lightning-card>
+                        </article>
+                    </div>
+                </template>
+                <!--<template if:false={hasCompetitorData}> -->
+                <!--<template if:true={hasEditAccess}>-->
+                <template if:true={isCreateable}>
+                    <div class="slds-m-top_small">
+                        <lightning-button
+                            variant="brand"
+                            label={label.addCompetitior}
+                            disabled={disableAddButton}
+                            onclick={handleCreateNew}
+                            class="slds-m-left_medium"
+                        ></lightning-button>
+                    </div>
+                </template>
+                <!--</template> -->
+            </div>
+        </lightning-card>
+    </article>
+    <article
+        if:true={checkNoDataAndReadOnlyAccess}
+        class="slds-card slds-card_boundary"
+        style="text-decoration: none !important;"
+    >
+        <lightning-card variant="Narrow" style="color: black;" class="slds-m-top_xx-large">
+            <div slot="title">
+                <b>{label.competitionLabel}</b
+                ><c-info-navigation nav-url={label.CompetitionHeaderURL}></c-info-navigation>
+            </div>
+
+            <div class="slds-m-top_x-small slds-m-bottom_x-small" style="border-top: 1px solid #dcdcdc;">
+                <div class="slds-m-around_small">
+                    <c-summary-view-no-data></c-summary-view-no-data>
+                </div>
+            </div>
+        </lightning-card>
+    </article>
+</template>

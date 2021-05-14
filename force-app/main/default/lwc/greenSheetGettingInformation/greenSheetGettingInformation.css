@@ -1,0 +1,91 @@
+.buttonBorder {
+    border: 1px solid gray;
+    padding: 2px 8px;
+}
+.gettingHR {
+    border-bottom: 1px solid #8080804d;
+    margin: 12px 0px 0px 0px;
+}
+.leftHeading {
+    font-family: "Arial-BoldMT", "Arial Bold", "Arial", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 12px;
+    color: #080707;
+    margin-bottom: 11px;
+    margin-top: 18px;
+}
+
+.leftNormatlText {
+    font-family: "ArialMT", "Arial", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    color: #3e3e3c;
+    line-height: 16px;
+}
+
+.leftBulletlText {
+    display: list-item; /* This has to be "list-item"                                               */
+    list-style-type: disc; /* See https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-type     */
+    list-style-position: inside; /* See https:
+    /* list-style: disc;
+    padding-left: 45px;
+    font-size: 12px; */
+}
+.scroll {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.icon-confirmation {
+    margin-right: 8px;
+    height: 16px;
+    width: 16px;
+    padding: 1px;
+    font-size: 10px;
+    background-color: #aaa;
+}
+
+.icon-for-button {
+    margin-right: 8px;
+    color: #aaa;
+}
+
+.button-selected {
+    background-color: rgba(217, 235, 247, 1);
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(176, 207, 227, 1);
+}
+
+.golden-icon {
+    margin-right: 13px;
+}
+.golden-icon-non-selected {
+    border: 1px solid gray;
+    border-radius: 2px;
+    background-color: #fff;
+    height: 21px;
+    width: 20px;
+}
+
+.golden-icon-selected {
+    border: 1px solid #e6bf35;
+    border-radius: 2px;
+    background-color: #e6bf35;
+    height: 21px;
+    width: 20px;
+}
+.golden-icon img {
+    height: 17px;
+    width: 18px;
+    padding-bottom: 1px;
+}
+.golden-icon-summary-selected {
+    border-radius: 2px;
+    background-color: #fff;
+    height: 20px;
+    width: 20px;
+}

@@ -1,0 +1,95 @@
+<template>
+    <template if:true={displayInsight}>
+        <template if:false={showonBs}>
+            <div class="slds-m-top_x-small slds-m-bottom_x-small divClass slds-card_boundary item divInsight">
+                <div class="slds-m-around_small">
+                    <div class="slds-text-heading_small">
+                        <lightning-icon
+                            icon-name="utility:light_bulb"
+                            alternative-text="Connected"
+                            title="Connected"
+                            size="x-small"
+                        >
+                        </lightning-icon
+                        >&nbsp; <span class="textInsightFont">{label.Insights}</span>
+                    </div>
+
+                    <template if:true={hasInsightAlertData}>
+                        <template for:each={insightAlertData} for:item="item">
+                            <div key={item.id} class="slds-m-top_x-small slds-m-bottom_x-small">
+                                <span class="textFont"> {item.insightAlertText}:</span>
+                                <template if:true={item.insightAlertLink}>
+                                    <template if:true={categoryComp}>
+                                        <lightning-formatted-url
+                                            class="slds-text-heading_xx-small"
+                                            value={item.insightAlertLink}
+                                            target="_blank"
+                                            label={label.Link_to_Document}
+                                        >
+                                        </lightning-formatted-url>
+                                    </template>
+                                    <template if:true={categoryPersp}>
+                                        <lightning-formatted-url
+                                            class="slds-text-heading_xx-small"
+                                            value={item.insightAlertLink}
+                                            target="_blank"
+                                            label={item.insightAlertLinkDisplayLinkAs}
+                                        >
+                                        </lightning-formatted-url>
+                                    </template>
+                                </template>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </div>
+        </template>
+        <template if:true={showonBs}>
+            <div class="slds-m-top_x-small">
+                <div class="slds-m-left--small slds-m-right--small slds-card_boundary item divInsight">
+                    <div class=" slds-grid slds-m-around_small slds-size_4-of-4 slds-grid_vertical-align-center">
+                        <div style="width:10%" class="slds-text-title_bold ">
+                            <lightning-icon
+                                icon-name="utility:light_bulb"
+                                alternative-text="Connected"
+                                title="Connected"
+                                size="x-small"
+                            >
+                            </lightning-icon>
+                            <span class="textInsightFont"> {label.Insights}</span>
+                        </div>
+                        <div style="width:90%" class="slds-border_left slds-m-left_small">
+                            <template if:true={hasInsightAlertData}>
+                                <template for:each={insightAlertData} for:item="item">
+                                    <div key={item.Id} class="slds-m-left_small slds-m-bottom_xx-small">
+                                        <span class="textFont"> {item.insightAlertText}:</span>
+                                        <template if:true={item.insightAlertLink}>
+                                            <template if:true={categoryComp}>
+                                                <lightning-formatted-url
+                                                    class="slds-text-heading_xx-small"
+                                                    value={item.insightAlertLink}
+                                                    target="_blank"
+                                                    label={label.Link_to_Document}
+                                                >
+                                                </lightning-formatted-url
+                                            ></template>
+                                            <template if:true={categoryPersp}>
+                                                <lightning-formatted-url
+                                                    class="slds-text-heading_xx-small"
+                                                    value={item.insightAlertLink}
+                                                    target="_blank"
+                                                    label={item.insightAlertLinkDisplayLinkAs}
+                                                >
+                                                </lightning-formatted-url>
+                                            </template>
+                                        </template>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </template>
+</template>

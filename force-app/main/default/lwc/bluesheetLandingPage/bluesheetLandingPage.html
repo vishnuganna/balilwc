@@ -1,0 +1,258 @@
+<template>
+    <div class="c-container slds-p-right_medium slds-p-bottom_medium">
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item>
+                <c-welcome-mat onclosemat={handleProgressGuidedJourney}></c-welcome-mat>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+                <lightning-layout>
+                    <lightning-layout-item size="3">
+                        <div>
+                            <lightning-vertical-navigation>
+                                <h1
+                                    class="slds-m-left_medium slds-text-heading_small slds-text-title_bold slds-m-around-small"
+                                    onclick={testclick}
+                                >
+                                    {label.strategicAnalysis}
+                                    <!-- <lightning-icon
+                                <h1 class="slds-m-bottom_medium slds-m-left_medium" onclick={testclick}>
+                                    <label class="slds-text-heading_small slds-text-title_bold"
+                                        >{label.strategicAnalysis}</label
+                                    >&nbsp;{label.blueSheetInBraces}
+                                    <lightning-icon
+                                        icon-name={utilMenu}
+                                        class="slds-m-left_xx-small"
+                                        onclick={expandmenuClick}
+                                        size="xx-small"
+                                    ></lightning-icon> -->
+                                </h1>
+
+                                <lightning-menu-divider class="divider-top"></lightning-menu-divider>
+
+                                <!--singleSalesObjective-->
+                                <c-progress-navigation-item
+                                    item-progress={ssoProgress}
+                                    label-item-progress={lblsinglesalesobjProgressStatus}
+                                    label-item-name={label.singleSalesObjective}
+                                    expand-menu={expandMenu}
+                                    onscrolltocomponent={handleClick}
+                                    not-started-navigation-url={label.singlesalesobjectiveNotStartedURL}
+                                    not-started-statusinfo={label.singlesalesobjectiveNotStarted}
+                                    in-progress-statusinfo={label.singlesalesobjectiveInProgress}
+                                    completed-statusinfo={label.singlesalesobjectiveCompleted}
+                                    in-progress-navigation-url={label.singlesalesobjectiveInProgressURL}
+                                    class-for-anchor="link_ssoCallDetails"
+                                >
+                                </c-progress-navigation-item>
+                                <!--/singleSalesObjective-->
+                                <lightning-menu-divider class="divider-top"></lightning-menu-divider>
+                                <!--currentPosition-->
+                                <c-progress-navigation-item
+                                    item-progress={currentPosProgress}
+                                    label-item-progress={lblcurrentpositionProgressStatus}
+                                    label-item-name={label.currentPosition}
+                                    expand-menu={expandMenu}
+                                    onscrolltocomponent={handleClick}
+                                    not-started-navigation-url={label.currentpositionNotStartedURL}
+                                    not-started-statusinfo={label.currentpositionNotStarted}
+                                    in-progress-statusinfo={label.currentpositionInProgress}
+                                    completed-statusinfo={label.currentpositionCompleted}
+                                    in-progress-navigation-url=""
+                                    class-for-anchor="link_cpCallDetails"
+                                >
+                                </c-progress-navigation-item>
+                                <!--/currentPosition-->
+                                <lightning-menu-divider class="divider-top"></lightning-menu-divider>
+                                <!--StrategicSellingScorecard-->
+                                <c-progress-navigation-item
+                                    item-progress={scorecardProgress}
+                                    label-item-progress={lblscorecardProgressStatus}
+                                    label-item-name={label.strategicSellingScorecard}
+                                    expand-menu={expandMenu}
+                                    onscrolltocomponent={handleClick}
+                                    not-started-navigation-url={label.scorecardNotStartedURL}
+                                    not-started-statusinfo={label.scorecardNotStarted}
+                                    in-progress-statusinfo={label.scorecardInProgress}
+                                    completed-statusinfo={label.scorecardCompleted}
+                                    in-progress-navigation-url={label.scorecardNotStartedURL}
+                                    class-for-anchor="anchor_scoreCardCallDetails"
+                                >
+                                </c-progress-navigation-item>
+                                <!--/strategicSellingScorecard-->
+                                <lightning-menu-divider class="divider-top"></lightning-menu-divider>
+                                <!--Competition-->
+                                <c-progress-navigation-item
+                                    item-progress={competitionProgress}
+                                    label-item-progress={lblcompetitionProgressStatus}
+                                    label-item-name={label.competition}
+                                    expand-menu={expandMenu}
+                                    showcustom-insights={showcustomInsights}
+                                    onscrolltocomponent={handleClick}
+                                    not-started-navigation-url={label.competitionNotStartedURL}
+                                    not-started-statusinfo={label.competitionNotStarted}
+                                    in-progress-statusinfo={label.competitionInProgress}
+                                    completed-statusinfo={label.competitionCompleted}
+                                    in-progress-navigation-url={label.competitionInProgressURL}
+                                    class-for-anchor="anchor_competitionCallDetails"
+                                    get-id-from-parent={recordId}
+                                    insight-category={label.categoryCompetitor}
+                                >
+                                </c-progress-navigation-item>
+
+                                <lightning-menu-divider class="divider-top"></lightning-menu-divider>
+                                <!--Buying Influence-->
+                                <c-progress-navigation-item
+                                    item-progress={biProgress}
+                                    label-item-progress={lblbuyingInfluenceProgressStatus}
+                                    label-item-name={label.buyingInfluence}
+                                    expand-menu={expandMenu}
+                                    onscrolltocomponent={handleClick}
+                                    not-started-navigation-url={label.buyingInfluenceNotStartedURL}
+                                    not-started-statusinfo={label.buyingInfluenceNotStarted}
+                                    in-progress-statusinfo={label.buyingInfluenceInProgress}
+                                    completed-statusinfo={label.buyingInfluenceCompleted}
+                                    in-progress-navigation-url={label.buyingInfluenceInProgressURL}
+                                    class-for-anchor="anchor_buyingInfluenceCallDetails"
+                                >
+                                </c-progress-navigation-item>
+                                <!--/Buying Influence-->
+
+                                <lightning-menu-divider class="divider-top"></lightning-menu-divider>
+
+                                <!--Summary of My Position-->
+
+                                <c-progress-navigation-item
+                                    item-progress={summaryofmyPosProgress}
+                                    label-item-progress={lblsummaryofMyPosProgressStatus}
+                                    label-item-name={label.summaryOfMyPositionToday}
+                                    expand-menu={expandMenu}
+                                    onscrolltocomponent={handleClick}
+                                    not-started-navigation-url={label.summaryofMyPositionNotStartedURL}
+                                    not-started-statusinfo={label.summaryofMyPositionNotStarted}
+                                    in-progress-statusinfo={label.summaryofMyPositionInProgress}
+                                    completed-statusinfo={label.summaryofMyPositionCompleted}
+                                    in-progress-navigation-url={label.summaryofMyPositionInProgressURL}
+                                    class-for-anchor="anchor_summaryofMypositionDetails"
+                                >
+                                </c-progress-navigation-item>
+
+                                <lightning-menu-divider class="divider-top"></lightning-menu-divider>
+                                <!--Action Plan-->
+                                <c-progress-navigation-item
+                                    item-progress={actionPlanProgress}
+                                    label-item-name={label.actionPlan}
+                                    expand-menu={expandMenu}
+                                    showcustom-insights={showcustomInsights}
+                                    onscrolltocomponent={handleClick}
+                                    not-started-navigation-url={label.actionPlanNoStartedURL}
+                                    not-started-statusinfo={label.actionPlanNotStarted}
+                                    in-progress-statusinfo={label.actionPlanInProgress}
+                                    completed-statusinfo={label.actionPlanCompleted}
+                                    in-progress-navigation-url={label.actionPlanInProgressURL}
+                                    class-for-anchor="anchor_actionPlanCallDetails"
+                                    get-id-from-parent={recordId}
+                                    insight-category={label.categoryPerspective}
+                                >
+                                </c-progress-navigation-item>
+                                <div class="slds-p-horizontal_medium slds-m-left_small slds-m-top_small">
+                                    <a onclick={expandmenuClick} class="slds-text-heading_small slds-var-p-left_large"
+                                        >{showInsightslink}</a
+                                    >
+                                </div>
+                                <lightning-menu-divider class="divider-top"></lightning-menu-divider>
+                            </lightning-vertical-navigation>
+                        </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item padding="around-small" size="9">
+                        <lightning-layout multiple-rows="true" vertical-align="stretch">
+                            <lightning-layout-item padding="around-small" size="12">
+                                <div class="anchor_ssoCallDetails">
+                                    <c-single-sales-objective-blue-sheet
+                                        get-id-from-parent={recordId}
+                                        module-data={ssoBsGuidedJourney}
+                                    >
+                                    </c-single-sales-objective-blue-sheet>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small" size="12">
+                                <div class="anchor_ssoCallDetails">
+                                    <c-sso-main-page
+                                        get-id-from-parent={recordId}
+                                        onupdateprogressfromchild={handleProgress}
+                                        module-data={ssoGuidedJourney}
+                                    >
+                                    </c-sso-main-page>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item padding="around-small" size="12">
+                                <div class="anchor_cpCallDetails">
+                                    <c-current-position-progress
+                                        object-api-name={objectApiName}
+                                        get-id-from-parent={recordId}
+                                        onupdateprogressfromchild={handleProgress}
+                                        module-data={cpGuidedJourney}
+                                    ></c-current-position-progress>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item padding="around-small" size="12">
+                                <div class="anchor_scoreCardCallDetails">
+                                    <c-score-card
+                                        get-id-from-parent={recordId}
+                                        onupdateprogressfromchild={handleProgress}
+                                        module-data={scrcardGuidedJourney}
+                                    ></c-score-card>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item padding="around-small" size="12">
+                                <div class="anchor_competitionCallDetails">
+                                    <c-competition
+                                        object-api-name={objectApiName}
+                                        get-id-from-parent={recordId}
+                                        onupdateprogressfromchild={handleProgress}
+                                        module-data={competitionGuidedJourney}
+                                    ></c-competition>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item padding="around-small" size="12">
+                                <div class="anchor_buyingInfluenceCallDetails">
+                                    <c-buying-Influence
+                                        object-api-name={objectApiName}
+                                        get-id-from-parent={recordId}
+                                        onupdateprogressfromchild={handleProgress}
+                                        module-data={biGuidedJourney}
+                                    ></c-buying-Influence>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item padding="around-small" size="12">
+                                <div class="anchor_summaryofMypositionDetails">
+                                    <c-my-position-main-page
+                                        get-id-from-parent={recordId}
+                                        onupdateprogressfromchild={handleProgress}
+                                        module-data={summaryOfMPGuidedJourney}
+                                    ></c-my-position-main-page>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item padding="around-small" size="12">
+                                <div class="anchor_actionPlanCallDetails">
+                                    <c-action-Plan-Page
+                                        object-api-name={objectApiName}
+                                        get-id-from-parent={recordId}
+                                        onupdateprogressfromchild={handleProgress}
+                                        module-data={actionPlanGuidedJourney}
+                                    ></c-action-Plan-Page>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+</template>

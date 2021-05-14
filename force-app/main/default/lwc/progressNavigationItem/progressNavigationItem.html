@@ -1,0 +1,51 @@
+<template>
+    <a
+        href="javascript:void(0);"
+        aria-current="page"
+        class="slds-nav-vertical__action nav-item-text slds-p-vertical_medium"
+        onclick={handleClickItem}
+        data-class={classForAnchor}
+    >
+        <div class="left-section">
+            <div role="listitem">
+                <lightning-icon
+                    class="slds-icon-utility-user slds-m-right_x-small slds-line-height_reset slds-icon_container"
+                    icon-name={utilName}
+                    alternative-text="Error!"
+                    size="x-small"
+                    variant={variantName}
+                ></lightning-icon>
+                {labelItemName}
+            </div>
+            <template if:true={expandMenu}>
+                <div class="slds-m-horizontal_large">
+                    <!-- <h1 class="slds-text-body_small slds-m-bottom_xx-small item-progress">
+                        {itemProgress}
+                    </h1> -->
+                    <p class="slds-text-body_small item-progress-info">
+                        {itemProgressinfo}
+                        <lightning-icon
+                            class="slds-m-left_xx-small"
+                            icon-name="utility:info_alt"
+                            size="xx-small"
+                            alternative-text="info_alt!"
+                            title="Click [i] to learn more"
+                            onclick={navigateToWebPageMyposition}
+                            if:true={checkProgessIsComplete}
+                        ></lightning-icon>
+                        <br />
+                        <template if:true={showcustomInsights}>
+                            {refreshCustomInsights}
+
+                            <c-custom-insights
+                                showon-bs={showonBS}
+                                get-id-from-parent={getIdFromParent}
+                                type={insightCategory}
+                            ></c-custom-insights>
+                        </template>
+                    </p>
+                </div>
+            </template>
+        </div>
+    </a>
+</template>

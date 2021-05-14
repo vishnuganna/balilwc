@@ -1,0 +1,342 @@
+<template>
+    <!--Read Only View-->
+    <template if:false={showEditView}>
+        <div key={item.id} class="">
+            <div class="slds-card__body">
+                <article class="slds-card slds-card_boundary item">
+                    <div class="slds-var-p-left_x-small slds-var-p-bottom_small">
+                        <div class="slds-grid slds-var-m-left_small slds-var-m-right_small">
+                            <div class="slds-col slds-size_2-of-3 slds-var-m-top_small slds-var-m-bottom_small">
+                                <h3 class="slds-text-heading_small slds-var-p-bottom_small" key={item.id}>
+                                    {item.msDate}
+                                </h3>
+                                <template if:true={item.msNotes} class="slds-var-p-bottom_small slds-var-p-top_small">
+                                    <c-show-more-show-less-line
+                                        description={item.msNotes}
+                                        no-of-lines="2"
+                                        class="slds-var-p-top_small"
+                                    ></c-show-more-show-less-line>
+                                </template>
+                                <template if:false={item.msNotes}>
+                                    <h3 class="slds-text-heading_small">-</h3>
+                                </template>
+                            </div>
+                            <div class="slds-col slds-size_1-of-3 slds-var-m-top_small slds-var-m-bottom_small">
+                                <div class="slds-text-align_right">
+                                    <template if:true={isDeletable}>
+                                        <lightning-button
+                                            variant="base"
+                                            label={allLabel.Delete}
+                                            onclick={handleDeleteModal}
+                                            disabled={isDeleteDataDisabled}
+                                            class="slds-var-p-right_x-small"
+                                        ></lightning-button>
+                                    </template>
+                                    <template if:true={isUpdateable}>
+                                        <lightning-button
+                                            label={allLabel.edit}
+                                            onclick={handleEdit}
+                                            disabled={isEditDataDisabled}
+                                        ></lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+                        <template if:true={showPlayerLink}>
+                            <template if:true={isstrategicPlayerlink}>
+                                <a onclick={expandmenuClick} class="slds-text-heading_xx-small slds-var-p-left_small">
+                                    {strategicPlayertextLink}<lightning-icon
+                                        icon-name={utilMenu}
+                                        class="slds-var-m-left_xx-small"
+                                        size="xx-small"
+                                    ></lightning-icon
+                                ></a>
+
+                                <!--Start Strategic Player table-->
+                                <template if:true={isStratPlayertable}>
+                                    <lightning-card
+                                        title={allLabel.StrategicPlayers}
+                                        class="slds-var-p-bottom_xx-small slds-text-title slds-var-m-left_small slds-var-p-top_medium"
+                                    >
+                                        <div
+                                            class="slds-var-m-left_medium slds-var-m-right_medium slds-var-m-top_medium slds-border_top"
+                                        ></div>
+                                        <ul class="slds-var-m-left_large">
+                                            <template for:each={item.playerWrapperList} for:item="player">
+                                                <li key={player.Id}>
+                                                    <div
+                                                        class="slds-grid slds-var-m-left_small slds-var-m-right_small slds-p-left_small"
+                                                    >
+                                                        <div
+                                                            class="slds-col slds-size_2-of-3 slds-var-m-top_medium slds-var-m-bottom_medium"
+                                                        >
+                                                            <div class="slds-grid">
+                                                                <div class="slds-col slds-size_1-of-3">
+                                                                    <span>{allLabel.Name}</span>
+                                                                </div>
+                                                                <div class="slds-col slds-size_1-of-3">
+                                                                    <span>{allLabel.Title}</span>
+                                                                </div>
+                                                                <div class="slds-col slds-size_1-of-3">
+                                                                    <span>{allLabel.Role}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="slds-grid slds-var-m-top_x-small">
+                                                                <div class="slds-col slds-size_1-of-3">
+                                                                    <span>{player.strategicPlayerName}</span>
+                                                                </div>
+                                                                <div class="slds-col slds-size_1-of-3">
+                                                                    <span>{player.strategicPlayerTitle}</span>
+                                                                </div>
+                                                                <div class="slds-col slds-size_1-of-3">
+                                                                    <span>{player.role}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div
+                                                        class="slds-var-m-left_large slds-var-m-right_medium slds-border_top"
+                                                    ></div>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </lightning-card>
+                                </template>
+                            </template>
+                        </template>
+                        <!--/Strategic Player table-->
+                    </div>
+                </article>
+            </div>
+        </div>
+    </template>
+    <!--/Read Only View-->
+
+    <!-- New Record Modal Start-->
+    <template if:true={newRecordModalFlag}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            class="slds-modal slds-fade-in-open slds-modal-small"
+            aria-labelledby="modal-heading-00"
+            aria-modal="true"
+            aria-describedby="modal-content-id-0"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={allLabel.close}
+                        onclick={handleCancel}
+                    >
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">{allLabel.cancel}</span>
+                    </button>
+                    <h2 id="modal-heading-03" class="slds-modal__title slds-hyphenate">
+                        {allLabel.StrategicPlayer}
+                    </h2>
+                </header>
+
+                <div
+                    class="slds-modal__content slds-var-p-left_medium slds-var-p-around_medium slds-card_header slds-p-bottom_x-large"
+                    id="modal-content-id-1"
+                    style="height:250px;"
+                >
+                    <c-lwc-lookup
+                        lookup-label={allLabel.StrategicPlayer}
+                        icon-name="standard:contact"
+                        onrecordselection={onAccountSelection}
+                        selected-list={strategicPlayers}
+                        gold-sheet={currentGoldSheet}
+                    ></c-lwc-lookup>
+                </div>
+                <div class="slds-modal__footer slds-align_right slds-theme_default">
+                    <lightning-button
+                        label={allLabel.cancel}
+                        class="slds-var-p-right_x-small slds-text-small"
+                        variant="neutral"
+                        onclick={handleCancelSave}
+                    ></lightning-button>
+                    <lightning-button
+                        label={allLabel.save}
+                        class="slds-text-small"
+                        disabled={isSaveDisabled}
+                        variant="brand"
+                        onclick={handleSave}
+                    ></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- New Record Modal End-->
+
+    <!-- Delete Modal Start -->
+    <template if:true={ShowModal}>
+        <c-prompt-modal
+            header-label={allLabel.deleteMilestone}
+            body-msg={allLabel.deletePromptMilestone}
+            positive-response-button={allLabel.Yes}
+            negative-response-button={allLabel.Cancel}
+            close-label={allLabel.close}
+            onpositiveresponse={deleteModal}
+            onnegativeresponse={closeModal}
+        ></c-prompt-modal>
+    </template>
+    <!--Delete Modal End-->
+
+    <!--Edit View-->
+    <template if:true={showEditView}>
+        <div class="slds-card__body">
+            <article class="slds-card slds-card_boundary item">
+                <lightning-card class="slds-text-heading_small item">
+                    <lightning-layout horizontal-align="spread">
+                        <lightning-layout-item padding="around-small" size="3">
+                            <lightning-input
+                                name="meetingDateField"
+                                value={meetingDate}
+                                date-style="short"
+                                label={allLabel.meetingDateFieldLabel}
+                                onchange={handleDateChange}
+                                type="date"
+                                message-when-bad-input={allLabel.DateFieldErrorMessage}
+                                class="datefield"
+                                required
+                            ></lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <h3
+                            class="slds-var-p-bottom_xx-small slds-text-title slds-var-m-left_small slds-var-p-top_medium"
+                        >
+                            {allLabel.meetingNotesFieldLabel}
+                        </h3>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <lightning-layout-item class="slds-var-p-left_small slds-var-p-right_small" size="8">
+                            <textarea
+                                rows="3"
+                                name="meetingNotesField"
+                                onkeyup={handleMaxLimitError}
+                                onchange={handleNotesChange}
+                                class="slds-textarea"
+                                maxlength="32000"
+                                style="color: black;"
+                            >
+{meetingNotes}</textarea
+                            >
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <template if:true={showMaxLimitError}>
+                            <div class="slds-text-color_error slds-var-m-left_small">
+                                {allLabel.ErrorMax32kCharacters}
+                            </div>
+                        </template>
+                    </lightning-layout>
+
+                    <!--Start Strategic Player table-->
+                    <template if:true={isstrategicPlayerlink}>
+                        <template if:true={isStratPlayertable}>
+                            <lightning-card
+                                title={allLabel.StrategicPlayers}
+                                class="slds-var-p-bottom_xx-small slds-text-title slds-var-m-left_small slds-var-p-top_medium"
+                            >
+                                <div class="slds-var-m-around_medium slds-border_top"></div>
+                                <ul class="slds-var-m-around_medium scrollPlayers">
+                                    <template for:each={itemList} for:item="contact">
+                                        <li key={contact.spId}>
+                                            <div class="slds-grid slds-var-m-left_small slds-var-m-right_small">
+                                                <div
+                                                    class="slds-col slds-size_2-of-3 slds-var-m-top_small slds-var-m-bottom_small"
+                                                >
+                                                    <div class="slds-grid">
+                                                        <div class="slds-col slds-size_1-of-3">
+                                                            <span>{allLabel.Name}</span>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-3">
+                                                            <span>{allLabel.Title}</span>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-3">
+                                                            <span>{allLabel.Role}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-grid slds-var-m-top_x-small">
+                                                        <div class="slds-col slds-size_1-of-3">
+                                                            <span>{contact.strategicPlayerName}</span>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-3">
+                                                            <span>{contact.strategicPlayerTitle}</span>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-3">
+                                                            <span>{contact.role}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="slds-col slds-size_1-of-3 slds-var-m-top_small slds-var-m-bottom_small"
+                                                >
+                                                    <div class="slds-text-align_right">
+                                                        <lightning-button
+                                                            variant="base"
+                                                            label={allLabel.Remove}
+                                                            onclick={removeRow}
+                                                            access-key={contact.spId}
+                                                            class="slds-var-p-right_x-small"
+                                                        ></lightning-button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-var-m-around_medium slds-border_top"></div>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </lightning-card>
+                        </template>
+
+                        <!--/Strategic Player table-->
+                        <div class="slds-m-around_medium slds-border_top"></div>
+                        <lightning-layout>
+                            <div class="slds-p-left_small slds-var-m-bottom_x-small slds-var-m-top_x-small">
+                                <lightning-button
+                                    class="slds-text-small"
+                                    slot="actions"
+                                    name="addNew"
+                                    label={allLabel.addStrategicPlayerLabel}
+                                    variant="neutral"
+                                    onclick={handleStrategicPlayer}
+                                    style="text-decoration: none;font-size:small;"
+                                ></lightning-button>
+                            </div>
+                        </lightning-layout>
+                    </template>
+                    <template if:true={isCreateable}>
+                        <div class="slds-var-m-top_large slds-align_absolute-center">
+                            <lightning-button
+                                label={allLabel.cancel}
+                                class="slds-var-p-right_x-small"
+                                variant="neutral"
+                                onclick={handleCancelClick}
+                                style="text-decoration: none;font-size:small;"
+                            ></lightning-button>
+                            <lightning-button
+                                label={allLabel.save}
+                                variant="brand"
+                                onclick={handleSaveClick}
+                                style="font-size:small;"
+                                disabled={saveDisableFlag}
+                            >
+                            </lightning-button>
+                        </div>
+                    </template>
+                </lightning-card>
+            </article>
+        </div>
+    </template>
+
+    <!--/Edit View-->
+</template>

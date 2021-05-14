@@ -1,0 +1,332 @@
+<template>
+    <template if:true={categoryActAlert}>
+        <template if:false={viewCategoryActAlert}>
+            <div class="container slds-p-top_medium">
+                <div class="slds-button slds-section__title-action">
+                    <span class="slds-p-right_small">{label.ActionAlertConfiguration}</span>
+                    <span onclick={handleToggleSection} class="hovercls">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            class="hovercls"
+                        >
+                            <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z"></path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </template>
+        <template if:true={viewCategoryActAlert}>
+            <div>
+                <div class="container slds-p-top_medium">
+                    <div class="slds-button slds-section__title-action">
+                        <span class="slds-p-right_small">{label.ActionAlertConfiguration}</span>
+                        <span onclick={handleToggleSection} class="hovercls">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                                <path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <table class="slds-table slds-table_cell-buffer">
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title={label.AlertEnabled}></div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title={label.AlertEnabled}>
+                                    {label.AlertEnabled}
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title={label.OverrideText}>
+                                    {label.OverrideText}
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title={label.CustomText}>
+                                    {label.CustomText}
+                                </div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title={label.DefaultText}>
+                                    {label.DefaultText}
+                                </div>
+                            </th>
+                        </tr>
+
+                        <tbody>
+                            <tr class="slds-hint-parent" style="height: 50px">
+                                <td data-label="Header">
+                                    <div class="slds-truncate" title={label.Header}>
+                                        {label.Header}
+                                    </div>
+                                </td>
+                                <td data-label="Header">
+                                    <div class="slds-truncate">
+                                        <div class="slds-form-element__control def-text">
+                                            {customDataAlertEnabled}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-label="Header">
+                                    <div class="slds-truncate">
+                                        <div class="slds-form-element__control def-text">
+                                            {customDataOverrideHeader}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-label="Header">
+                                    <div class="slds-form-element__control">
+                                        <label class="slds-truncate def-text"> {customDataCustomAlertHeader}</label>
+                                    </div>
+                                </td>
+                                <td data-label="Header">
+                                    <div class="slds-truncate def-text">
+                                        {customDataDefaultAlertHeader}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent" style="height: 60px">
+                                <td data-label="Header">
+                                    <div class="slds-truncate" title={label.AlertText}>
+                                        {label.AlertText}
+                                    </div>
+                                </td>
+                                <td data-label="Header">
+                                    <div class="slds-truncate" title={label.AlertText}></div>
+                                </td>
+                                <td data-label="Header">
+                                    <div class="slds-truncate">
+                                        <div class="slds-form-element__control def-text">
+                                            {customDataOverrideMessage}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-label="Header">
+                                    <div class="slds-truncate def-text">
+                                        <lightning-formatted-rich-text
+                                            value={customDataCustomAlertMessage}
+                                        ></lightning-formatted-rich-text>
+                                    </div>
+                                </td>
+                                <td data-label="Header">
+                                    <div class="slds-truncate def-text">
+                                        {customDataDefaultAlertMessage}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Seller Email -->
+            <template if:true={viewCategoryActAlert}>
+                <div>
+                    <div class="container slds-p-top_medium">
+                        <div class="slds-button slds-section__title-action">
+                            <span class="slds-p-right_small">{label.SellerEmailConfiguration}</span>
+                        </div>
+                        <table class="slds-table slds-table_cell-buffer">
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={label.AlertEnabled}></div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={label.AlertEnabled}>
+                                        {label.AlertEnabled}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={label.OverrideText}>
+                                        {label.OverrideText}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={label.CustomText}>
+                                        {label.CustomText}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={label.DefaultText}>
+                                        {label.DefaultText}
+                                    </div>
+                                </th>
+                            </tr>
+
+                            <tbody>
+                                <tr class="slds-hint-parent" style="height: 50px">
+                                    <td data-label="Header">
+                                        <div class="slds-truncate" title={label.Header}>
+                                            {label.Header}
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate">
+                                            <div class="slds-form-element__control def-text">
+                                                {customSellerDataAlertEnabled}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate">
+                                            <div class="slds-form-element__control def-text">
+                                                {customSellerDataOverrideHeader}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-truncate def-text">
+                                                {customSellerDataCustomAlertHeader}</label
+                                            >
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate def-text">
+                                            {customSellerDataDefaultAlertHeader}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="slds-hint-parent" style="height: 60px">
+                                    <td data-label="Header">
+                                        <div class="slds-truncate" title={label.AlertText}>
+                                            {label.AlertText}
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate" title={label.AlertText}></div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate">
+                                            <div class="slds-form-element__control def-text">
+                                                {customSellerDataOverrideMessage}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate def-text">
+                                            <lightning-formatted-rich-text
+                                                value={customSellerDataCustomAlertMessage}
+                                            ></lightning-formatted-rich-text>
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate def-text">
+                                            {customSellerDataDefaultAlertMessage}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Manager Email -->
+            <template if:true={viewCategoryActAlert}>
+                <div>
+                    <div class="container slds-p-top_medium">
+                        <div class="slds-button slds-section__title-action">
+                            <span class="slds-p-right_small">{label.ManagerEmailConfiguration}</span>
+                        </div>
+                        <table class="slds-table slds-table_cell-buffer">
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={label.AlertEnabled}></div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={label.AlertEnabled}>
+                                        {label.AlertEnabled}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={label.OverrideText}>
+                                        {label.OverrideText}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={label.CustomText}>
+                                        {label.CustomText}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={label.DefaultText}>
+                                        {label.DefaultText}
+                                    </div>
+                                </th>
+                            </tr>
+
+                            <tbody>
+                                <tr class="slds-hint-parent" style="height: 50px">
+                                    <td data-label="Header">
+                                        <div class="slds-truncate" title={label.Header}>
+                                            {label.Header}
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate">
+                                            <div class="slds-form-element__control def-text">
+                                                {customManagerDataAlertEnabled}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate">
+                                            <div class="slds-form-element__control def-text">
+                                                {customManagerDataOverrideHeader}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-truncate def-text">
+                                                {customManagerDataCustomAlertHeader}</label
+                                            >
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate def-text">
+                                            {customManagerDataDefaultAlertHeader}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="slds-hint-parent" style="height: 60px">
+                                    <td data-label="Header">
+                                        <div class="slds-truncate" title={label.AlertText}>
+                                            {label.AlertText}
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate" title={label.AlertText}></div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate">
+                                            <div class="slds-form-element__control def-text">
+                                                {customManagerDataOverrideMessage}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate def-text">
+                                            <lightning-formatted-rich-text
+                                                value={customManagerDataCustomAlertMessage}
+                                            ></lightning-formatted-rich-text>
+                                        </div>
+                                    </td>
+                                    <td data-label="Header">
+                                        <div class="slds-truncate def-text">
+                                            {customManagerDataDefaultAlertMessage}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </template>
+        </template>
+    </template>
+</template>

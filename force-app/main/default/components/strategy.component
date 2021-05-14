@@ -1,0 +1,811 @@
+<apex:component controller="GoldSheetStrategyTabPDFController" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <!-- fpor Buy Sell Hierarchy -->
+    <div class="margintop20" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.Strategy}" />
+        </div>
+
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.BuySellHierarchy}" />
+        </div>
+
+        <apex:pageBlock rendered="{! If(goldSheetStrategyPDFWrapper.buySellHierarchyData.buySellhierarchyDateString !=null ,true,false) }"
+        >
+            <table style="width:100%;color: #4d4d4f">
+                <tbody>
+                    <tr>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.BuySellHierarchyView}" />
+                        </td>
+                        <td class="font7" width="2%">
+                            <apex:outputLabel />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.BuySellHierarchyLastYear}" />
+                        </td>
+                        <td class="font7" width="2%">
+                            <apex:outputLabel />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.BuySellHierarchyThisYear}" />
+                        </td>
+                        <td class="font7" width="2%">
+                            <apex:outputLabel />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.BuySellHierarchyNextYear}" />
+                        </td>
+                        <td class="font7" width="2%">
+                            <apex:outputLabel />
+                        </td>
+                        <!-- Need to Modify dynamic date -->
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!goldSheetStrategyPDFWrapper.buySellHierarchyData.buySellhierarchyDateString}"
+                            />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <apex:repeat value="{!goldSheetStrategyPDFWrapper.buySellHierarchyData}" var="buySellHierarchyobj">
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+
+                <table style="width:100%">
+                    <tbody>
+                        <tr class="dividerhr">
+                            <td class="data-bold-view" width="16%">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.buySellhierarchyName !=null ,true,false) }"
+                                    >{!$Label.FieldOfPlay}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.buySellhierarchyName ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayLastYear !=null ,true,false) }"
+                                >
+                                    <span>
+                                        <apex:repeat value="{!buySellHierarchyobj.rfsMarkerPdfWrapper}"
+                                            var="fieldOfPlayLastYear"
+                                        >
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((fieldOfPlayLastYear=='fieldOfPlayLastYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['fieldOfPlayLastYear']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((fieldOfPlayLastYear=='fieldOfPlayLastYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['fieldOfPlayLastYear']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayThisYear !=null ,true,false) }"
+                                >
+                                    {!buySellHierarchyobj.fieldOfPlayLastYear}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayLastYear ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayThisYear !=null ,true,false) }"
+                                >
+                                    <span>
+                                        <apex:repeat value="{!buySellHierarchyobj.rfsMarkerPdfWrapper}"
+                                            var="fieldOfPlayThisYear"
+                                        >
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((fieldOfPlayThisYear=='fieldOfPlayThisYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['fieldOfPlayThisYear']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((fieldOfPlayThisYear=='fieldOfPlayThisYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['fieldOfPlayThisYear']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayThisYear !=null ,true,false) }"
+                                >
+                                    {!buySellHierarchyobj.fieldOfPlayThisYear}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayThisYear ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayNextYear !=null ,true,false) }"
+                                >
+                                    <span>
+                                        <apex:repeat value="{!buySellHierarchyobj.rfsMarkerPdfWrapper}"
+                                            var="fieldOfPlayNextYear"
+                                        >
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((fieldOfPlayNextYear=='fieldOfPlayNextYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['fieldOfPlayNextYear']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((fieldOfPlayNextYear=='fieldOfPlayNextYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['fieldOfPlayNextYear']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayNextYear !=null ,true,false) }"
+                                >
+                                    {!buySellHierarchyobj.fieldOfPlayNextYear}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayNextYear ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayCustomYear !=null ,true,false) }"
+                                >
+                                    <span>
+                                        <apex:repeat value="{!buySellHierarchyobj.rfsMarkerPdfWrapper}"
+                                            var="fieldOfPlayCustomYear"
+                                        >
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((fieldOfPlayCustomYear=='fieldOfPlayCustomYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['fieldOfPlayCustomYear']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((fieldOfPlayCustomYear=='fieldOfPlayCustomYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['fieldOfPlayCustomYear']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.fieldOfPlayCustomYear !=null ,true,false) }"
+                                >
+                                    {!buySellHierarchyobj.fieldOfPlayCustomYear}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.buySellhierarchyDate ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="9" class="dividerhr"> </td>
+                        </tr>
+                        <tr class="dividerhr">
+                            <td class="data-bold-view" width="16%">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.buySellhierarchyName !=null ,true,false) }"
+                                    >{!$Label.BuySellHierarchyUs}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.buySellhierarchyName ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usLastYear !=null ,true,false) }">
+                                    <span>
+                                        <apex:repeat value="{!buySellHierarchyobj.rfsMarkerPdfWrapper}"
+                                            var="usLastYear"
+                                        >
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((usLastYear=='usLastYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['usLastYear']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((usLastYear=='usLastYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['usLastYear']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usLastYear !=null ,true,false) }">
+                                    {!buySellHierarchyobj.usLastYear}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usLastYear ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usThisYear !=null ,true,false) }">
+                                    <span>
+                                        <apex:repeat value="{!buySellHierarchyobj.rfsMarkerPdfWrapper}"
+                                            var="usThisYear"
+                                        >
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((usThisYear=='usThisYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['usThisYear']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((usThisYear=='usThisYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['usThisYear']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usThisYear !=null ,true,false) }">
+                                    {!buySellHierarchyobj.usThisYear}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usThisYear ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usNextYear !=null ,true,false) }">
+                                    <span>
+                                        <apex:repeat value="{!buySellHierarchyobj.rfsMarkerPdfWrapper}"
+                                            var="usNextYear"
+                                        >
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((usNextYear=='usNextYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['usNextYear']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((usNextYear=='usNextYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['usNextYear']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usNextYear !=null ,true,false) }">
+                                    {!buySellHierarchyobj.usNextYear}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usNextYear ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usCustomYear !=null ,true,false) }">
+                                    <span>
+                                        <apex:repeat value="{!buySellHierarchyobj.rfsMarkerPdfWrapper}"
+                                            var="usCustomYear"
+                                        >
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((usCustomYear=='usCustomYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['usCustomYear']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((usCustomYear=='usCustomYear'),IF(buySellHierarchyobj.rfsMarkerPdfWrapper['usCustomYear']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.usCustomYear !=null ,true,false) }">
+                                    {!buySellHierarchyobj.usCustomYear}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(buySellHierarchyobj.buySellhierarchyDate ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+            </apex:repeat>
+        </apex:pageBlock>
+        <apex:pageBlock rendered="{! If(goldSheetStrategyPDFWrapper.buySellHierarchyData.buySellhierarchyDateString ==null ,true,false) }"
+        >
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!-- for fop Charter Statement  -->
+    <div class="margintop20" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.Strategy}" />
+        </div>
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.charterStatementTitle}" />
+        </div>
+        <apex:pageBlock rendered="{! If(goldSheetStrategyPDFWrapper.charterStatement.charterStatement !=null ,true,false) }"
+        >
+            <div class="margintop10">
+                <apex:repeat value="{!goldSheetStrategyPDFWrapper.charterStatement}" var="fopTrendsobj">
+                    <div class="margintop5">
+                        <table style="margin-left: -2px;">
+                            <tr>
+                                <td>
+                                    <apex:repeat value="{!fopTrendsobj.rfsMarkerPdfWrapper}" var="charterStatementRfs">
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((charterStatementRfs=='charterStatementRfs'),IF(fopTrendsobj.rfsMarkerPdfWrapper['charterStatementRfs']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((charterStatementRfs=='charterStatementRfs'),IF(fopTrendsobj.rfsMarkerPdfWrapper['charterStatementRfs']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="margintop5 data-bold-view-normal">
+                            <apex:pageBlock rendered="{! If(fopTrendsobj.charterStatement !=null ,true,false) }">
+                                {!fopTrendsobj.charterStatement}
+                            </apex:pageBlock>
+                            <apex:pageBlock rendered="{! If(fopTrendsobj.charterStatement ==null ,true,false) }">
+                                -
+                            </apex:pageBlock>
+                        </div>
+                    </div>
+                </apex:repeat>
+            </div>
+        </apex:pageBlock>
+
+        <apex:pageBlock rendered="{! If(goldSheetStrategyPDFWrapper.charterStatement.charterStatement ==null ,true,false) }"
+        >
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!-- fpor relationship goals -->
+    <div class="margintop20 statusImage" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.Strategy}" />
+        </div>
+
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.RelationshipGoals}" />
+        </div>
+
+        <apex:pageBlock rendered="{!goldSheetStrategyPDFWrapper.relationshipGoals.size!=0}">
+            <apex:repeat value="{!goldSheetStrategyPDFWrapper.relationshipGoals}" var="relationshipGoalobj">
+                <table class="margintop20" style="width: 100%">
+                    <tr>
+                        <td style="width: 82%; margin-left: -2px;" class="data-bold-view capitalword">
+                            {!relationshipGoalobj.goalName}
+                        </td>
+                        <td style="width: 18%;text-align: left" class="data-bold-view-normal">
+                            <p style="display: inline-block;vertical-align: inherit">
+                                <apex:image style="width: 15px;height: 15px"
+                                    url="{!URLFOR($Resource.pdf_resource, 'icon-status-incomplete.jpg')}"
+                                    rendered="{!relationshipGoalobj.goalStatus == 'Incomplete'}"
+                                />
+
+                                <apex:image style="width: 15px;height: 15px"
+                                    url="{!URLFOR($Resource.pdf_resource, 'icon-status-complete.jpg')}"
+                                    rendered="{!relationshipGoalobj.goalStatus == 'Complete'}"
+                                />
+                            </p>
+                            <span>{!relationshipGoalobj.goalStatus}</span>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+
+                <div style="width: 70%; margin-left: 2px;" class="margintop10 data-bold-view-normal">
+                    <apex:pageBlock rendered="{! If(relationshipGoalobj.description !=null ,true,false) }">
+                        {!relationshipGoalobj.description}
+                    </apex:pageBlock>
+
+                    <apex:pageBlock rendered="{! If(relationshipGoalobj.description ==null ,true,false) }">
+                        -
+                    </apex:pageBlock>
+                </div>
+
+                <div style="width: 100% ;margin-left: 16px">
+                    <apex:repeat value="{!relationshipGoalobj.relatedActivitiesWrapper}" var="relationshipGoallistobj">
+                        <div class="width100">
+                            <div class="dividerhr margintop10" style="width:98%"></div>
+                        </div>
+
+                        <div class="margintop10">{! relationshipGoallistobj.objectLabel}</div>
+
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width: 60%;vertical-align: text-top;">
+                                    <div style="margin-left: -3px;">
+                                        <span class=" semibold colorgray">
+                                            {!relationshipGoallistobj.title}
+                                        </span>
+                                    </div>
+                                    <div class="margintop10" style="margin-left: -3px;">
+                                        <apex:pageBlock rendered="{! If(relationshipGoallistobj.description !=null ,true,false) }"
+                                        >
+                                            {!relationshipGoallistobj.description}
+                                        </apex:pageBlock>
+
+                                        <apex:pageBlock rendered="{! If(relationshipGoallistobj.description ==null ,true,false) }"
+                                        >
+                                            -
+                                        </apex:pageBlock>
+                                    </div>
+                                </td>
+
+                                <td style="width: 20%;vertical-align: text-top;">
+                                    <div class="semibold colorgray">
+                                        Amount
+                                    </div>
+                                    <div class="margintop10">
+                                        <apex:pageBlock rendered="{! If(relationshipGoallistobj.Amount !=null ,true,false) }"
+                                        >
+                                            <apex:outputText value="{0, number, currency}">
+                                                <apex:param value="{!relationshipGoallistobj.Amount}" />
+                                            </apex:outputText>
+                                        </apex:pageBlock>
+
+                                        <apex:pageBlock rendered="{! If(relationshipGoallistobj.Amount ==null ,true,false) }"
+                                        >
+                                            -
+                                        </apex:pageBlock>
+                                    </div>
+                                </td>
+
+                                <td style="width: 20%;vertical-align: text-top;">
+                                    <div class="semibold data-bold-view-normal">
+                                        Status
+                                    </div>
+                                    <div class="margintop10">
+                                        <span>
+                                            <apex:image style="width: 10px;height: 10px;"
+                                                url="{!URLFOR($Resource.pdf_resource, 'icon-status-incomplete.jpg')}"
+                                                rendered="{!relationshipGoallistobj.raStatus == 'Incomplete'}"
+                                            />
+
+                                            <apex:image style="width: 10px;height: 10px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'icon-status-complete.jpg')}"
+                                                rendered="{!relationshipGoallistobj.raStatus == 'Complete'}"
+                                            />
+                                        </span>
+                                        &nbsp;&nbsp; {!relationshipGoallistobj.raStatus}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 60%;vertical-align: text-top;">
+                                    <!-- WHO and Source -->
+
+                                    <div
+                                        class="margintop10"
+                                        style="{!IF((relationshipGoallistobj.Source !=null), 'display:block', 'display:none')};margin-left: -3px;"
+                                    >
+                                        <span class=" semibold colorgray">
+                                            <apex:outputLabel value="{!$Label.Source}" />
+                                        </span>
+                                    </div>
+                                    <div style="margin-left: -3px;">
+                                        <apex:pageBlock rendered="{! If(relationshipGoallistobj.Source !=null ,true,false) }"
+                                        >
+                                            {!relationshipGoallistobj.Source}
+                                        </apex:pageBlock>
+                                    </div>
+
+                                    <!--/ WHO and Source -->
+                                </td>
+                                <td style="width: 20%;vertical-align: text-top;">
+                                    <!-- WHO and Source -->
+
+                                    <div
+                                        class="margintop10"
+                                        style="{!IF((relationshipGoallistobj.Who !=null), 'display:block', 'display:none')};margin-left: -3px;"
+                                    >
+                                        <span class=" semibold colorgray">
+                                            <apex:outputLabel value="{!$Label.Who}" />
+                                        </span>
+                                    </div>
+                                    <div style="margin-left: -3px;">
+                                        <apex:pageBlock rendered="{! If(relationshipGoallistobj.Who !=null ,true,false) }"
+                                        >
+                                            {!relationshipGoallistobj.Who}
+                                        </apex:pageBlock>
+                                    </div>
+
+                                    <!--/ WHO and Source -->
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:repeat>
+                </div>
+            </apex:repeat>
+        </apex:pageBlock>
+
+        <apex:pageBlock rendered="{!goldSheetStrategyPDFWrapper.relationshipGoals.size==0}">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!-- fpor Focus Investment -->
+    <div class="margintop20 statusImage" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.Strategy}" />
+        </div>
+
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.FocusInvestment}" />
+        </div>
+
+        <apex:pageBlock rendered="{!NOT(goldSheetStrategyPDFWrapper.focusInvestments.empty)}">
+            <table style="width:100%;color: #4d4d4f">
+                <tbody>
+                    <tr>
+                        <td class="font7" width="30%">
+                            <apex:outputLabel value="{!$Label.FocusInvestment}" />
+                        </td>
+                        <td class="font7" width="40%">
+                            <apex:outputLabel value="{!$Label.focInv_Description}" />
+                        </td>
+
+                        <td class="font7" width="15%">
+                            <apex:outputLabel value="{!$Label.foInvAmount}" />
+                        </td>
+
+                        <td class="font7" width="15%">
+                            <apex:outputLabel value="{!$Label.foInvStatus}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <apex:repeat value="{!goldSheetStrategyPDFWrapper.focusInvestments}" var="focusInvestmentobj">
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+
+                <table style="width:100%" class="marginbottom12">
+                    <tbody>
+                        <tr>
+                            <td width="2%" style="text-align:right">
+                                <apex:pageBlock rendered="{! If(focusInvestmentobj.FoiInvestmentTitle !=null ,true,false) }"
+                                >
+                                    <span>
+                                        <apex:repeat value="{!focusInvestmentobj.rfsMarkerPdfWrapper}"
+                                            var="FoiInvestmentTitle"
+                                        >
+                                            <apex:image style="width: 12px;height: 15px ;vertical-align: middle;"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((FoiInvestmentTitle=='FoiInvestmentTitle'),IF(focusInvestmentobj.rfsMarkerPdfWrapper['FoiInvestmentTitle']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 12px;height: 15px;vertical-align: middle;"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((FoiInvestmentTitle=='FoiInvestmentTitle'),IF(focusInvestmentobj.rfsMarkerPdfWrapper['FoiInvestmentTitle']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+                            <td class="semibold data-bold-view" width="28%">
+                                <apex:pageBlock rendered="{! If(focusInvestmentobj.FoiInvestmentTitle !=null ,true,false) }"
+                                >
+                                    {!focusInvestmentobj.FoiInvestmentTitle}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(focusInvestmentobj.FoiInvestmentTitle ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="40%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(focusInvestmentobj.foiDescription !=null ,true,false) }"
+                                >
+                                    {!focusInvestmentobj.foiDescription}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(focusInvestmentobj.foiDescription ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="15%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(focusInvestmentobj.foiAmount !=null ,true,false) }">
+                                    <apex:outputText value="{0, number, currency}">
+                                        <apex:param value="{!focusInvestmentobj.foiAmount}" />
+                                    </apex:outputText>
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(focusInvestmentobj.foiAmount ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+                            <!-- /Complete Images -->
+                            <td width="15%" class="data-bold-view-normal">
+                                <span style="vertical-align: top;">
+                                    <apex:image style="width: 15px;height:15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'icon-status-incomplete.jpg')}"
+                                        rendered="{! If(focusInvestmentobj.foiStatus == 'Incomplete',true,false) }"
+                                    />
+                                    <apex:image style="width: 15px;height:15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'icon-status-complete.jpg')}"
+                                        rendered="{! If(focusInvestmentobj.foiStatus == 'Complete',true,false) }"
+                                    />
+                                </span>
+                                <span style="margin-left: 10px"> {!focusInvestmentobj.foiStatus}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </apex:repeat>
+        </apex:pageBlock>
+        <apex:pageBlock rendered="{!(goldSheetStrategyPDFWrapper.focusInvestments.empty)}">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!-- fpor Stop Investment -->
+    <div class="margintop20" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.Strategy}" />
+        </div>
+
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.StopInvestmentHeader}" />
+        </div>
+
+        <apex:pageBlock rendered="{!NOT(goldSheetStrategyPDFWrapper.stopInvestments.empty)}">
+            <table style="width:100%;color: #4d4d4f">
+                <tbody>
+                    <tr>
+                        <td class="font7" width="30%">
+                            <apex:outputLabel value="{!$Label.StopInvestmentHeader}" />
+                        </td>
+                        <td class="font7" width="40%">
+                            <apex:outputLabel value="{!$Label.stopInv_Description}" />
+                        </td>
+
+                        <td class="font7" width="15%">
+                            <apex:outputLabel value="{!$Label.stopInvAmount}" />
+                        </td>
+                        <!-- <td class="font7" width="2%">
+                            <apex:outputLabel />
+                        </td> -->
+                        <td class="font7" width="15%">
+                            <apex:outputLabel value="{!$Label.stopInvStatus}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <apex:repeat value="{!goldSheetStrategyPDFWrapper.stopInvestments}" var="stopInvestmentobj">
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+
+                <table style="width:100%" class="marginbottom12">
+                    <tbody>
+                        <tr>
+                            <td width="2%" style="text-align:right">
+                                <apex:pageBlock rendered="{! If(stopInvestmentobj.FoiInvestmentTitle !=null ,true,false) }"
+                                >
+                                    <span>
+                                        <apex:repeat value="{!stopInvestmentobj.rfsMarkerPdfWrapper}"
+                                            var="FoiInvestmentTitle"
+                                        >
+                                            <apex:image style="width: 12px;height: 15px ;vertical-align: middle;"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((FoiInvestmentTitle=='FoiInvestmentTitle'),IF(stopInvestmentobj.rfsMarkerPdfWrapper['FoiInvestmentTitle']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 12px;height: 15px ;vertical-align: middle;"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((FoiInvestmentTitle=='FoiInvestmentTitle'),IF(stopInvestmentobj.rfsMarkerPdfWrapper['FoiInvestmentTitle']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+                            <td width="28%" class="data-bold-view">
+                                <apex:pageBlock rendered="{! If(stopInvestmentobj.FoiInvestmentTitle !=null ,true,false) }"
+                                >
+                                    {!stopInvestmentobj.FoiInvestmentTitle}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(stopInvestmentobj.FoiInvestmentTitle ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="40%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(stopInvestmentobj.foiDescription !=null ,true,false) }">
+                                    {!stopInvestmentobj.foiDescription}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(stopInvestmentobj.foiDescription ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="15%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(stopInvestmentobj.foiAmount !=null ,true,false) }">
+                                    <apex:outputText value="{0, number, currency}">
+                                        <apex:param value="{!stopInvestmentobj.foiAmount}" />
+                                    </apex:outputText>
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(stopInvestmentobj.foiAmount ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="15%" class="data-bold-view-normal">
+                                <span style="vertical-align: top;">
+                                    <apex:image style="width: 15px;height:15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'icon-status-incomplete.jpg')}"
+                                        rendered="{! If(stopInvestmentobj.foiStatus == 'Incomplete',true,false) }"
+                                    />
+                                    <apex:image style="width: 15px;height:15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'icon-status-complete.jpg')}"
+                                        rendered="{! If(stopInvestmentobj.foiStatus == 'Complete',true,false) }"
+                                    />
+                                </span>
+                                <span class="data-bold-view-normal" style="margin-left: 10px">
+                                    {!stopInvestmentobj.foiStatus}</span
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </apex:repeat>
+        </apex:pageBlock>
+        <apex:pageBlock rendered="{!(goldSheetStrategyPDFWrapper.stopInvestments.empty)}">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+</apex:component>

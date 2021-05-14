@@ -1,0 +1,28 @@
+<template>
+    <lightning-tabset variant="scoped">
+        <lightning-tab label={allLabels.SituationalAppraisal}>
+            <c-strategic-players get-id-from-parent={recordId}></c-strategic-players>
+            <c-field-of-play-trends get-id-from-parent={recordId}></c-field-of-play-trends>
+            <c-fop-opportunities-main-page record-id={recordId}></c-fop-opportunities-main-page>
+            <c-strategic-strength-data-page get-id-from-parent={recordId}></c-strategic-strength-data-page>
+            <c-critical-vulnerability goldsheet-id={recordId}></c-critical-vulnerability>
+        </lightning-tab>
+        <lightning-tab label={allLabels.Strategy}>
+            <c-buy-sell-hierarchy get-id-from-parent={recordId}></c-buy-sell-hierarchy>
+            <c-charter-Statement goldsheet-id={recordId}></c-charter-Statement>
+            <c-relationship-Goals-Page get-id-from-parent={recordId}></c-relationship-Goals-Page>
+            <c-focus-investment get-id-from-parent={recordId}></c-focus-investment>
+            <c-stop-investment get-id-from-parent={recordId}></c-stop-investment>
+        </lightning-tab>
+        <lightning-tab label={allLabels.Revenue}>
+            <c-revenue-target get-id-from-parent={recordId}></c-revenue-target>
+            <c-single-sales-objective-gold-sheet get-id-from-parent={recordId}></c-single-sales-objective-gold-sheet>
+        </lightning-tab>
+        <lightning-tab label={allLabels.actionPlan}>
+            <c-actions get-id-from-parent={recordId}></c-actions>
+            <c-information-needed get-id-from-parent={recordId}></c-information-needed>
+            <c-investment-program get-id-from-parent={recordId}></c-investment-program>
+            <c-milestones-host-component get-id-from-parent={recordId}></c-milestones-host-component>
+        </lightning-tab>
+    </lightning-tabset>
+</template>

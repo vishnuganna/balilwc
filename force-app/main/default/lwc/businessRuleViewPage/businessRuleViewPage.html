@@ -1,0 +1,1546 @@
+<template>
+    <div class="slds-grid">
+        <div class="slds-size_1-of-1">
+            <lightning-card>
+                <!--VIEW STATE-->
+
+                <template if:true={readView}>
+                    <div class="slds-align_absolute-center slds-p-bottom_small">
+                        <span style="font-weight: 200; font-size: x-large;">{label.newRecordHeaderLabel}</span>
+                    </div>
+                    <div class="container">
+                        <div class="slds-button slds-section__title-action">
+                            <span>{label.informationSectionLabel}</span>
+                        </div>
+                        <div class="slds-grid">
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-form-element slds-p-around_x-small">
+                                    <div class="slds-form-element__control">
+                                        <label class="slds-text-body_small">{label.businessRuleNameFieldLabel}</label>
+                                    </div>
+                                    <div class="slds-form-element__control">
+                                        <label class="slds-text-heading_small">{businessRuleName}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.businessRulesGroupFieldLabel}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <lightning-tile>
+                                                    <lightning-button
+                                                        class="slds-text-heading_small"
+                                                        variant="Base"
+                                                        label={brGroupName}
+                                                        onclick={viewBRGRecord}
+                                                        value={brGroupId}
+                                                    ></lightning-button>
+                                                </lightning-tile>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-2">
+                                <div class=" slds-border_bottom slds-m-right_small"></div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 ">
+                                <div class=" slds-border_bottom slds-m-left_small"></div>
+                            </div>
+                        </div>
+                        <div class="slds-grid">
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-form-element slds-p-around_x-small">
+                                    <div class="slds-form-element__control">
+                                        <label class="slds-form-element__label slds-text-body_small"
+                                            >{label.isActiveFieldLabel}</label
+                                        >
+                                    </div>
+                                    <div class="slds-form-element__control">
+                                        <template if:true={active}>
+                                            <lightning-input
+                                                type="checkbox"
+                                                label={label.isActiveFieldLabel}
+                                                name="IsActive"
+                                                variant="label-hidden"
+                                                onclick={handleActiveButtonClick}
+                                                checked
+                                            ></lightning-input>
+                                        </template>
+                                        <template if:false={active}>
+                                            <lightning-input
+                                                type="checkbox"
+                                                label={label.isActiveFieldLabel}
+                                                name="IsActive"
+                                                variant="label-hidden"
+                                                onclick={handleActiveButtonClick}
+                                            ></lightning-input>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-form-element slds-p-around_x-small">
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-col slds-size_1-of-2 slds-form-element__control">
+                                            <label class="slds-text-body_small">{label.BusinessRuleCategory}</label>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-form-element__control">
+                                            <label class="slds-text-heading_small">{selectedCategoryType}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-2">
+                                <div class=" slds-border_bottom slds-m-right_small"></div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 ">
+                                <div class=" slds-border_bottom slds-m-left_small"></div>
+                            </div>
+                        </div>
+                        <div class="slds-grid">
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-form-element slds-p-around_x-small">
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-col slds-size_1-of-2 slds-form-element__control">
+                                            <label class="slds-form-element__label slds-text-body_small"
+                                                >{label.businessRuleFieldLabel}</label
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-col slds-size_1-of-2 slds-form-element__control">
+                                            <label class="slds-text-heading_small">{brAutoName}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <template if:false={categoryMeetingPlan}>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element slds-p-around_x-small">
+                                        <div class="slds-form-element__control slds-col slds-size_1-of-2">
+                                            <label class="slds-text-body_small">{label.OpportunityCurrencyField}</label>
+                                        </div>
+                                        <div class="slds-form-element__control slds-col slds-size_1-of-2">
+                                            <label class="slds-text-heading_small">{selectedCurrencyField}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <template if:true={categoryMeetingPlan}>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element slds-p-around_x-small">
+                                        <div class="slds-form-element__control slds-col slds-size_1-of-2">
+                                            <label class="slds-text-body_small"
+                                                >{label.NumberofDaysBeforeMeeting}</label
+                                            >
+                                        </div>
+                                        <div class="slds-form-element__control slds-col slds-size_1-of-2">
+                                            <label class="slds-text-heading_small">{numDaysBeforeMeeting}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-2">
+                                <div class="slds-border_bottom slds-m-right_small"></div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <div class=" slds-border_bottom slds-m-left_small"></div>
+                            </div>
+                        </div>
+                        <template if:false={categoryMeetingPlan}>
+                            <div class="slds-grid">
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element slds-p-around_x-small">
+                                        <div class="slds-form-element__control slds-col slds-size_1-of-2">
+                                            <label class="slds-text-body_small">{label.MinimumRange}</label>
+                                        </div>
+                                        <div class="slds-truncate slds-col slds-size_1-of-2">
+                                            <label class="slds-text-heading_small">{minimumRange}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element slds-p-around_x-small">
+                                        <div class="slds-form-element__control slds-col slds-size_1-of-2">
+                                            <label class="slds-text-body_small">{label.MaximumRange}</label>
+                                        </div>
+                                        <div class="slds-truncate slds-col slds-size_1-of-2">
+                                            <label class="slds-text-heading_small">{maximumRange}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <div class="slds-border_bottom slds-m-right_small"></div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <div class=" slds-border_bottom slds-m-left_small"></div>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="slds-grid">
+                            <template if:false={categoryMeetingPlan}>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element slds-p-around_x-small">
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-text-body_small"
+                                                >{label.opportunityStageFieldLabel}</label
+                                            >
+                                        </div>
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-text-heading_small">{globalOptyStage}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <div class="slds-size_1-of-2">
+                                <div class="slds-form-element slds-p-around_x-small">
+                                    <div class="slds-form-element__control">
+                                        <label class="slds-text-body_small">{label.BusinessRuleOwner}</label>
+                                    </div>
+                                    <div class="slds-form-element__control">
+                                        <lightning-tile>
+                                            <lightning-icon
+                                                icon-name="utility:user"
+                                                size="small"
+                                                alternative-text={label.UtilityImage}
+                                                title={label.Image}
+                                            ></lightning-icon>
+                                            <lightning-button
+                                                class="slds-text-heading_small"
+                                                variant="Base"
+                                                label={brOwnerName}
+                                                onclick={viewOwnerRecord}
+                                                value={brOwner}
+                                            ></lightning-button>
+                                        </lightning-tile>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-2">
+                                <div class=" slds-border_bottom slds-m-right_small"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <template if:true={categoryComp}>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.alertsLabel}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">{label.Insights}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small wrapTextCls">{insights}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">{label.competitior}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{accountName}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element slds-p-around_x-small">
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-text-body_small">{label.InsightsLink}</label>
+                                        </div>
+                                        <div class="slds-form-element__control">
+                                            <lightning-formatted-url
+                                                class="slds-text-heading_small def-text-link wrapTextCls"
+                                                value={insightsLink}
+                                                target="_blank"
+                                                label={insightsLink}
+                                            >
+                                            </lightning-formatted-url>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 ">
+                                        <div class=" slds-border_bottom slds-m-left_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template if:true={categoryOpty}>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.isaBlueSheetrequiredSectionLabel}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.isaBlueSheetrequiredSectionLabel}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{bsReqSelectedValue}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.IsCloseDatePastDue}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">{label.AlertOnPastDue}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="isClosedDatePast"
+                                                        variant="label-hidden"
+                                                        checked={isClosedDatePastDue}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 ">
+                                        <div class=" slds-border_bottom slds-m-left_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.ArePastDueBestActions}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">{label.AlertOnDueDate}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="isBestActionPastDue"
+                                                        variant="label-hidden"
+                                                        checked={isBestActionPastDue}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 ">
+                                        <div class=" slds-border_bottom slds-m-left_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.IsCurrentPosNegative}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"> {label.AlertOnPosition}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="isCurrentPosNegative"
+                                                        variant="label-hidden"
+                                                        checked={isCurrentPosNegative}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 ">
+                                        <div class=" slds-border_bottom slds-m-left_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.WhoIsCompetition}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"> {label.AlertOnNocompetitor}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="isCompetitorAccount"
+                                                        variant="label-hidden"
+                                                        checked={isCompetitorAccount}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 ">
+                                        <div class=" slds-border_bottom slds-m-left_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.PositionVSCompetition}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">
+                                                    {label.AlertOnPositionCompetition}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="positionVsCompetitor"
+                                                        variant="label-hidden"
+                                                        checked={positionVsCompetitor}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 ">
+                                        <div class=" slds-border_bottom slds-m-left_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.Customer_Timing_for_Priorities}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">
+                                                    {label.AlertOnCustomerTimeWork}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="custTimeForPriorityAvail"
+                                                        variant="label-hidden"
+                                                        checked={custTimeForPriorityAvail}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 ">
+                                        <div class=" slds-border_bottom slds-m-left_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.blueSheetUpdatedSectionLabel}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.maxDaysBSUpdateFieldLabel}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{maxDaysBSUpdate}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.SSOSectionLabel}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.maxDaysOppStageFieldLabel}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{maxDaysOptyStage}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.blueSheetActionSectionLabel}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">{label.minActionFieldLabel}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{minActionsOptyStage}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template if:true={categoryScr}>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.scorecardRequiredSectionLabel}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.scorecardRequiredFieldLabel}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{scrCrdSelectedValue}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.scorecardUpdateHeader}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label slds-text-body_small"
+                                                    >{label.triggerMaxDaysScorecardHeader}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <template if:true={lastModifiedDateCheck}>
+                                                    <lightning-input
+                                                        type="checkbox"
+                                                        label={label.lastModifiedDateCheckLabel}
+                                                        name="IsActiveCheckLastModifiedDate"
+                                                        variant="label-hidden"
+                                                        checked
+                                                    ></lightning-input>
+                                                </template>
+                                                <template if:false={lastModifiedDateCheck}>
+                                                    <lightning-input
+                                                        type="checkbox"
+                                                        label={label.lastModifiedDateCheckLabel}
+                                                        name="IsActiveCheckLastModifiedDate"
+                                                        variant="label-hidden"
+                                                    ></lightning-input>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.scorecardMaxDaysUpdate}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{scrMaxDaysUpdate}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.totalScoreHeader}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label slds-text-body_small"
+                                                    >{label.triggerTotalScoreHeader}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <template if:true={totalScoreCheck}>
+                                                    <lightning-input
+                                                        type="checkbox"
+                                                        label={label.totalScoreCheckLabel}
+                                                        name="IsActiveTotalScore"
+                                                        variant="label-hidden"
+                                                        checked
+                                                    ></lightning-input>
+                                                </template>
+                                                <template if:false={totalScoreCheck}>
+                                                    <lightning-input
+                                                        type="checkbox"
+                                                        label={label.totalScoreCheckLabel}
+                                                        name="IsActiveTotalScore"
+                                                        variant="label-hidden"
+                                                    ></lightning-input>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.minimumTotalScoreRange}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{minTotalScore}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.maximumTotalScoreRange}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{maxTotalScore}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.opportunityCriteriaScoreHeader}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label slds-text-body_small"
+                                                    >{label.triggerOptyScoreHeader}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <template if:true={opportunityCriteriaScoreCheck}>
+                                                    <lightning-input
+                                                        type="checkbox"
+                                                        label={label.opportunityCriteriaScoreCheckLabel}
+                                                        name="IsActiveOptyScoreCriteria"
+                                                        variant="label-hidden"
+                                                        onclick={handleOpportunityCriteriaScoreCheck}
+                                                        checked
+                                                    ></lightning-input>
+                                                </template>
+                                                <template if:false={opportunityCriteriaScoreCheck}>
+                                                    <lightning-input
+                                                        type="checkbox"
+                                                        label={label.opportunityCriteriaScoreCheckLabel}
+                                                        name="IsActiveOptyScoreCriteria"
+                                                        variant="label-hidden"
+                                                        onclick={handleOpportunityCriteriaScoreCheck}
+                                                    ></lightning-input>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.minimumOptyScoreRange}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{minOptyScore}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.maximumOptyScoreRange}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{maxOptyScore}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.businessCriteriaScoreHeader}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-form-element__label slds-text-body_small"
+                                                    >{label.triggerBusinessScoreHeader}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <template if:true={businessCriteriaScoreCheck}>
+                                                    <lightning-input
+                                                        type="checkbox"
+                                                        label={label.businessCriteriaScoreCheckLabel}
+                                                        name="IsActiveBusinessScoreCriteria"
+                                                        variant="label-hidden"
+                                                        onclick={handleBusinessCriteriaScoreCheck}
+                                                        checked
+                                                    ></lightning-input>
+                                                </template>
+                                                <template if:false={businessCriteriaScoreCheck}>
+                                                    <lightning-input
+                                                        type="checkbox"
+                                                        label={label.businessCriteriaScoreCheckLabel}
+                                                        name="IsActiveBusinessScoreCriteria"
+                                                        variant="label-hidden"
+                                                        onclick={handleBusinessCriteriaScoreCheck}
+                                                    ></lightning-input>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.minimumBusinessScoreRange}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{minBusinessScore}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.maximumBusinessScoreRange}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{maxBusinessScore}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template if:true={categoryBI}>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.IsPersonalWin}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"> {label.AlertOnPersonalWin}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="isPersonalWinAvail"
+                                                        variant="label-hidden"
+                                                        checked={isPersonalWinAvail}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.AlertOnBusinessResult}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">
+                                                    {label.AlertOnNoBusinessResult}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="isBusinessResultavail"
+                                                        variant="label-hidden"
+                                                        checked={isBusinessResultavail}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.BuyingInfluenceRating}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">
+                                                    {label.AlertOnBuyingInfluence}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="biNegativeRating"
+                                                        variant="label-hidden"
+                                                        checked={biNegativeRating}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.PotentialCoach}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"> {label.AlertOnBuyingRating}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="biHighRateNoCoach"
+                                                        variant="label-hidden"
+                                                        checked={biHighRateNoCoach}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.CoachInfluence}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"> {label.CoachInfluenceAlert}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="biLowDegreeCoach"
+                                                        variant="label-hidden"
+                                                        checked={biLowDegreeCoach}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.ModeCustomerTime}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"> {label.AlertOnCustomerTime}</label>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        class="actAlertChkGroup"
+                                                        type="checkbox"
+                                                        name="biCustTimeUrgentKeel"
+                                                        variant="label-hidden"
+                                                        checked={biCustTimeUrgentKeel}
+                                                        disabled
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.MinimumNumberOfContactsOnBI}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">
+                                                    {label.MinimumNumberOfContactsOnBI}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{minNumberContact}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.buyingInfluenceSectionLabel}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.buyingInfluenceRoleFieldLabel}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-heading_small">{roleSelectedValue}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template if:true={categoryMeetingPlan}>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.NoMinimumActionCommitmentEntered}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.TriggerNoMinimumActionCommitmentHeader}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <lightning-input
+                                                    type="checkbox"
+                                                    label=""
+                                                    name="minActionCommitmentEntered"
+                                                    variant="label-hidden"
+                                                    checked={minActionCommitmentEntered}
+                                                    disabled
+                                                ></lightning-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.NoBestActionCommitmentEntered}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.TriggerNoBestActionCommitmentHeader}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <lightning-input
+                                                    type="checkbox"
+                                                    label=""
+                                                    name="noBestActCommitmentEntered"
+                                                    variant="label-hidden"
+                                                    checked={noBestActCommitmentEntered}
+                                                    disabled
+                                                >
+                                                </lightning-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.NoVBREntered}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small"
+                                                    >{label.TriggerNoVBREnteredHeader}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <lightning-input
+                                                    type="checkbox"
+                                                    label=""
+                                                    name="noValidResonEntered"
+                                                    variant="label-hidden"
+                                                    checked={noValidResonEntered}
+                                                    disabled
+                                                ></lightning-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span>{label.NoConceptforBIEntered}</span>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <label class="slds-text-body_small">
+                                                    {label.TriggerNoConceptforBIEnteredHeader}</label
+                                                >
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <lightning-input
+                                                    type="checkbox"
+                                                    label=""
+                                                    name="noConceptEntered"
+                                                    variant="label-hidden"
+                                                    checked={noConceptEntered}
+                                                    disabled
+                                                ></lightning-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <div class=" slds-border_bottom slds-m-right_small"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template if:true={isCustomPerspectiveInsights}>
+                        <template if:false={viewPerspectiveInsights}>
+                            <div class="container slds-p-top_medium">
+                                <div class="slds-button slds-section__title-action">
+                                    <span class="slds-p-right_small">{label.InsightsCustomizeAlert}</span>
+                                    <span onclick={handleTogglePerspectiveInsights} class="hovercls">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="12"
+                                            height="12"
+                                            viewBox="0 0 24 24"
+                                            class="hovercls"
+                                        >
+                                            <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </template>
+
+                        <template if:true={viewPerspectiveInsights}>
+                            <div class="slds-button slds-section__title-action">
+                                <span class="slds-p-right_small">{label.InsightsCustomizeAlert}</span>
+                                <span onclick={handleTogglePerspectiveInsights} class="hovercls">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                                        <path
+                                            d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
+                                        ></path>
+                                    </svg>
+                                </span>
+                            </div>
+
+                            <div class="slds-size_12-of-12">
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-col slds-size_1-of-2 slds-form-element__control">
+                                                    <label class="slds-form-element__label slds-text-body_small"
+                                                        >{label.Insights}</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-col slds-size_2-of-2 slds-form-element__control">
+                                                    <label class="slds-text-heading_small wrapTextCls"
+                                                        >{customPerspectiveInsights}</label
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-col slds-size_2-of-2 slds-form-element__control">
+                                                    <label class="slds-form-element__label slds-text-body_small"
+                                                        >{label.InsightsLink}</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-col slds-size_2-of-2 slds-form-element__control">
+                                                    <lightning-formatted-url
+                                                        class="slds-text-heading_small def-text-link wrapTextCls"
+                                                        value={customPerspectiveInsightsLink}
+                                                        target="_blank"
+                                                        label={customPerspectiveInsightsLink}
+                                                    >
+                                                    </lightning-formatted-url>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-col slds-size_2-of-2 slds-form-element__control">
+                                                    <label class="slds-form-element__label slds-text-body_small"
+                                                        >{label.InsightsIndustry}</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-col slds-size_2-of-2 slds-form-element__control">
+                                                    <label class="slds-text-heading_small"
+                                                        >{customPerspectiveInsightsInsudtry}</label
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-col slds-size_12-of-12 slds-form-element__control">
+                                                    <label class="slds-form-element__label slds-text-body_small"
+                                                        >{label.InsightsDisplayLinkAs}</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-col slds-size_2-of-2 slds-form-element__control">
+                                                    <template if:true={customPerspectiveInsightsLink}>
+                                                        <p class="slds-text-heading_small def-text-link">
+                                                            <lightning-formatted-url
+                                                                value={customPerspectiveInsightsLink}
+                                                                target="_blank"
+                                                                label={insightsDisplayLinkASText}
+                                                            >
+                                                            </lightning-formatted-url>
+                                                        </p>
+                                                    </template>
+
+                                                    <template if:false={customPerspectiveInsightsLink}>
+                                                        <label class="slds-text-heading_small def-text-link wrapTextCls"
+                                                            >{insightsDisplayLinkASText}</label
+                                                        >
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-grid">
+                                    <div class="slds-size_1-of-2">
+                                        <div class="slds-form-element slds-p-around_x-small">
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-col slds-size_1-of-2 slds-form-element__control">
+                                                    <label class="slds-form-element__label slds-text-body_small"
+                                                        >{label.InsightsOpportunityType}</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-col slds-size_1-of-2 slds-form-element__control">
+                                                    <label class="slds-text-heading_small"
+                                                        >{customPerspectiveInsightsOptType}</label
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+
+                    <template if:true={categoryActAlert}>
+                        <c-view-custom-alert business-rule-id={itemId}></c-view-custom-alert>
+                    </template>
+
+                    <div>
+                        <div class="container slds-p-top_medium">
+                            <div class="slds-button slds-section__title-action">
+                                <span>{label.BusinessRuleSystemInformation}</span>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element slds-p-around_x-small">
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-text-body_small">{label.BusinessRuleCreatedBy}</label>
+                                        </div>
+                                        <div class="slds-form-element__control">
+                                            <lightning-tile>
+                                                <lightning-icon
+                                                    icon-name="utility:user"
+                                                    size="small"
+                                                    alternative-text={label.UtilityImage}
+                                                    title={label.Image}
+                                                ></lightning-icon>
+                                                <lightning-button
+                                                    class="slds-text-heading_small"
+                                                    variant="Base"
+                                                    label={brCreateBy}
+                                                    onclick={viewOwnerRecord}
+                                                    value={createdById}
+                                                ></lightning-button>
+                                                <label class="slds-text-heading_small">{createdDate}</label>
+                                            </lightning-tile>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element slds-p-around_x-small">
+                                        <div class="slds-form-element__control">
+                                            <label class="slds-text-body_small"
+                                                >{label.BusinessRuleLastModifiedBy}</label
+                                            >
+                                        </div>
+                                        <div class="slds-form-element__control">
+                                            <lightning-tile>
+                                                <lightning-icon
+                                                    icon-name="utility:user"
+                                                    size="small"
+                                                    alternative-text={label.UtilityImage}
+                                                    title={label.Image}
+                                                ></lightning-icon>
+                                                <lightning-button
+                                                    class="slds-text-heading_small"
+                                                    variant="Base"
+                                                    label={brLastModifiedBy}
+                                                    onclick={viewOwnerRecord}
+                                                    value={lastModifiedById}
+                                                ></lightning-button>
+                                                <label class="slds-text-heading_small">{lastModifiedDate}</label>
+                                            </lightning-tile>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <div class=" slds-border_bottom slds-m-right_small"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </lightning-card>
+        </div>
+    </div>
+</template>

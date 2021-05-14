@@ -1,0 +1,332 @@
+@page {
+    margin-top: 30mm;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    margin-bottom: 45px !important;
+    @top-left {
+        content: element(header);
+    }
+    @bottom-left {
+        border-top: 1px solid #919191;
+        color: #919191;
+        content: element(footer);
+        padding-left: 10px !important;
+    }
+    size: A4; /* Put page numbers in the top right corner of each page in the pdf
+    document. */
+    @bottom-right {
+        border-top: 1px solid #919191;
+        color: #919191;
+        content: counter(page);
+        padding-right: 10px !important;
+    }
+}
+body {
+    line-height: 12px;
+    letter-spacing: 0.2px;
+    font-size: 9px;
+    font-family: sans-serif;
+}
+div.mainHeader {
+    position: running(header);
+}
+table.header {
+    table-layout: auto;
+    width: 100%;
+}
+table.footer {
+    position: running(footer);
+    width: 100%; /* margin-bottom: 10px; */
+}
+.dividerhr {
+    border-bottom: 1px solid #d7d9d8;
+}
+.maincontainer {
+    width: 100%;
+}
+.margintop5 {
+    margin-top: 5px;
+}
+.capitalword {
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.4px;
+    font-family: ProximaNova;
+}
+.margintop10 {
+    margin-top: 10px;
+}
+.marginbottom5 {
+    margin-bottom: 5px;
+}
+.width100 {
+    width: 100%;
+}
+.margintop15 {
+    margin-top: 15px;
+}
+.font16 {
+    font-size: 16px;
+}
+.font20 {
+    font-size: 20px;
+}
+.lineheight20 {
+    line-height: 20px;
+}
+.semibold {
+    font-weight: 800;
+}
+.fontgray {
+    color: #302a2c;
+}
+.linegray {
+    border-bottom: 1px solid #d7d9d8;
+}
+.colorgray {
+    color: #302a2c;
+}
+.boldfont {
+    font-weight: bold;
+}
+.paddingleft5 {
+    padding-left: 5px;
+}
+.margintop20 {
+    margin-top: 20px;
+}
+.font7 {
+    font-size: 7px;
+}
+.letterspacingtitle {
+    letter-spacing: 1.5px;
+}
+.width25 {
+    width: 25%;
+    word-break: break-word;
+}
+.margintopsso {
+    margin-top: 5.5px;
+}
+.alignright {
+    text-align: right;
+}
+.dollars:before {
+    content: "$";
+}
+.lineheight16 {
+    line-height: 16px;
+}
+tr td {
+    vertical-align: baseline;
+}
+.letterspacingrevenue {
+    letter-spacing: 0.3px;
+}
+.revenue-target tr td {
+    vertical-align: baseline;
+}
+.marginbottom12 {
+    margin-bottom: 12.5px;
+}
+.statusImage {
+    vertical-align: middle;
+}
+.statusImage img {
+    vertical-align: middle;
+}
+.statusImage tr td img {
+    vertical-align: middle;
+}
+.main-heading-bar {
+    line-height: 23px;
+    font-size: 16px;
+    letter-spacing: 0.4px;
+    font-family: ProximaNova;
+    font-weight: 600;
+}
+.data-bold-view {
+    font-family: ProximaNova;
+    font-size: 9px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 0.2px;
+    color: #302a2c;
+}
+.data-bold-view-normal {
+    font-family: ProximaNova;
+    font-size: 9px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 0.2px;
+    color: #302a2c;
+}
+.squareborder {
+    padding: 10px;
+    background-color: #007bc7;
+    color: white;
+}
+.scorecardscore {
+    padding: 10px;
+    background-color: #007bc7;
+    border: 1px solid #007bc7;
+    color: white;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -khtml-border-radius: 50%;
+}
+.dividerhrV2 {
+    border-bottom: 1px solid #e5e6e5;
+}
+.topHeaaderScoreCard {
+    text-transform: uppercase;
+    font-family: Helvetica;
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.15;
+    letter-spacing: 1.5px;
+    color: black;
+}
+.topHeaaderScoreCardDes {
+    font-family: Helvetica;
+    font-size: 9px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 2;
+    letter-spacing: 0.15px;
+    color: black;
+}
+.socreBgSC {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+    text-align: center;
+    font-family: Helvetica;
+    font-size: 16px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: 0.4px;
+    text-align: center;
+    color: #fff;
+}
+.socreBgSCBlack {
+    position: absolute;
+    top: 11px;
+    width: 100%;
+    text-align: center;
+    font-family: Helvetica;
+    font-size: 16px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.44;
+    letter-spacing: 0.4px;
+    text-align: center;
+    color: #000;
+}
+.scoreArea tr td {
+    vertical-align: inherit;
+}
+.scoreText {
+    font-family: Helvetica;
+    font-size: 9px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 0.2px;
+    color: #302a2c;
+}
+.margintop32 {
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+.oppheadding {
+    text-transform: uppercase;
+    font-family: Helvetica;
+    font-size: 11px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 0.8px;
+    color: #000000;
+}
+.businessheadding {
+    margin-top: 20px;
+    text-transform: uppercase;
+    font-family: Helvetica;
+    font-size: 9px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 0.8px;
+    color: #000000;
+}
+.textHeadding {
+    margin-top: 10px;
+    font-family: Helvetica;
+    font-size: 12px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 0.2px;
+    color: #302a2c;
+}
+.textDes {
+    margin-top: 6px;
+    font-family: Helvetica;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 0.2px;
+    color: #302a2c;
+}
+.yesColumn {
+    margin-right: 5%;
+    width: 5%;
+    vertical-align: middle;
+    font-family: Helvetica;
+    font-size: 9px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 0.2px;
+}
+.pointValue {
+    width: 5%;
+    vertical-align: middle;
+    font-family: ProximaNova;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 1px;
+    text-align: right;
+}
+.topHeaaderText {
+    font-family: Helvetica;
+    font-size: 9px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: 0.2px;
+    color: #10263c;
+}

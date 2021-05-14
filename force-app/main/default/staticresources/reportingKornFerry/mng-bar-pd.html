@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Manager Bar Graph</title>
+	<script src="js/Chart.bundle.min.js"></script>
+	<script src="js/utils.js"></script>
+	<style>
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div style="width: 100%">
+		<canvas id="canvas"></canvas>
+	</div>
+	<script>
+
+		//Rando Math Maker
+		var randomScalingFactor = function () {
+			return Math.round(Math.random() * 10);
+		};
+		
+		var color = Chart.helpers.color;
+		var barChartData = {
+			labels: ['Dev Plans Created', 'In Progress', 'Complete'],
+			datasets: [{
+				label: '2018 Program A',
+				backgroundColor: '#4BC076',
+				borderColor: '#4BC076',
+				borderWidth: 1,
+				data: [
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor()
+				]
+			}]
+
+		};
+
+		window.onload = function () {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myBar = new Chart(ctx, {
+				type: 'bar',
+				data: barChartData,
+				options: {
+					responsive: true,
+					legend: {
+						position: 'bottom',
+					},
+					title: {
+						display: false,
+						text: 'Chart Title HEre'
+					}
+				}
+			});
+
+		};
+
+	</script>
+</body>
+
+</html>

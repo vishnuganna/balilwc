@@ -1,0 +1,207 @@
+<template>
+    <div class="slds-grid slds-size_9-of-12 slds-m-bottom_small">
+        {allLabels.RevenueTargetHeader}
+        <c-info-navigation nav-url={allLabels.RevenueTargetTabLink}></c-info-navigation>
+    </div>
+
+    <div class="slds-truncate slds-grid slds-wrap slds-border_top slds-border_bottom">
+        <div class="slds-grid slds-col">
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5 slds-m-bottom_medium">
+                <div><strong>{allLabels.LowTarget}</strong></div>
+
+                <lightning-input
+                    type="number"
+                    label={allLabels.RecurringRevenue}
+                    formatter="currency"
+                    value={lowTargetRecurringRev}
+                    onblur={updateLowRecurringRevenue}
+                    class="lowTarget"
+                    step="1"
+                ></lightning-input>
+            </div>
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5">
+                <p></p>
+
+                <lightning-input
+                    type="number"
+                    label={allLabels.LostRevenue}
+                    formatter="currency"
+                    value={lowTargetLostRev}
+                    onblur={updateLowLostRevenue}
+                    class="lowTarget"
+                    step="1"
+                ></lightning-input>
+            </div>
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5">
+                <p></p>
+
+                <lightning-input
+                    type="number"
+                    label={allLabels.NewRevenue}
+                    formatter="currency"
+                    value={lowTargetNewRev}
+                    onblur={updateLowNewRevenue}
+                    class="lowTarget"
+                    step="1"
+                ></lightning-input>
+            </div>
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-grid_vertical-align-end slds-size_1-of-5">
+                <div class="slds-m-top_large slds-m-left_medium">
+                    <p></p>
+                    <lightning-button
+                        label={allLabels.Calculate}
+                        variant="brand"
+                        onclick={calculateLowTarget}
+                    ></lightning-button>
+                </div>
+            </div>
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5  slds-theme_shade">
+                <p></p>
+                <lightning-input
+                    type="number"
+                    label={allLabels.LowTarget}
+                    formatter="currency"
+                    value={lowTarget}
+                    onblur={updateLowTarget}
+                    step="1"
+                ></lightning-input>
+            </div>
+        </div>
+    </div>
+    <div class="slds-truncate slds-grid slds-wrap slds-border_bottom">
+        <div class="slds-grid slds-col">
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5 slds-m-bottom_medium">
+                <div><strong>{allLabels.RealisticTarget}</strong></div>
+                <lightning-input
+                    type="number"
+                    label={allLabels.RecurringRevenue}
+                    formatter="currency"
+                    value={realisticTargetRecurringRev}
+                    onblur={updateRealisticRecurringRevenue}
+                    step="1"
+                    class="realisticTarget"
+                ></lightning-input>
+            </div>
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5">
+                <p></p>
+                <lightning-input
+                    type="number"
+                    label={allLabels.LostRevenue}
+                    formatter="currency"
+                    value={realisticTargetLostRev}
+                    onblur={updateRealisticLostRevenue}
+                    step="1"
+                    class="realisticTarget"
+                ></lightning-input>
+            </div>
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5">
+                <p></p>
+                <lightning-input
+                    type="number"
+                    label={allLabels.NewRevenue}
+                    formatter="currency"
+                    value={realisticTargetNewRev}
+                    onblur={updateRealisticNewRevenue}
+                    step="1"
+                    class="realisticTarget"
+                ></lightning-input>
+            </div>
+            <div class="slds-col slds-grid_vertical-align-end slds-p-left_small slds-p-top_small slds-size_1-of-5">
+                <div class="slds-m-top_large slds-m-left_medium">
+                    <p></p>
+                    <lightning-button
+                        label={allLabels.Calculate}
+                        variant="brand"
+                        onclick={calculateRealisticTarget}
+                    ></lightning-button>
+                </div>
+            </div>
+            <div class="slds-col slds-p-left_small slds-size_1-of-5 slds-p-top_small slds-theme_shade">
+                <p></p>
+                <lightning-input
+                    type="number"
+                    label={allLabels.RealisticTarget}
+                    formatter="currency"
+                    value={realisticTarget}
+                    onblur={updateRealisticTarget}
+                    step="1"
+                ></lightning-input>
+            </div>
+        </div>
+    </div>
+    <div class="slds-truncate slds-grid slds-wrap slds-m-bottom_large slds-border_bottom">
+        <div class="slds-grid slds-col">
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5 slds-m-bottom_medium">
+                <div><strong>{allLabels.HighTarget}</strong></div>
+                <lightning-input
+                    type="number"
+                    label={allLabels.RecurringRevenue}
+                    formatter="currency"
+                    value={hightTargetRecurringRev}
+                    onblur={updateHighRecurringRevenue}
+                    step="1"
+                    class="highTarget"
+                ></lightning-input>
+            </div>
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5">
+                <p></p>
+                <lightning-input
+                    type="number"
+                    label={allLabels.LostRevenue}
+                    formatter="currency"
+                    value={hightTargetLostRev}
+                    onblur={updateHighLostRevenue}
+                    step="1"
+                    class="highTarget"
+                ></lightning-input>
+            </div>
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5">
+                <p></p>
+                <lightning-input
+                    type="number"
+                    label={allLabels.NewRevenue}
+                    formatter="currency"
+                    value={highTargetNewRev}
+                    onblur={updateHighNewRevenue}
+                    step="1"
+                    class="highTarget"
+                ></lightning-input>
+            </div>
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5">
+                <div class="slds-m-top_large slds-m-left_medium">
+                    <p></p>
+                    <lightning-button
+                        label={allLabels.Calculate}
+                        variant="brand"
+                        onclick={calculateHighTarget}
+                    ></lightning-button>
+                </div>
+            </div>
+            <div class="slds-col slds-p-left_small slds-p-top_small slds-size_1-of-5 slds-theme_shade">
+                <p></p>
+                <lightning-input
+                    type="number"
+                    label={allLabels.HighTarget}
+                    formatter="currency"
+                    value={highTarget}
+                    onblur={updateHighTarget}
+                    step="1"
+                ></lightning-input>
+            </div>
+        </div>
+    </div>
+    <div class="slds-grid slds-col">
+        <div class="slds-col slds-size_4-of-5">
+            <lightning-textarea
+                name="input1"
+                max-length="32000"
+                value={currentYearAssumption}
+                onchange={updateAssumption}
+                label={allLabels.Assumptions}
+            ></lightning-textarea>
+            <template if:true={showAssumptionError}>
+                <span class="slds-required">{allLabels.ErrorDescriptionTooLong}</span>
+            </template>
+        </div>
+    </div>
+</template>

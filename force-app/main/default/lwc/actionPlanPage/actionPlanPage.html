@@ -1,0 +1,417 @@
+<template>
+    <template if:true={moduleData}>
+        <c-go-to-bluesheet-prompts
+            module-data={moduleData}
+            module-learning-completed={moduleLearningCompleted}
+            module-section={moduleSection}
+        ></c-go-to-bluesheet-prompts>
+    </template>
+    <article
+        if:false={checkNoDataAndReadOnlyAccess}
+        class="slds-card slds-card_boundary divClass"
+        style="text-decoration:none !important;background-color:#F0F0F0;"
+    >
+        <lightning-card variant="Narrow" style="color:black;" class="slds-m-top_xx-large">
+            <div slot="title">
+                <b>{label.actionPlan}</b><c-info-navigation nav-url={label.ActionPlanHeaderURL}></c-info-navigation>
+            </div>
+            <!--<hr style="margin:3%;background-color:#dcdcdc !important;">-->
+
+            <div class="slds-m-top_x-small slds-m-bottom_x-small divClass">
+                <!--<lightning-card>-->
+                <div class="slds-m-around_small">
+                    <!--<div class="slds-box">
+                <b>Action Plan</b>
+            </div>-->
+                    <!--<div class="slds-box slds-theme-shade">-->
+                    <!--Read Only Section-->
+                    <div class="slds-m-top_x-small slds-m-bottom_x-small">
+                        <c-custom-insights
+                            showon-bs={showonbs}
+                            get-id-from-parent={getIdFromParent}
+                            type={label.categoryPerspective}
+                        >
+                        </c-custom-insights>
+                    </div>
+                    <template if:true={actionPlansData}>
+                        <template for:each={actionPlansData} for:item="item">
+                            <div key={item.Id}>
+                                <c-action-plan-data
+                                    item={item}
+                                    item2={item}
+                                    onrefreshscreen={handleRefresh}
+                                ></c-action-plan-data>
+                            </div>
+                        </template>
+                    </template>
+                    <!--/Read Only Section-->
+                    <!--Spinner-->
+                    <!--<template if:true={spinnerFlag}>
+                    <lightning-spinner alternative-text="Processing..." variant="brand">
+                    </lightning-spinner>
+                </template>-->
+                    <!--/Spinner-->
+
+                    <div class="slds-card__body" if:true={boolVisible}>
+                        <article class="slds-card slds-card_boundary item slds-m-left_xx-small" style="padding:2%">
+                            <fieldset class="slds-form-element slds-form-element_compound">
+                                <div class="slds-form-element__control">
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-size_1-of-2">
+                                            <b class="slds-p-bottom_small slds-p-left_small"
+                                                >{label.newPossibleAction}</b
+                                            ><c-info-navigation nav-url={label.possibleactionURL}></c-info-navigation
+                                            ><br />
+                                            <div class="slds-form-element slds-m-top_xx-small">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        data-id="action-summary"
+                                                        type="text"
+                                                        label={label.Summary}
+                                                        name="summary"
+                                                        placeholder={label.AddSummary}
+                                                        onchange={validateInputs}
+                                                        max-length="256"
+                                                        required
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-size_1-of-2">
+                                            <b class="slds-p-bottom_small slds-p-left_small"></b>
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <button
+                                                        class="slds-button slds-button_neutral slds-m-left_medium slds-m-top_large"
+                                                        onclick={openAddListlookup}
+                                                    >
+                                                        {label.addFromList}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-form-element__row slds-m-top_medium">
+                                        <div class="slds-size_1-of-1">
+                                            <div class="slds-form-element slds-m-top_xx-small">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-textarea
+                                                        name="Description"
+                                                        placeholder={label.AddDescription}
+                                                        label={label.Description}
+                                                        onchange={validateInputs}
+                                                        max-length="32000"
+                                                    ></lightning-textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-m-top_medium slds-m-bottom_medium slds-border_top"></div>
+
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <template if:true={ActionTypePicklistValues}>
+                                                        <lightning-combobox
+                                                            name="ActionType"
+                                                            label={label.ActionType}
+                                                            value={value}
+                                                            placeholder=" "
+                                                            options={ActionTypePicklistValues}
+                                                            onchange={handleActionTypePicklistValue}
+                                                        >
+                                                        </lightning-combobox>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <c-lookup-component
+                                                        child-object-api-name={objectForLookup}
+                                                        target-field-api-name={contactFieldName}
+                                                        field-label={label.Contact}
+                                                        onvalueselected={handleContactSelcted}
+                                                        style="font-size:12px;"
+                                                    ></c-lookup-component>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <c-lookup-component
+                                                        child-object-api-name={objectForLookup}
+                                                        target-field-api-name={assignedToFieldName}
+                                                        field-label={label.Assigned_To}
+                                                        onvalueselected={handleValueSelcted}
+                                                        value={ownerName}
+                                                        style="font-size:12px;"
+                                                        show-required-star={showRequired}
+                                                        required
+                                                    ></c-lookup-component>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-form-element__row slds-m-top_large">
+                                        <div class="slds-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <template if:true={StatusPicklistValues}>
+                                                        <lightning-combobox
+                                                            name="Status"
+                                                            label={label.Status}
+                                                            value={value}
+                                                            placeholder="  "
+                                                            options={StatusPicklistValues}
+                                                            onchange={handleStatusPicklistValue}
+                                                        >
+                                                        </lightning-combobox>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        type="date"
+                                                        date-style="short"
+                                                        name="startDate"
+                                                        value={defaultStartDateValue}
+                                                        label={label.Start_Date}
+                                                        onchange={validateInputs}
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-input
+                                                        type="date"
+                                                        date-style="short"
+                                                        name="dueDate"
+                                                        label={label.Due_Date}
+                                                        onchange={validateInputs}
+                                                    ></lightning-input>
+                                                </div>
+                                            </div>
+                                            <template if:true={validationcheck}>
+                                                <div class="slds-text-color_error slds-p-left_medium">
+                                                    {label.ErrorDueDateBeforeStart}
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-form-element__row slds-m-top_large fixheight">
+                                        <div class="slds-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <template if:true={PriorityPicklistValues}>
+                                                        <lightning-combobox
+                                                            name="Priority"
+                                                            label={label.Priority}
+                                                            value={value}
+                                                            placeholder="  "
+                                                            options={PriorityPicklistValues}
+                                                            onchange={handlePriorityTypePicklistValue}
+                                                        >
+                                                        </lightning-combobox>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-size_1-of-3 toggleAlign">
+                                            <span class="slds-form-element__label slds-m-bottom_none slds-grid"
+                                                >{label.Is_a_Best_Action}<c-info-navigation
+                                                    nav-url={label.bestActionURL}
+                                                ></c-info-navigation
+                                            ></span>
+                                            <div class="slds-form-element" style="width: 20%;">
+                                                <!--
+                                        <label class="slds-checkbox_toggle slds-grid">
+                                        <lightning-input type="checkbox" style="color:blue" name="checkbox" label={label.Is_a_Best_Action}  aria-describedby="checkbox-toggle-16" onchange={handleonChange}></lightning-input>
+                                        </label>
+                                        -->
+                                                <label class="toggleDisplay">
+                                                    <div class="slds-checkbox_toggle slds-grid">
+                                                        <input
+                                                            type="checkbox"
+                                                            name="checkbox-toggle-16"
+                                                            value="checkbox-toggle-16"
+                                                            aria-describedby="checkbox-toggle-16"
+                                                            onchange={handleonChange}
+                                                        />
+                                                        <span
+                                                            id="checkbox-toggle-16"
+                                                            class="slds-checkbox_faux_container"
+                                                            aria-live="assertive"
+                                                        >
+                                                            <span class="slds-checkbox_faux"></span>
+                                                            <span class="slds-checkbox_on"></span>
+                                                            <span class="slds-checkbox_off"></span>
+                                                        </span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <template if:true={bestAction}
+                                            ><!--KFS 255 Starts-->
+                                            <div class="slds-size_1-of-3">
+                                                <div class="slds-form-element">
+                                                    <div class="slds-form-element__control">
+                                                        <span
+                                                            class="slds-form-element__label slds-m-bottom_none slds-p-left_small"
+                                                        >
+                                                            {label.WillYouBeProvidePerspective}
+                                                            <c-info-navigation
+                                                                nav-url={label.providingPerspectiveURL}
+                                                            ></c-info-navigation>
+                                                        </span>
+                                                        <div class="slds-form-element__control slds-p-top_small ">
+                                                            <button
+                                                                class={yesCss}
+                                                                data-target-value="Yes"
+                                                                data-target-id="diYes"
+                                                                data-target-class="InfluenceDegree"
+                                                                onclick={handleButtonClick}
+                                                                data-target-selected={yesSelected}
+                                                            >
+                                                                <span class="slds-icon_container">
+                                                                    <svg
+                                                                        class="slds-button__icon slds-button__icon_left "
+                                                                    >
+                                                                        <use
+                                                                            xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#check"
+                                                                        ></use>
+                                                                    </svg>
+                                                                </span>
+                                                                <label>
+                                                                    <span> {label.yes} </span>
+                                                                </label>
+                                                            </button>
+                                                            <button
+                                                                class={noCss}
+                                                                data-target-value="No"
+                                                                data-target-id="diNo"
+                                                                data-target-class="InfluenceDegree"
+                                                                onclick={handleButtonClick}
+                                                                data-target-selected={noSelected}
+                                                            >
+                                                                <span class="slds-icon_container">
+                                                                    <svg
+                                                                        class="slds-button__icon slds-button__icon_left "
+                                                                    >
+                                                                        <use
+                                                                            xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#close"
+                                                                        ></use>
+                                                                    </svg>
+                                                                </span>
+                                                                <label>
+                                                                    <span> {label.no} </span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> </template
+                                        ><!--KFS 255 Ends-->
+                                    </div>
+                                    <template if:true={bestAction}
+                                        ><!--KFS Starts-->
+                                        <template if:true={providingPerspective}>
+                                            <div class="slds-form-element__row slds-m-top_medium">
+                                                <div class="slds-size_1-of-1">
+                                                    <div class="slds-form-element slds-m-top_xx-small">
+                                                        <div class="slds-form-element__control">
+                                                            <lightning-textarea
+                                                                name="Perspective"
+                                                                label={label.HowWillYouProvidePerspective}
+                                                                onchange={validateInputs}
+                                                                max-length="32000"
+                                                            ></lightning-textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template> </template
+                                    ><!--KFS 255 Ends-->
+                                    <div class="slds-align_absolute-center saveAndCancelBtn">
+                                        <lightning-button
+                                            label={label.cancel}
+                                            variant="neutral"
+                                            onclick={handleCancel}
+                                        ></lightning-button>
+                                        &nbsp; &nbsp;
+                                        <lightning-button
+                                            label={label.save}
+                                            variant="brand"
+                                            onclick={createActionPlan}
+                                            disabled={saveDisableFlag}
+                                        ></lightning-button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </article>
+                    </div>
+                    <template if:true={isCreateable}>
+                        <lightning-button
+                            variant="brand"
+                            disabled={btnflag}
+                            label={label.AddNewPossibleAction}
+                            onclick={handleClick}
+                            class="slds-m-left_xx-small"
+                        ></lightning-button>
+                    </template>
+                    <!--</div>-->
+                </div>
+            </div>
+        </lightning-card>
+    </article>
+    <article
+        if:true={checkNoDataAndReadOnlyAccess}
+        class="slds-card slds-card_boundary"
+        style="text-decoration:none !important"
+    >
+        <lightning-card variant="Narrow" style="color:black;" class="slds-m-top_xx-large">
+            <div slot="title">
+                <b>{label.actionPlan}</b><c-info-navigation nav-url={label.ActionPlanHeaderURL}></c-info-navigation>
+            </div>
+            <div class="slds-m-top_x-small slds-m-bottom_x-small" style="border-top: 1px solid #dcdcdc;">
+                <!--<lightning-card>-->
+                <div class="slds-m-around_small">
+                    <c-summary-view-no-data></c-summary-view-no-data>
+                    <!--</div>-->
+                </div>
+            </div>
+        </lightning-card>
+    </article>
+    <template if:true={openAddFromListModal}>
+        <div class="assetmodal" style="height: 600px">
+            <section
+                role="dialog"
+                tabindex="-1"
+                aria-modal="true"
+                aria-labelledby="modal-heading-01"
+                aria-describedby="modal-content-id-2"
+                class="slds-modal slds-fade-in-open"
+            >
+                <div class="slds-modal__container" style="height: 600px">
+                    <div class="slds-modal__content slds-p-around_large" id="modalcontentlabor">
+                        <c-add-List blue-sheet-id={blueSheetId} onmodalvaluechange={getSelectedActionList}>
+                        </c-add-List>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </template>
+</template>

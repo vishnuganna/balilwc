@@ -1,0 +1,24 @@
+.hovercls {
+    fill: black;
+}
+
+.hovercls:hover {
+    fill: #0070d2;
+    cursor: pointer;
+}
+
+.selectedbutton {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: 1px solid #dddbda;
+    -webkit-transition: border 0.15s linear;
+    transition: border 0.15s linear;
+    background-color: #c2dfff;
+    border-color: #c2dfff;
+    color: black;
+}

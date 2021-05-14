@@ -1,0 +1,28 @@
+.gettingCommitmentHeader {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+}
+.getting-header-text {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+    padding-top: 0px;
+}
+
+.scroll1 {
+    overflow: scroll;
+}
+.rating-color {
+    --sds-c-icon-color-foreground-default: rgb(201, 199, 197);
+}
+.question-type {
+    background-color: #c9c7c5;
+    width: 17px;
+    height: 1px;
+    padding: 2px;
+    display: inline-table;
+    font-size: 1px;
+    margin-right: 9px;
+    margin-left: 13px;
+}

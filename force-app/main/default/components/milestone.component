@@ -1,0 +1,104 @@
+<apex:component controller="GoldSheetActionPlanTabPDFController" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+    <apex:attribute name="obj"
+        description="This is the object"
+        assignTo="{!goldSheetActionPlanPDFWrapper}"
+        required="true"
+        type="GoldSheetPDFWrapper"
+    />
+    <apex:attribute name="milestone" description="This is the milestone number" required="true" type="String" />
+    <apex:repeat value="{!goldSheetActionPlanPDFWrapper.milestoneWrapperList[milestone]}" var="milestoneobj">
+        <div class="width100">
+            <div class="dividerhr linegray margintop5"></div>
+        </div>
+
+        <div class="margintop10 ">
+            <div class="margintop20 boldfont colorgray ">
+                <table style="margin-left: -2px;">
+                    <tr>
+                        <td class="data-bold-view">
+                            <apex:pageBlock rendered="{! If(milestoneobj.msDateFormatted != null ,true,false) }">
+                                {!milestoneobj.msDateFormatted}
+                            </apex:pageBlock>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="margintop5 colorgray data-bold-view-normal">
+                <apex:pageBlock rendered="{! If(milestoneobj.msNotes != null ,true,false) }">
+                    {!milestoneobj.msNotes}
+                </apex:pageBlock>
+
+                <apex:pageBlock rendered="{! If(milestoneobj.msNotes == null ,true,false) }">
+                    -
+                </apex:pageBlock>
+            </div>
+
+            <apex:pageBlock rendered="{!NOT(milestoneobj.playerWrapperList.empty)}">
+                <!-- <apex:pageBlock rendered="{! If(milestoneobj.playerWrapperList.size!=0 ,true,false)}"> -->
+                <div style="width: 100% ;margin-left: 20px;">
+                    <div class="margintop10">
+                        <apex:outputLabel value="{!$Label.StrategicPlayers}" />
+                    </div>
+
+                    <apex:repeat value="{!milestoneobj.playerWrapperList}" var="PlayerWrapper">
+                        <div class="marginbottom5 margintopsso" style="width: 98%;">
+                            <div class="dividerhr"></div>
+                        </div>
+                        <div class="width100">
+                            <table style="width: 60%">
+                                <tr>
+                                    <td width="16.50%" class="semibold colorgray">
+                                        <apex:outputLabel value="{!$Label.Name}" />
+                                    </td>
+                                    <td width="16.50%" class="semibold colorgray">
+                                        <apex:outputLabel value="{!$Label.Title}" />
+                                    </td>
+                                    <td width="16.50%" class="semibold colorgray">
+                                        <apex:outputLabel value="{!$Label.Role}" />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="16.50%">
+                                        <apex:pageBlock rendered="{! If(PlayerWrapper['strategicPlayerName'] !=null ,true,false) }"
+                                        >
+                                            {!PlayerWrapper['strategicPlayerName']}
+                                        </apex:pageBlock>
+
+                                        <apex:pageBlock rendered="{! If(PlayerWrapper['strategicPlayerName'] ==null ,true,false) }"
+                                        >
+                                            -
+                                        </apex:pageBlock>
+                                    </td>
+
+                                    <td width="16.50%">
+                                        <apex:pageBlock rendered="{! If(PlayerWrapper['strategicPlayerTitle'] !=null ,true,false) }"
+                                        >
+                                            {!PlayerWrapper['strategicPlayerTitle']}
+                                        </apex:pageBlock>
+
+                                        <apex:pageBlock rendered="{! If(PlayerWrapper['strategicPlayerTitle'] ==null ,true,false) }"
+                                        >
+                                            -
+                                        </apex:pageBlock>
+                                    </td>
+                                    <td width="16.50%">
+                                        <apex:pageBlock rendered="{! If(PlayerWrapper['role'] !=null ,true,false) }">
+                                            {!PlayerWrapper['role']}
+                                        </apex:pageBlock>
+
+                                        <apex:pageBlock rendered="{! If(PlayerWrapper['role'] ==null ,true,false) }">
+                                            -
+                                        </apex:pageBlock>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </apex:repeat>
+                </div>
+            </apex:pageBlock>
+        </div>
+    </apex:repeat>
+</apex:component>

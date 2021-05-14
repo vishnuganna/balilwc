@@ -1,0 +1,352 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-around_small">
+            <div class="slds-grid slds-grid_align-spread">
+                <div class="slds-col">
+                    <div class="slds-float_left">
+                        <label class="">{label.Scorecard_Name_placeholder}<span class="highlightdiv">*</span></label>
+                        <lightning-input
+                            type="text"
+                            required
+                            variant="label-hidden"
+                            aria-label="hidden"
+                            maxlength="256"
+                            message-when-value-missing={label.Scorecard_Template_Required_Error}
+                            value={scoreCardName}
+                            onblur={handlenameChange}
+                            onchange={handleScorecardNameChange}
+                            class="slds-size_2-of-3"
+                        ></lightning-input>
+                        <template if:true={maxCharReached}>
+                            <span class="highlightdiv">{label.Scorecard_Template_Name_Max_Char_Limit}</span>
+                        </template>
+                        <br />
+                        <div class="slds-text-heading_small slds-p-top_Medium">{label.Scorecard_Criteria_Header}</div>
+                        <div class="slds-text-body_small slds-p-top_Medium">
+                            {label.Scorecard_Template_Criteria_HelpText}
+                        </div>
+                    </div>
+                </div>
+                <template if:true={hasLanguageValues}>
+                    <div class="slds-col">
+                        <lightning-layout-item>
+                            <div>
+                                <lightning-combobox
+                                    name="scorecardLanguage"
+                                    label={label.ScoreCardLanguage}
+                                    value={defaultlanguage}
+                                    options={LanguagePicklistValues}
+                                    onchange={handleChangeScoreCardLanguage}
+                                    class="picklist"
+                                    placeholder=""
+                                ></lightning-combobox>
+                            </div>
+                        </lightning-layout-item>
+                    </div>
+                </template>
+                <div class="slds-col">
+                    <div>
+                        <lightning-input
+                            type="checkbox"
+                            onchange={handlDefaultUpdate}
+                            label={label.Scorecard_Template_Mark_As_Default}
+                            checked={isDefault}
+                        ></lightning-input>
+                    </div>
+                </div>
+                <div class="slds-col">
+                    <div class="slds-p-top_small">
+                        <div>
+                            <div class=" slds-clearfix slds-float_right">
+                                <lightning-button
+                                    variant="base"
+                                    label={label.cancel}
+                                    onclick={handleCancel}
+                                    class="slds-p-right_small"
+                                ></lightning-button>
+                                <lightning-button
+                                    label={label.save}
+                                    disabled={disableSave}
+                                    variant="brand"
+                                    onclick={handleSave}
+                                ></lightning-button>
+                            </div>
+                            <br />
+                        </div>
+                        <div>
+                            <div
+                                class="slds-text-heading_small slds-p-top_medium slds-float_right totalpoints highlightdiv"
+                            >
+                                {label.Scorecard_Template_point_Value_text} : {totalPoint}
+                                <template if:true={invalidPointVal}>
+                                    <div data-id="divblock-1" class="slds-visible slds-float_right">
+                                        <lightning-icon
+                                            icon-name="utility:warning"
+                                            alternative-text={label.WarningLabel}
+                                            size="xx-small"
+                                            title={label.Warning}
+                                        ></lightning-icon>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div data-id="divblock-2" class="slds-text-body_small slds-float_right slds-visible">
+                                {label.Scorecard_Template_PointValue_Warning}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table class="slds-table slds-table_cell-buffer slds-no-row-hover">
+                <thead>
+                    <tr class="">
+                        <th class="slds-size_2-of-12" scope="col">
+                            <div class="slds-truncate">
+                                {label.Scorecard_Template_Section_Column}<span class="highlightdiv">*</span>
+                            </div>
+                        </th>
+                        <th class="slds-size_4-of-12" scope="col">
+                            <div class="slds-truncate">
+                                {label.Scorecard_Template_Title_Column}<span class="highlightdiv">*</span>
+                            </div>
+                        </th>
+                        <th class="slds-size_4-of-12" scope="col">
+                            <div class="slds-truncate">
+                                {label.Scorecard_Template_Criteria_Column}<span class="highlightdiv">*</span>
+                            </div>
+                        </th>
+                        <th class="slds-size_1-of-12" scope="col">
+                            <div class="slds-truncate">{label.Scorecard_Template_PointValue_Column}</div>
+                        </th>
+                        <th class="slds-size_1-of-12" scope="col">
+                            <div class="slds-truncate">{label.Scorecard_Template_OrderNumber_Column}</div>
+                        </th>
+                        <th class="slds-size_1-of-12" scope="col">
+                            <div class="slds-truncate">{label.Scorecard_Template_IsActive_Column}</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template if:true={isInsert}>
+                        <template for:each={accRecords} for:item="acc" for:index="index">
+                            <tr key={acc.key} class="slds-hint-parent tablerow slds-p-around_small">
+                                <td class="slds-size_2-of-12" align="top">
+                                    <!--placeholder={label.Scorecard_Template_Criteria_Type}-->
+                                    <lightning-combobox
+                                        name="Criteria Options"
+                                        aria-label="hidden"
+                                        value={acc.section}
+                                        options={options}
+                                        variant="label-hidden"
+                                        key={acc.key}
+                                        class="comboBox"
+                                        required
+                                        message-when-value-missing={label.Scorecard_Template_Required_Error}
+                                        data-id={acc.key}
+                                        onchange={handleChange}
+                                    ></lightning-combobox>
+                                </td>
+                                <td class="slds-size_4-of-12 slds-p-top_medium slds-p-bottom_medium" align="top">
+                                    <!--placeholder={label.Scorecard_Template_Title_Column} -->
+                                    <lightning-textarea
+                                        key={acc.key}
+                                        data-id={acc.key}
+                                        max-length="32000"
+                                        name={acc.key}
+                                        required
+                                        message-when-value-missing={label.Scorecard_Template_Required_Error}
+                                        onkeyup={handleMaxLimitErrorTitle}
+                                        value={acc.title}
+                                        variant="label-hidden"
+                                        onblur={handletitleChange}
+                                    ></lightning-textarea>
+                                    <div data-id="errordivblocktitle" id={acc.key} class="erroMsg divHide">
+                                        {label.maxLimitError}
+                                    </div>
+                                </td>
+                                <td class="slds-size_4-of-12 slds-p-top_medium slds-p-bottom_medium" align="top">
+                                    <!--placeholder={label.Scorecard_Template_Criteria_placeholder} -->
+                                    <lightning-textarea
+                                        name={acc.key}
+                                        max-length="32000"
+                                        key={acc.key}
+                                        data-id={acc.key}
+                                        required
+                                        onkeyup={handleMaxLimitErrorCriteria}
+                                        label={label.Scorecard_Template_Criteria_Column}
+                                        message-when-value-missing={label.Scorecard_Template_Required_Error}
+                                        value={acc.criteriaDef}
+                                        variant="label-hidden"
+                                        onblur={handlecriteriaChange}
+                                    ></lightning-textarea>
+                                    <div data-id="errordivblockcriteria" id={acc.key} class="erroMsg divHide">
+                                        {label.maxLimitError}
+                                    </div>
+                                </td>
+                                <td class="slds-size_1-of-12" align="top">
+                                    <lightning-input
+                                        key={acc.key}
+                                        min="1"
+                                        max="100"
+                                        data-id={acc.key}
+                                        type="number"
+                                        name="point"
+                                        label={label.Scorecard_Template_PointValue_Column}
+                                        value={acc.pointValue}
+                                        variant="label-hidden"
+                                        onchange={handlepointupdate}
+                                    ></lightning-input>
+                                </td>
+                                <td class="slds-size_1-of-12 slds-is-sortable" align="top">
+                                    <lightning-input
+                                        key={acc.key}
+                                        min="1"
+                                        max={maxOrderNumber}
+                                        data-id={acc.key}
+                                        type="number"
+                                        name="order"
+                                        label=""
+                                        value={acc.orderNumber}
+                                        variant="label-hidden"
+                                        onblur={handleOrderupdate}
+                                    ></lightning-input>
+                                </td>
+                                <td class="slds-size_1-of-12 slds-is-sortable" align="top">
+                                    <lightning-input
+                                        type="checkbox"
+                                        key={acc.key}
+                                        data-id={acc.key}
+                                        label=""
+                                        checked={acc.isActiveCriteria}
+                                        name="isActiveCriteria"
+                                        onclick={handleCriteriaActivation}
+                                    ></lightning-input>
+                                </td>
+                            </tr>
+                        </template>
+                    </template>
+                    <template if:false={isInsert}>
+                        <template for:each={accRecords} for:item="acc" for:index="index">
+                            <tr key={acc.childId} class="slds-hint-parent tablerow slds-p-around_small">
+                                <td class="slds-size_2-of-12" align="top">
+                                    <!--placeholder={label.Scorecard_Template_Criteria_Type}-->
+                                    <lightning-combobox
+                                        name="Criteria Options"
+                                        aria-label="hidden"
+                                        value={acc.section}
+                                        options={options}
+                                        variant="label-hidden"
+                                        key={acc.childId}
+                                        required
+                                        message-when-value-missing={label.Scorecard_Template_Required_Error}
+                                        data-id={acc.childId}
+                                        onchange={handleChange}
+                                    ></lightning-combobox>
+                                </td>
+                                <td class="slds-size_4-of-12 slds-p-top_medium slds-p-bottom_medium" align="top">
+                                    <!--placeholder={label.Scorecard_Template_Title_Column} -->
+                                    <lightning-textarea
+                                        key={acc.childId}
+                                        data-id={acc.childId}
+                                        max-length="32000"
+                                        name={acc.key}
+                                        required
+                                        message-when-value-missing={label.Scorecard_Template_Required_Error}
+                                        message-when-too-long="32k "
+                                        value={acc.title}
+                                        variant="label-hidden"
+                                        onkeyup={handleMaxLimitErrorTitle}
+                                        onblur={handletitleChange}
+                                    ></lightning-textarea>
+                                    <div data-id="errordivblocktitle" id={acc.key} class="erroMsg divHide">
+                                        {label.maxLimitError}
+                                    </div>
+                                </td>
+                                <td class="slds-size_4-of-12 slds-p-top_medium slds-p-bottom_medium" align="top">
+                                    <!--placeholder={label.Scorecard_Template_Criteria_placeholder} -->
+                                    <lightning-textarea
+                                        name={acc.key}
+                                        max-length="32000"
+                                        key={acc.childId}
+                                        data-id={acc.childId}
+                                        required
+                                        label={label.Scorecard_Template_Criteria_Column}
+                                        message-when-value-missing={label.Scorecard_Template_Required_Error}
+                                        onkeyup={handleMaxLimitErrorCriteria}
+                                        value={acc.criteriaDef}
+                                        variant="label-hidden"
+                                        onblur={handlecriteriaChange}
+                                    ></lightning-textarea>
+                                    <div data-id="errordivblockcriteria" id={acc.key} class="erroMsg divHide">
+                                        {label.maxLimitError}
+                                    </div>
+                                </td>
+                                <td class="slds-size_1-of-12" align="top">
+                                    <lightning-input
+                                        key={acc.childId}
+                                        min="1"
+                                        max="100"
+                                        data-id={acc.childId}
+                                        type="number"
+                                        name="point"
+                                        label={label.Scorecard_Template_PointValue_Column}
+                                        value={acc.pointValue}
+                                        variant="label-hidden"
+                                        onchange={handlepointupdate}
+                                    ></lightning-input>
+                                </td>
+                                <td class="slds-size_1-of-12 slds-is-sortable" align="top">
+                                    <lightning-input
+                                        key={acc.childId}
+                                        min="1"
+                                        max={maxOrderNumber}
+                                        data-id={acc.childId}
+                                        type="number"
+                                        name="order"
+                                        label=""
+                                        value={acc.orderNumber}
+                                        variant="label-hidden"
+                                        onblur={handleOrderupdate}
+                                    ></lightning-input>
+                                </td>
+                                <td class="slds-size_1-of-12 " align="top">
+                                    <lightning-input
+                                        type="checkbox"
+                                        key={acc.childId}
+                                        data-id={acc.childId}
+                                        label=""
+                                        checked={acc.isActiveCriteria}
+                                        name="isActiveCriteria"
+                                        onclick={handleCriteriaActivation}
+                                    ></lightning-input>
+                                </td>
+                            </tr>
+                        </template>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="slds-m-top_small slds-p-left_small">
+            <lightning-icon icon-name="action:new" size="small" onclick={addRow}> </lightning-icon>
+            {label.Scorecard_Template_Add_Criterion_Label}
+            <div class=" slds-clearfix slds-float_right slds-p-right_small">
+                <lightning-button
+                    variant="base"
+                    label={label.cancel}
+                    onclick={handleCancel}
+                    class="slds-p-right_small"
+                ></lightning-button>
+                <lightning-button
+                    label={label.save}
+                    disabled={disableSave}
+                    variant="brand"
+                    onclick={handleSave}
+                ></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

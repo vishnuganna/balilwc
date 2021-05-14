@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Donut Charts with Img Center</title>
+	<script src="js/Chart.bundle.min.js"></script>
+	<script src="js/utils.js"></script>
+	<style>
+		.container {
+			width: 100%;
+			position: relative;
+		}
+
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+
+		.chart-img {
+			display: block;
+			position: absolute;
+			z-index: -20;
+			top: 48%;
+			left: 50%;
+			margin-right: -50%;
+			transform: translate(-50%, -50%);
+			max-width: 600px;
+			width: 25%;
+			height: auto;
+			border-radius: 300px;
+			/* should be half of max-width */
+			border: 2px solid #FFFFFF;
+			opacity: 0;
+			animation-duration: 2s;
+			animation-delay: 1s;
+			animation-name: fadein;
+			animation-fill-mode: forwards;
+		}
+
+		@media all and (min-width: 480px) and (max-width: 736px) {
+			.chart-img {
+				transform: translate(-50%, -60%);
+			}
+		}
+
+		@media all and (min-width: 320px) and (max-width: 479px) {
+			.chart-img {
+				transform: translate(-50%, -65%);
+				width: 20%;
+			}
+		}
+
+				@media all and (max-width: 319px) {
+			.chart-img {
+				display: none;
+			}
+		}
+
+		@keyframes fadein {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<canvas id="canvas"></canvas>
+		<img class="chart-img" src="https://avatars2.githubusercontent.com/u/9450828?s=460&v=4" />
+
+	</div>
+	<script>
+		//Rando Math Maker
+		var randomScalingFactor = function () {
+			return Math.round(Math.random() * 100);
+		};
+
+		var img = new Image();
+		img.src = 'https://avatars2.githubusercontent.com/u/9450828?s=460&v=4';
+		var ctx = document.getElementById('canvas').getContext('2d');
+		var fillPattern = ctx.createPattern(img, 'repeat');
+
+		var config = {
+			type: 'doughnut',
+			data: {
+				datasets: [{
+					data: [
+						33,
+						34,
+						33
+					],
+					backgroundColor: [
+						'#0070D2',
+						'#4BC076',
+						'#7E8BE4'						
+						
+					],
+					label: 'Compentencies'
+				}],
+				labels: [
+				    'Accountability',
+					'Capability',
+					'Identity'							
+				]
+			},
+			options: {
+				responsive: true,
+				cutoutPercentage: 50,
+				rotation: .5 * Math.PI,
+				legend: {
+					position: 'bottom',
+				},
+				title: {
+					display: false,
+					text: 'Add title here if needed'
+				},
+				tooltips: {
+					callbacks: {
+						label: function (tooltipItem, data) {
+							var dataset = data.datasets[tooltipItem.datasetIndex];
+							var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+								return previousValue + currentValue;
+							});
+							var currentValue = dataset.data[tooltipItem.index];
+							var precentage = Math.floor(((currentValue / total) * 100) + 0.5);
+							return precentage + "%";
+						}
+					},
+					position: 'nearest'
+				},
+				animation: {
+					animateScale: true,
+					animateRotate: true
+				},
+			}
+		};
+
+		window.onload = function () {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			Chart.defaults.global.defaultFontFamily = "'Proxima Nova', 'Salesforce Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+			window.myDoughnut = new Chart(ctx, config);
+		};
+
+	</script>
+</body>
+
+</html>

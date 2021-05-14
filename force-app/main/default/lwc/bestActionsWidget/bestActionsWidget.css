@@ -1,0 +1,37 @@
+.btnClass {
+    float: right;
+    border: none;
+    background: none;
+}
+
+.container {
+    position: relative;
+    text-align: center;
+}
+
+.best-action-widget-title {
+    position: absolute;
+    top: 26px;
+    left: 65px;
+    color: white;
+    line-height: 1.15;
+    font-weight: 400;
+    font-style: normal;
+    font-size: large;
+    text-align: center;
+}
+
+.act-now {
+    display: flex;
+    align-items: center;
+}
+
+.no-pending-action {
+    text-align: center;
+    padding-bottom: 25px;
+}
+
+.widget-content {
+    max-height: 20rem;
+    width: 100%;
+}

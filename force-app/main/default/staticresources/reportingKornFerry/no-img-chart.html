@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Donut Charts with Img Center</title>
+	<script src="js/Chart.bundle.min.js"></script>
+	<script src="js/utils.js"></script>
+	<style>
+		.container {
+			width: 100%;
+			position: relative;
+		}
+
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+
+		.chart-img {
+			display: none;
+		}
+		
+
+
+	</style>
+</head>
+
+<body>
+	<div style="width: 100%">
+		<canvas id="canvas"></canvas>
+	</div>
+	<script>
+		//Rando Math Maker
+		var randomScalingFactor = function () {
+			return Math.round(Math.random() * 100);
+		};
+		
+		var ctx = document.getElementById('canvas').getContext('2d');
+
+		var config = {
+			type: 'doughnut',
+			data: {
+				datasets: [{
+					data: [
+						33,
+						34,
+						33
+					],
+					backgroundColor: [
+						'#0070D2',
+						'#4BC076',
+						'#7E8BE4'						
+						
+					],
+					label: 'Compentencies'
+				}],
+				labels: [
+				    'Accountability',
+					'Capability',
+					'Identity'							
+				]
+			},
+			options: {
+				responsive: true,
+				cutoutPercentage: 50,
+				rotation: .5 * Math.PI,
+				legend: {
+					position: 'bottom',
+				},
+				title: {
+					display: false,
+					text: 'Add title here if needed'
+				},
+				tooltips: {
+					callbacks: {
+						label: function (tooltipItem, data) {
+							var dataset = data.datasets[tooltipItem.datasetIndex];
+							var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+								return previousValue + currentValue;
+							});
+							var currentValue = dataset.data[tooltipItem.index];
+							var precentage = Math.floor(((currentValue / total) * 100) + 0.5);
+							return precentage + "%";
+						}
+					},
+					position: 'nearest'
+				},
+				animation: {
+					animateScale: true,
+					animateRotate: true
+				},
+			}
+		};
+
+		window.onload = function () {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			Chart.defaults.global.defaultFontFamily = "'Proxima Nova', 'Salesforce Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+			window.myDoughnut = new Chart(ctx, config);
+		};
+
+	</script>
+</body>
+
+</html>

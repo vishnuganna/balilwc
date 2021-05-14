@@ -1,0 +1,28 @@
+.tablerow {
+    background-color: #e8e8e8;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 0 1em;
+}
+textarea {
+    resize: none;
+    resize: unset;
+}
+.highlightdiv {
+    color: red;
+}
+
+td {
+    padding-top: 1%;
+    vertical-align: top !important;
+}
+
+.erroMsg {
+    color: red;
+    font-size: 12px;
+}
+
+.divHide {
+    display: none;
+}

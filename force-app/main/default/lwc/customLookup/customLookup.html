@@ -1,0 +1,217 @@
+<template>
+    <template if:false={selectedRecord}>
+        <template if:true={selectedconname}> </template>
+        <template if:false={selectedconname}>
+            <c-search-component onchange={handleOnchange}> </c-search-component> </template
+    ></template>
+    <template if:true={selectedRecord}>
+        <template if:true={selectedconname}></template>
+        <template if:false={selectedconname}>
+            <c-search-component onchange={handleOnchange}></c-search-component> </template
+    ></template>
+    <div>
+        <template if:true={error}>
+            <template if:true={error.details}>
+                <template if:true={error.details.body}>
+                    {error.details.body.message}
+                </template>
+            </template>
+        </template>
+    </div>
+    <div>
+        <template if:false={selectedRecord}>
+            <template if:true={records}>
+                <template for:each={records} for:item="record">
+                    <c-record-list
+                        key={record.Id}
+                        record={record}
+                        onselect={handleSelect}
+                        iconname={iconname}
+                        fieldname={searchfield}
+                    >
+                    </c-record-list>
+                </template>
+                <!--Create New Contact Start-->
+                <template class="slds-align_absolute-center" if:false={hidenewconbutton}>
+                    <div class="slds-box slds-theme_shade slds-p-left_none slds-p-right_none" style="width: 193px;">
+                        <lightning-button
+                            variant="brand"
+                            label={label.AddeNewContactLabel}
+                            title={label.AddeNewContactLabel}
+                            onclick={navigateToNewContact}
+                            class="slds-align_absolute-center"
+                        >
+                        </lightning-button>
+                    </div>
+                </template>
+                <!-- Open New Contact Modal-->
+                <template if:true={newconform}>
+                    <section
+                        role="dialog"
+                        tabindex="-1"
+                        class="slds-modal slds-fade-in-open slds-modal_small"
+                        aria-labelledby="modal-heading-01"
+                        aria-modal="true"
+                        aria-describedby="modal-content-id-1"
+                    >
+                        <div class="slds-modal__container">
+                            <header class="slds-modal__header">
+                                <button
+                                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                    onclick={handleReset}
+                                    title={label.close}
+                                >
+                                    <lightning-icon icon-name="utility:close" icon-label="Close"></lightning-icon>
+                                    <span class="slds-assistive-text">{label.close}</span>
+                                </button>
+                                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+                                    {label.NewContactLabel}
+                                </h2>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                <lightning-record-edit-form
+                                    object-api-name="Contact"
+                                    onsuccess={handleSuccess}
+                                    onsubmit={handleSubmit}
+                                >
+                                    <lightning-messages></lightning-messages>
+                                    <div
+                                        class="slds-page-header slds-text-heading_medium"
+                                        style="font-size:16px; font-weight:500;  "
+                                    >
+                                        {label.ContactInformationLabel}
+                                    </div>
+                                    <div
+                                        class="slds-form-element__control slds-form-element__row slds-size_1-of-1 slds-form-element"
+                                    >
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col">
+                                                <lightning-output-field
+                                                    field-name="OwnerId"
+                                                    aria-label="Owner"
+                                                    label={label.OwnerLabel}
+                                                ></lightning-output-field>
+                                                <lightning-input-field
+                                                    field-name="Name"
+                                                    aria-label="Name"
+                                                ></lightning-input-field>
+                                                <lightning-input-field
+                                                    field-name="AccountId"
+                                                    value={accountid}
+                                                ></lightning-input-field>
+                                                <lightning-input-field field-name="Title"></lightning-input-field>
+                                            </div>
+                                            <div class="slds-col">
+                                                <lightning-input-field
+                                                    field-name="Phone"
+                                                    aria-label="Phone"
+                                                ></lightning-input-field>
+                                                <lightning-input-field
+                                                    field-name="MobilePhone"
+                                                    aria-label="Mobile"
+                                                ></lightning-input-field>
+                                                <lightning-input-field field-name="Email"></lightning-input-field>
+                                                <lightning-input-field field-name="Department"></lightning-input-field>
+                                                <lightning-input-field field-name="ReportsToId"></lightning-input-field>
+                                                <lightning-input-field
+                                                    field-name="Id"
+                                                    class="slds-hidden"
+                                                    value={conid}
+                                                ></lightning-input-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class=" slds-page-header slds-text-heading_medium"
+                                        style="font-size:16px; font-weight:500;"
+                                    >
+                                        {label.AddressInformationLabel}
+                                    </div>
+                                    <div
+                                        class="slds-form-element__control slds-form-element__row slds-size_1-of-1 slds-form-element"
+                                    >
+                                        <div class="slds-grid slds-gutters">
+                                            <div class="slds-col">
+                                                <lightning-input-field
+                                                    field-name="MailingAddress"
+                                                ></lightning-input-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<div class="slds-docked-form-footer">   -->
+                                    <div class="slds-modal__footer slds-theme_shade">
+                                        <lightning-button
+                                            class="slds-m-top_medium slds-p-horizontal_small"
+                                            label={label.cancelLabel}
+                                            onclick={handleReset}
+                                        >
+                                        </lightning-button>
+                                        <lightning-button
+                                            variant="brand"
+                                            class="slds-m-top_medium slds-p-horizontal_small"
+                                            type="submit"
+                                            name="submit"
+                                            label={label.saveLabel}
+                                        >
+                                        </lightning-button>
+                                    </div>
+                                </lightning-record-edit-form>
+                                <!--**********************************************-->
+                            </div>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open" if:false={backdrophide}></div>
+                    <center>
+                        <!-- <lightning-button variant="brand" label="Add New Contact12" title="Create New Contact" onclick={navigateToNewContact}  class="slds-m-left_x-small"></lightning-button>-->
+                    </center>
+                </template>
+                <!---->
+
+                <!-- Open New Contact Modal-->
+                <!--Create New Contact End-->
+            </template>
+        </template>
+        <template if:false={selectedRecord}> </template>
+    </div>
+    <!--<div class="slds-p-around_x-small">-->
+
+    <template if:true={selectedconname}>
+        <div
+            class="slds-combobox__form-element slds-input-has-icon 
+                            slds-input-has-icon_left-right"
+            role="none"
+        >
+            <span
+                class="slds-icon_container
+                                slds-icon-standard-account 
+                                slds-combobox__input-entity-icon"
+                title={label.Account}
+            >
+                <lightning-icon icon-name={iconname}></lightning-icon>
+            </span>
+            <input
+                class="slds-input slds-combobox__input
+                           slds-combobox__input-value"
+                id="combobox-id-5"
+                aria-controls="listbox-id-5"
+                autocomplete="off"
+                role="textbox"
+                type="text"
+                placeholder="{label.SelectOptionLabel"
+                readonly=""
+                value={conname}
+                disabled
+            />
+
+            <button
+                class="sicon_container slds-button slds-button_icon 
+                                   slds-input__icon slds-input__icon_right"
+                title={label.RemoveSelectedOptionLabel}
+                onclick={handleRemove}
+            >
+                <lightning-icon icon-name="utility:close" size="x-small"> </lightning-icon>
+                <span class="slds-assistive-text">{label.RemoveSelectedOptionLabel}</span>
+            </button>
+        </div>
+    </template>
+</template>

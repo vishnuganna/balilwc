@@ -1,0 +1,148 @@
+<template>
+    <div>
+        <div class="container slds-p-top_medium">
+            <div class="slds-button slds-section__title-action">
+                <span class="slds-p-right_small">{_alertTemplate.alertType}</span>
+                <span onclick={handleToggleSectionAction} class="hovercls">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                        <path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"></path>
+                    </svg>
+                </span>
+            </div>
+
+            <div class="slds-p-left_medium slds-p-right_medium slds-p-top_medium slds-grid slds-gutters">
+                <article class="slds-card slds-m-bottom_large slds-size_2-of-2">
+                    <!-- <template if:true={showCreateEditState}>-->
+                    <template if:true={showNotificationError}>
+                        <div class="slds-text-color_error">{label.RulescheckError}</div>
+                    </template>
+                    <table class="slds-table slds-table_cell-buffer" style="width: 100%; table-layout: fixed">
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col" style="width: 10%">
+                                <div class="slds-truncate"></div>
+                            </th>
+                            <th class="" scope="col" style="width: 10%">
+                                <div class="slds-truncate">{label.AlertEnabled}</div>
+                            </th>
+                            <th class="" scope="col" style="width: 10%">
+                                <div class="slds-truncate">{label.OverrideText}</div>
+                            </th>
+                            <th class="" scope="col" style="width: 40%">
+                                <div class="slds-truncate">{label.CustomText}</div>
+                            </th>
+                            <th class="" scope="col" style="width: 30%">
+                                <div class="def-text">{label.DefaultText}</div>
+                            </th>
+                        </tr>
+                        <tbody>
+                            <tr class="slds-hint-parent" style="height: 50px">
+                                <td data-label="Header" style="width: 10%">
+                                    <div class="slds-truncate">{label.Header}</div>
+                                </td>
+                                <td data-label="Header" style="width: 10%">
+                                    <div class="slds-truncate">
+                                        <div class="slds-form-element__control">
+                                            <lightning-input
+                                                type="checkbox"
+                                                label=""
+                                                name="isAlertEnabledAction"
+                                                variant="label-hidden"
+                                                disabled={disableActionAlert}
+                                                onchange={updateIsAlertEnabled}
+                                                checked={isAlertEnabled}
+                                            ></lightning-input>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-label="Header" style="width: 10%">
+                                    <div class="slds-truncate">
+                                        <div class="slds-form-element__control">
+                                            <lightning-input
+                                                type="checkbox"
+                                                label=""
+                                                name="isHeaderOverrideEnabledAction"
+                                                variant="label-hidden"
+                                                disabled={disableOverrideTextAction}
+                                                onchange={updateOverrideHeaderCheckbox}
+                                                checked={overrideHeader}
+                                            ></lightning-input>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-label="Header" style="width: 40%">
+                                    <div class="slds-truncate">
+                                        <lightning-input
+                                            class="slds-m-top--xxx-small customAlertHeaderText"
+                                            variant="label-hidden"
+                                            aria-label="hidden"
+                                            name="headerCustomTextAction"
+                                            label=""
+                                            max-length="80"
+                                            value={customAlertHeaderText}
+                                            disabled={disableActionAlert}
+                                            onchange={updatecustomAlertHeaderText}
+                                        ></lightning-input>
+                                    </div>
+                                    <template if:true={showMaxLimitErrorHeaderAction}
+                                        ><div class="slds-text-color_error">
+                                            {label.HeaderCustomeMaxError}
+                                        </div></template
+                                    >
+                                </td>
+                                <td data-label="Header" style="width: 30%">
+                                    <!--<div class="slds-truncate def-text">{defaultAlertHeaderAction}</div>-->
+                                    <div class="slds-truncate def-text">{_alertTemplate.defaultAlertHeader}</div>
+                                </td>
+                            </tr>
+                            <tr class="slds-hint-parent" style="height: 60px">
+                                <td data-label="Header" style="width: 10%">
+                                    <div class="slds-wrap">{label.AlertText}</div>
+                                </td>
+                                <td data-label="Header" style="width: 10%">
+                                    <div class="slds-truncate"></div>
+                                </td>
+                                <td data-label="Header" style="width: 10%">
+                                    <div class="slds-truncate">
+                                        <div class="slds-form-element__control">
+                                            <lightning-input
+                                                type="checkbox"
+                                                label=""
+                                                name="isAlertOverrideEnabledAction"
+                                                variant="label-hidden"
+                                                disabled={disableOverrideTextAction}
+                                                onchange={updateoverrideMessageCheckbox}
+                                                checked={overrideMessage}
+                                            ></lightning-input>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-label="Header" style="width: 40%">
+                                    <div class="slds-truncate">
+                                        <lightning-textarea
+                                            name="alertCustomTextAction"
+                                            onchange={updatecustomAlertDescMessage}
+                                            label=""
+                                            value={customAlertDescMessage}
+                                            disabled={disableActionAlert}
+                                            class="textAreaPosition customAlertDescMessage"
+                                            max-length="256"
+                                            style="font-size: small"
+                                        ></lightning-textarea>
+                                        <template if:true={showMaxLimitErrorAlertAction}
+                                            ><div class="slds-text-color_error">{label.AlertMaxError}</div></template
+                                        >
+                                    </div>
+                                </td>
+                                <td data-label="Header" style="width: 30%">
+                                    <!-- <div class="def-text def-text">{defaultAlertMessageAction}</div>-->
+                                    <div class="def-text def-text">{_alertTemplate.defaultAlertMessage}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--</template>-->
+                </article>
+            </div>
+        </div>
+    </div>
+</template>

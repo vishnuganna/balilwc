@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Labelling Data Points Meow</title>
+	<script src="js/Chart.bundle.min.js"></script>
+	<script src="js/utils.js"></script>
+	<style>
+		.container {
+			width: 100%;
+		}
+
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+
+		.canvas {
+			background: transparent url('https://avatars2.githubusercontent.com/u/9450828?s=460&v=4') no-repeat;
+			background-position-y: center;
+			background-position-x: center;
+			background-clip: content-box;
+			background-size: 25%, auto, contain;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<canvas id="canvas"></canvas>
+	</div>
+	<button id="randomizeData">Randomize Data</button>
+	<script>
+		//Rando Math Maker
+		var randomScalingFactor = function () {
+			return Math.round(Math.random() * 100);
+		};
+
+		var img = new Image();
+		img.src = 'https://avatars2.githubusercontent.com/u/9450828?s=460&v=4';
+		var ctx = document.getElementById('canvas').getContext('2d');
+		var fillPattern = ctx.createPattern(img, 'repeat');
+
+		//Begin set up to add img in center of chart
+		Chart.pluginService.register({
+			beforeDraw: function (chart) {
+				if (chart.config.options.elements.center) {
+					//Get ctx from string
+					var ctx = chart.chart.ctx;
+
+					//Get options from the center object in options and define some default
+					var centerConfig = chart.config.options.elements.center;
+					var backgroundColor = centerConfig.backgroundColor || '#000000';
+					var sidePadding = centerConfig.sidePadding || 20;
+					var sidePaddingCalculated = (sidePadding / 100) * (chart.innerRadius * 2)
+
+					//Get  the width of the element minus 10 to give it 5px side padding
+					var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
+
+				}
+			}
+		});
+
+		var config = {
+			type: 'doughnut',
+			data: {
+				datasets: [{
+					data: [
+						33.2,
+						54.4,
+						66.6,
+					],
+					backgroundColor: [
+						'#7E8BE4',
+						'#0070D2',
+						fillPattern
+					],
+					label: 'Compentencies'
+				}],
+				labels: [
+					'Identity',
+					'Accountability',
+					'Capability'
+				]
+			},
+			options: {
+				responsive: true,
+				legend: {
+					position: 'bottom',
+				},
+				title: {
+					display: true,
+					text: 'POC KF Doughnut Chart'
+				},
+				tooltips: {
+					callbacks: {
+						label: function (tooltipItem, data) {
+							var dataset = data.datasets[tooltipItem.datasetIndex];
+							var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+								return previousValue + currentValue;
+							});
+							var currentValue = dataset.data[tooltipItem.index];
+							var precentage = Math.floor(((currentValue / total) * 100) + 0.5);
+							return precentage + "%";
+						}
+					},
+					position: 'nearest'
+				},
+				animation: {
+					animateScale: true,
+					animateRotate: true
+				},
+				elements: {
+					center: {
+						backgroundColor: '#000000',
+						sidePadding: 15 //Default 20 (as a percentage)
+					}
+				}
+			}
+		};
+
+		window.onload = function () {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			Chart.defaults.global.defaultFontFamily = "'Proxima Nova', 'Salesforce Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+			window.myDoughnut = new Chart(ctx, config);
+		};
+
+
+
+
+
+		//Random data creation and button Event listner
+		document.getElementById('randomizeData').addEventListener('click', function () {
+			config.data.datasets.forEach(function (dataset) {
+				dataset.data = dataset.data.map(function () {
+					return randomScalingFactor();
+				});
+			});
+
+			window.myDoughnut.update();
+		});
+
+	</script>
+</body>
+
+</html>

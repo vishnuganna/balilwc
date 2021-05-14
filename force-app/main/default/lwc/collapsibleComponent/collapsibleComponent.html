@@ -1,0 +1,149 @@
+<template>
+    <div class="slds-card__body margin0">
+        <article class={maincontainer}>
+            <div>
+                <article if:true={isExpandableView}>
+                    <div class="slds-grid slds-m-left_small">
+                        <div class="slds-grid slds-size_2-of-3 slds-m-top_small slds-m-bottom_small">
+                            <span onclick={handleToggleSection} class="hovercls">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                                    <path
+                                        d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
+                                    ></path>
+                                </svg>
+                            </span>
+                            <b class="slds-text-heading_small slds-var-m-left_xx-small">
+                                {titleHeader}
+                                <template if:false={isIconVisible}>
+                                    <c-info-navigation nav-url={ssoHeaderNavURL}></c-info-navigation>
+                                </template>
+                            </b>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3">
+                            <div class="slds-clearfix slds-text-small slds-float_right slds-p-around_x-small">
+                                <div if:true={isCreateable} class="slds-m-top_medium">
+                                    <template if:true={isaddNew}>
+                                        <lightning-button
+                                            class="slds-float_right slds-text-small slds-m-medium"
+                                            slot="actions"
+                                            name="addNew"
+                                            label={label.AddNewFoP}
+                                            variant="neutral"
+                                            onclick={handleAddNew}
+                                        ></lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-border_top"></div>
+                    <article>
+                        <div if:true={ssoView}>
+                            <div class="slds-grid slds-size_1-of-1 slds-m-around_small">
+                                <div class="slds-size_1-of-1">
+                                    <!--SSO LWC component-->
+                                    <template if:true={showSSo}>
+                                        <c-greensheet-sso sso-data={ssoobj}></c-greensheet-sso>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <div if:true={companyView}>
+                            <div>
+                                <div>
+                                    <c-our-company-attendees
+                                        get-id-from-parent={getIdFromParent}
+                                    ></c-our-company-attendees>
+                                </div>
+                            </div>
+                        </div>
+                        <div if:true={biView}>
+                            <div class="slds-p-around_small divClass">
+                                <div class="slds-m-right_small">
+                                    <c-green-sheet-buying-influence
+                                        get-id-from-parent={getIdFromParent}
+                                        newrecord-flag={newModal}
+                                    ></c-green-sheet-buying-influence>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div if:true={giView}>
+                            <div class="slds-p-around_small divClass">
+                                <div class="slds-m-right_small">
+                                    <c-green-sheet-getting-information
+                                        get-id-from-parent={getIdFromParent}
+                                    ></c-green-sheet-getting-information>
+                                </div>
+                            </div>
+                        </div>
+                        <div if:true={givingInfo}>
+                            <div class="divClass">
+                                <c-greensheet-giving-info
+                                    get-id-from-parent={getIdFromParent}
+                                ></c-greensheet-giving-info>
+                            </div>
+                        </div>
+                        <div if:true={commitmentView} class="divClass">
+                            <div class="slds-m-left_small slds-m-top_small slds-p-bottom_small slds-grid_align-end ">
+                                <div class="slds-m-right_large">
+                                    <c-getting-commitment get-id-from-parent={getIdFromParent}></c-getting-commitment>
+                                    <!--Company LWC component-->
+                                </div>
+                            </div>
+                        </div>
+                        <div if:true={issueView}>
+                            <div class="slds-p-around_small divClass">
+                                <div class="slds-m-right_small">
+                                    <c-basic-issues get-id-from-parent={getIdFromParent}></c-basic-issues>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </article>
+
+                <div if:false={isExpandableView}>
+                    <div class="slds-grid slds-m-left_small">
+                        <div class="slds-grid slds-size_2-of-3 slds-m-top_small slds-m-bottom_small">
+                            <span onclick={handleToggleSection} class="hovercls">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    class="hovercls"
+                                >
+                                    <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z"></path>
+                                </svg>
+                            </span>
+                            <b class="slds-text-heading_small slds-var-m-left_xx-small">
+                                {titleHeader}
+                                <template if:false={isIconVisible}>
+                                    <c-info-navigation nav-url={ssoHeaderNavURL}></c-info-navigation>
+                                </template>
+                            </b>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-3">
+                            <div class="slds-clearfix slds-text-small slds-float_right slds-p-around_x-small">
+                                <div if:true={isCreateable} class="slds-m-top_medium">
+                                    <template if:true={isaddNew}>
+                                        <lightning-button
+                                            class="slds-float_right slds-text-small slds-m-medium"
+                                            slot="actions"
+                                            name="addNew"
+                                            label={label.AddNewFoP}
+                                            variant="neutral"
+                                            onclick={handleAddNew}
+                                        ></lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</template>

@@ -1,0 +1,247 @@
+<template>
+    <div class="slds-var-p-left_medium slds-var-p-right_medium slds-grid slds-gutters">
+        <article class="slds-card slds-card_boundary slds-var-m-bottom_large slds-size_1-of-1">
+            <!--Create View<lightning-card class="slds-m-around_none slds-p-around_none">-->
+            <div slot="title" class="slds-grid slds-card__header slds-grid_vertical-align-center cardheader-goldsheet">
+                <div class="slds-col slds-size_2-of-3">
+                    <span class="cardlabels-goldsheet"
+                        >{label.charterStatementTitle}
+                        <c-info-navigation nav-url={label.charterStatementHeaderUrl}></c-info-navigation>
+                    </span>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <template if:true={showSavedState}>
+                        <template if:false={ischarterStatementDescEmpty}>
+                            <div class="slds-clearfix slds-float_right">
+                                <template if:true={isDeletable}>
+                                    <lightning-button
+                                        label={label.deleteLabel}
+                                        title={label.deleteLabel}
+                                        variant="base"
+                                        class="slds-var-p-right_x-small"
+                                        onclick={deleteCharterStatement}
+                                    ></lightning-button>
+                                </template>
+                                <template if:true={isUpdatable}>
+                                    <lightning-button
+                                        label={label.edit}
+                                        title={label.edit}
+                                        onclick={makeFormEditable}
+                                    ></lightning-button>
+                                </template>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </div>
+            <div class="slds-var-m-top_x-small slds-var-m-bottom_x-small" style="border-top: 1px solid #dcdcdc">
+                <template if:false={hasCharterData}>
+                    <!-- has edit access -->
+                    <template if:true={showCreateButton}>
+                        <div class="slds-var-m-top_x-small">
+                            <lightning-button
+                                variant="brand"
+                                label={label.addCharterStatementButton}
+                                class="slds-var-m-left_medium pointer"
+                                onclick={addCharterStatment}
+                            ></lightning-button>
+                        </div>
+                    </template>
+                </template>
+                <!-- has no access -->
+                <template if:false={isEditable}>
+                    <template if:false={showSavedState}>
+                        <div class="slds-p-bottom_x-small">
+                            <c-summary-view-no-data></c-summary-view-no-data>
+                        </div>
+                    </template>
+                </template>
+                <!-- saved state -->
+                <template if:true={showSavedState}>
+                    <div class="slds-grid slds-var-m-around_medium">
+                        <span>
+                            <c-strength-redflag
+                                rfs-data={rfsDetails.charterStatementRfs}
+                                read-only-view="true"
+                            ></c-strength-redflag>
+                        </span>
+                        <c-show-more-show-less-line description={charterStatementDesc} no-of-lines="10">
+                        </c-show-more-show-less-line>
+                    </div>
+                </template>
+                <!-- new and edit state -->
+                <template if:true={isEditable}>
+                    <div>
+                        <div class="slds-grid slds-var-m-around_medium">
+                            <div class="slds-col slds-size_2-of-3">
+                                <div class="slds-var-m-top_medium slds-var-m-bottom_medium">
+                                    {label.TemplateExample}
+                                </div>
+                                <div class="background displayCenterData">
+                                    <p style="text-align: center" class="displayCenterData">
+                                        <span style="float: left">{label.The}</span>
+                                        <!-- &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; -->
+                                        <span
+                                            class="theTemplate lighter_text"
+                                            style="float: left; margin-top: 14px; margin-left: 1px"
+                                        >
+                                            <span class="normal_text">{label.FieldOfPlay}</span>
+                                        </span>
+
+                                        <span style="float: left">{label.Will}</span>
+                                        <span
+                                            class="willTemplate lighter_text"
+                                            style="float: left; margin-top: 14px; margin-left: 1px"
+                                        >
+                                            <span class="normal_text benefitFieldOfPlay"
+                                                >{label.BenefitFieldOfPlay}</span
+                                            >
+                                        </span>
+
+                                        <span style="float: left">{label.By}</span>
+                                        <span
+                                            class="byTemplate lighter_text"
+                                            style="float: left; margin-top: 14px; margin-left: 1px"
+                                        >
+                                            <span class="normal_text howWeAddvalue">{label.HowWeAddvalue}</span>
+                                        </span>
+
+                                        <span style="float: left">{label.AndWeWillReceive}</span>
+                                        <span
+                                            class="receiveTemplate lighter_text"
+                                            style="float: left; margin-top: 14px; margin-left: 1px"
+                                        >
+                                            <span class="normal_text benefitToUs">{label.BenefitToUs}</span>
+                                        </span>
+                                        <span style="float: left">.&emsp;&emsp;&emsp;&emsp;</span>
+                                    </p>
+                                </div>
+                                <c-strength-redflag
+                                    rfs-data={rfsDetails.charterStatementRfs}
+                                    class="slds-clearfix slds-float_right"
+                                    onvalueselected={handleMarkerChange}
+                                ></c-strength-redflag>
+                                <lightning-layout-item class="slds-var-p-right_small slds-var-p-top_small" size="12">
+                                    <lightning-layout>
+                                        <label class="slds-form-element__label" style="margin-right: 0.5rem"
+                                            >{label.CharterStatement}
+                                            <abbr title="required" class="slds-required">*</abbr></label
+                                        >
+                                    </lightning-layout>
+                                    <textarea
+                                        rows="8"
+                                        name="charterStatementDesc"
+                                        required
+                                        onkeyup={handleDesc}
+                                        onchange={handleMaxLimitError}
+                                        class="slds-textarea"
+                                        maxlength="32000"
+                                        style="color: black"
+                                    >
+                                        {charterStatementDesc}</textarea
+                                    >
+                                </lightning-layout-item>
+                                <lightning-layout>
+                                    <template if:true={showMaxLimitError}
+                                        ><div class="slds-text-color_error">
+                                            {label.Description_cannot_exceed_32k_characters}
+                                        </div></template
+                                    >
+                                </lightning-layout>
+                            </div>
+                            <div class="slds-col slds-size_1-of-3">
+                                <div class="slds-var-m-top_medium slds-var-m-bottom_medium">
+                                    {label.QuestionsToConsider}
+                                </div>
+                                <div class="slds-var-m-top_medium slds-var-m-bottom_medium slds-border_top"></div>
+                                <ul class="slds-list_dotted">
+                                    <li>{label.WillThisMoveUsToOurDesiredLevelOnTheBuySellHierarchy}</li>
+                                    &emsp;
+                                    <li>{label.ValueForTheFieldOfPlay}</li>
+                                    &emsp;
+                                    <li>{label.WhatWillWeAsTheSellingOrganizationProvide}</li>
+                                    &emsp;
+                                    <li>{label.WhatBenefitDoWeReceive}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="slds-var-m-around_medium item">
+                            <div class="slds-align_absolute-center">
+                                <template if:true={cvShowSpinner}>
+                                    <div class="spinner">
+                                        <lightning-spinner
+                                            alternative-text={label.Loading}
+                                            size="small"
+                                        ></lightning-spinner>
+                                    </div>
+                                </template>
+                                <lightning-button
+                                    label={label.cancelLabel}
+                                    title="Non-primary action"
+                                    class="slds-var-m-left_x-small"
+                                    onclick={cancel}
+                                >
+                                </lightning-button>
+                                <lightning-button
+                                    label={label.saveLabel}
+                                    title="Non-primary action"
+                                    class="slds-var-m-left_x-small"
+                                    variant="brand"
+                                    disabled={isButtonDisabled}
+                                    onclick={handleSave}
+                                >
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <!-- </template> -->
+            </div>
+            <!-- </lightning-card> -->
+        </article>
+        <!-- modal start -->
+        <template if:true={ShowModal}>
+            <section
+                role="dialog"
+                tabindex="-1"
+                aria-labelledby="modal-heading-01"
+                aria-modal="true"
+                aria-describedby="modal-content-id-1"
+                class="slds-modal slds-fade-in-open"
+            >
+                <div class="slds-modal__container">
+                    <!-- modal header start -->
+                    <header class="slds-modal__header">
+                        <button
+                            class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                            title={label.close}
+                            onclick={closeModal}
+                        >
+                            <lightning-icon
+                                icon-name="utility:close"
+                                alternative-text={label.close}
+                                variant="inverse"
+                                size="small"
+                            ></lightning-icon>
+                            <span class="slds-assistive-text">{label.close}</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                            {label.DeleteCharterStatementHeader}
+                        </h2>
+                    </header>
+                    <!-- modal body start -->
+                    <div class="slds-modal__content slds-var-p-around_medium" id="modal-content-id-1">
+                        <p class="slds-align_absolute-center">{label.AreYouSureYouWantToDeleteCharterStatement}</p>
+                    </div>
+                    <!-- modal footer start-->
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={closeModal}>{label.no}</button>
+                        <button class="slds-button slds-button_brand" onclick={deleteModal}>{label.yes}</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <!-- modal end -->
+    </div>
+</template>

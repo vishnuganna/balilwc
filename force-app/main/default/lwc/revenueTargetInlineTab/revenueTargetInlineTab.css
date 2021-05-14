@@ -1,0 +1,13 @@
+p:empty {
+    width: 100px;
+    height: 20px;
+    background: transparent;
+}
+
+.erroMsg {
+    color: red;
+    font-size: 12px;
+}
+.errorElement {
+    border-color: red;
+}

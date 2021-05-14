@@ -1,0 +1,1543 @@
+<template>
+    <!--<lightning-record-form
+    record-id={getIdFromParent} 
+    object-api-name={objectApiName}
+    >
+    </lightning-record-form> -->
+    <template if:true={moduleData}>
+        <c-go-to-bluesheet-prompts
+            module-data={moduleData}
+            module-learning-completed={moduleLearningCompleted}
+            module-section={moduleSection}
+        ></c-go-to-bluesheet-prompts>
+    </template>
+    <article
+        if:false={checkNoDataAndReadOnlyAccess}
+        class="slds-card slds-card_boundary divClass"
+        style="text-decoration:none !important;background-color:#F0F0F0;"
+    >
+        <lightning-card variant="Narrow" style="color:black;" class="slds-m-top_xx-large">
+            <div slot="title">
+                <b>{label.buyingInfluenceLabel}</b
+                ><c-info-navigation nav-url={label.buying_InfluenceHeaderURL}></c-info-navigation>
+            </div>
+            <div class="slds-m-top_x-small slds-m-bottom_x-small divClass">
+                <div class="slds-m-around_small">
+                    <!--View only state-->
+                    <template if:true={showeditbutton}>
+                        <div class="slds-clearfix slds-p-left_xx-small slds-p-right_xx-small">
+                            <template for:each={biList} for:item="binf">
+                                <article key={binf.Id} class="slds-card slds-card_boundary">
+                                    <lightning-card>
+                                        <div class="slds-float_left slds-p-around_x-small">
+                                            <div class="slds-text-title_bold">
+                                                {binf.contactFname} &nbsp;&nbsp;{binf.contactLname}
+                                            </div>
+                                            <br />
+                                            <lightning-icon icon-name="utility:user" size="small"></lightning-icon
+                                            >{binf.title} &nbsp;&nbsp;
+                                            <!--<lightning-icon icon-name="utility:location" size="small"></lightning-icon>{binf.location}-->
+                                            <lightning-icon icon-name="utility:location" size="small"></lightning-icon
+                                            >{binf.MailingState} {binf.MailingCountry}&nbsp;&nbsp;
+                                        </div>
+
+                                        <div class="slds-float_right slds-p-around_x-small">
+                                            <template if:true={isDeletable}>
+                                                <lightning-button
+                                                    variant="base"
+                                                    label={label.deleteLabel}
+                                                    onclick={handleOpenModal}
+                                                    class="slds-p-right_x-small"
+                                                    slot="actions"
+                                                    value={binf.id}
+                                                ></lightning-button>
+                                            </template>
+                                            <template if:true={isUpdateable}>
+                                                <lightning-button
+                                                    label={label.editLabel}
+                                                    title="Non-primary action"
+                                                    onclick={handleEdit}
+                                                    slot="actions"
+                                                    value={binf.id}
+                                                ></lightning-button>
+                                            </template>
+                                        </div>
+
+                                        <hr />
+                                        <!--<div class="slds-m-top_medium slds-border_top slds-p-around_small"></div>-->
+
+                                        <div class="c-container">
+                                            <div class="slds-p-left_x-small">
+                                                <div class="slds-grid">
+                                                    <div class="slds-col slds-size_1-of-4">
+                                                        <!-- Your lightning-output-field components here -->
+                                                        <label class="slds-form-element__label"
+                                                            >{label.buyingInfluenceRolesLabel}<c-info-navigation
+                                                                nav-url={label.buying_InfluenceRoleURL}
+                                                            ></c-info-navigation>
+                                                            <c-strength-redflag
+                                                                class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                                                rfs-data={binf.rfsMarkerWrapper.BuyingInfluenceRole}
+                                                                onvalueselected={handleMarkerChange}
+                                                                read-only-view="true"
+                                                            ></c-strength-redflag>
+                                                        </label>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4">
+                                                        <!-- More lightning-output-field components here -->
+                                                        <label class="slds-form-element__label"
+                                                            >{label.buyingModeLabel}<c-info-navigation
+                                                                nav-url={label.buyingModeURL}
+                                                            ></c-info-navigation>
+                                                            <c-strength-redflag
+                                                                class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                                                rfs-data={binf.rfsMarkerWrapper.BuyingMode}
+                                                                onvalueselected={handleMarkerChange}
+                                                                read-only-view="true"
+                                                            ></c-strength-redflag>
+                                                        </label>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4">
+                                                        <!-- More lightning-output-field components here -->
+                                                        <label class="slds-form-element__label"
+                                                            >{label.ratingLabel}<c-info-navigation
+                                                                nav-url={label.ratingURL}
+                                                            ></c-info-navigation>
+                                                            <c-strength-redflag
+                                                                class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                                                rfs-data={binf.rfsMarkerWrapper.Rating}
+                                                                onvalueselected={handleMarkerChange}
+                                                                read-only-view="true"
+                                                            ></c-strength-redflag>
+                                                        </label>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4">
+                                                        <!-- More lightning-output-field components here -->
+                                                        <label class="slds-form-element__label"
+                                                            >{label.ratingEvidenceLabel}<c-info-navigation
+                                                                nav-url={label.evidenceURL}
+                                                            ></c-info-navigation>
+                                                            <c-strength-redflag
+                                                                class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                                                rfs-data={binf.rfsMarkerWrapper.RatingEvidence}
+                                                                onvalueselected={handleMarkerChange}
+                                                                read-only-view="true"
+                                                            ></c-strength-redflag>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-grid ">
+                                                    <div class="slds-col slds-size_1-of-4">
+                                                        <!-- Your lightning-output-field components here -->
+                                                        <label>{binf.biRoleListWithSpaces}</label>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4">
+                                                        <template if:true={binf.growth}>
+                                                            <svg
+                                                                viewBox="0 0 24 24"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="24"
+                                                                height="24"
+                                                            >
+                                                                <g class="nc-icon-wrapper" fill="#4BCA81">
+                                                                    <g stroke="none" stroke-width="1">
+                                                                        <path
+                                                                            fill="none"
+                                                                            fill-rule="evenodd"
+                                                                            d="M0 0h24v24H0z"
+                                                                        ></path>
+                                                                        <path
+                                                                            fill="#4BCA81"
+                                                                            d="M19 12h-2c-.6 0-1 .4-1 1v6c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-6c0-.6-.4-1-1-1zM7 15c.6 0 1 .4 1 1v3c0 .6-.4 1-1 1H5c-.6 0-1-.4-1-1v-3c0-.6.4-1 1-1h2zm5-11l5 6h-3v9c0 .6-.4 1-1 1h-2c-.6 0-1-.4-1-1v-9H7l5-6z"
+                                                                        ></path>
+                                                                    </g>
+                                                                </g>
+                                                            </svg>
+                                                            &nbsp;
+                                                        </template>
+                                                        <template if:true={binf.trouble}>
+                                                            <svg
+                                                                viewBox="0 0 24 24"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="24"
+                                                                height="24"
+                                                            >
+                                                                <g class="nc-icon-wrapper" fill="#F59A23">
+                                                                    <g stroke="none" stroke-width="1">
+                                                                        <path
+                                                                            fill="none"
+                                                                            fill-rule="evenodd"
+                                                                            d="M0 0h24v24H0z"
+                                                                        ></path>
+                                                                        <path
+                                                                            fill="#F59A23"
+                                                                            d="M12 4c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 14c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zM11 8h2v5h-2V8zm1 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+                                                                        ></path>
+                                                                    </g>
+                                                                </g>
+                                                            </svg>
+                                                            &nbsp;
+                                                        </template>
+                                                        <template if:true={binf.evenKeel}>
+                                                            <svg
+                                                                viewBox="0 0 24 24"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="24"
+                                                                height="24"
+                                                            >
+                                                                <g class="nc-icon-wrapper" fill="#02A7F0">
+                                                                    <g stroke="none" stroke-width="1">
+                                                                        <path
+                                                                            fill="none"
+                                                                            fill-rule="evenodd"
+                                                                            d="M0 0h24v24H0z"
+                                                                        ></path>
+                                                                        <path
+                                                                            fill="#02A7F0"
+                                                                            d="M22.886 10.945l-4.071-6.107a.68.68 0 0 0-.565-.302h-5.428V3.179a.678.678 0 1 0-1.357 0v1.357H6.036a.68.68 0 0 0-.565.302L1.4 10.945a.682.682 0 0 0-.114.376c0 1.959 1.816 4.072 4.75 4.072s4.75-2.113 4.75-4.072a.682.682 0 0 0-.114-.376L7.304 5.893h4.16v12.893h1.358V5.893h4.16l-3.368 5.052a.682.682 0 0 0-.114.376c0 1.959 1.816 4.072 4.75 4.072S23 13.28 23 11.32a.682.682 0 0 0-.114-.376zM8.84 10.643H3.233l2.803-4.205 2.803 4.205zm6.608 0l2.803-4.205 2.803 4.205h-5.606zm-9.411 9.5H18.25V21.5H6.036v-1.357z"
+                                                                        ></path>
+                                                                    </g>
+                                                                </g>
+                                                            </svg>
+                                                            &nbsp;
+                                                        </template>
+                                                        <template if:true={binf.overConfident}>
+                                                            <svg
+                                                                viewBox="0 0 24 24"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="24"
+                                                                height="24"
+                                                            >
+                                                                <g class="nc-icon-wrapper" fill="#C23934">
+                                                                    <g stroke="none" stroke-width="1">
+                                                                        <path
+                                                                            fill="none"
+                                                                            fill-rule="evenodd"
+                                                                            d="M0 0h24v24H0z"
+                                                                        ></path>
+                                                                        <path
+                                                                            fill="#C23934"
+                                                                            d="M18.934 20H5.067a.534.534 0 0 1 0-1.066h13.867a.534.534 0 0 1 0 1.066zM8.579 18.467h1.509l9.756-9.756a.533.533 0 0 0 0-.754l-4.8-4.8a.533.533 0 0 0-.754 0L4.157 13.29a.533.533 0 0 0 0 .754l4.423 4.423zm1.288-9.38l4.046 4.047-4.58 4.579-4.045-4.046 4.579-4.58z"
+                                                                        ></path>
+                                                                    </g>
+                                                                </g>
+                                                            </svg>
+                                                            &nbsp;
+                                                        </template>
+                                                        <label>{binf.mode}</label>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4">
+                                                        <!-- More lightning-output-field components here -->
+                                                        <!-- KFS-806-Start -->
+                                                        <template if:true={binf.rating}>
+                                                            <label>{binf.rating}</label>
+                                                        </template>
+                                                        <template if:false={binf.rating}>
+                                                            <label>-</label>
+                                                        </template>
+                                                        <!-- KFS-806-End -->
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4">
+                                                        <!-- More lightning-output-field components here -->
+                                                        <template if:true={binf.ratingEvidence}>
+                                                            <c-show-more-show-less text-display={binf.ratingEvidence}>
+                                                            </c-show-more-show-less>
+                                                        </template>
+                                                        <template if:false={binf.ratingEvidence}>
+                                                            <p key={binf.id} class="slds-text-body_regular">-</p>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-p-around_small"></div>
+                                            </div>
+
+                                            <div class="slds-p-left_x-small">
+                                                <div class="slds-grid">
+                                                    <div class="slds-col slds-size_1-of-4">
+                                                        <!-- Your lightning-output-field components here -->
+                                                        <label class="slds-form-element__label"
+                                                            >{label.competitivePreferenceLabel}<c-info-navigation
+                                                                nav-url={label.competitivePrefURL}
+                                                            ></c-info-navigation>
+                                                            <c-strength-redflag
+                                                                class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                                                rfs-data={binf.rfsMarkerWrapper.CompetitivePreference}
+                                                                onvalueselected={handleMarkerChange}
+                                                                read-only-view="true"
+                                                            ></c-strength-redflag>
+                                                        </label>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4">
+                                                        <!-- More lightning-output-field components here -->
+                                                        <label class="slds-form-element__label"
+                                                            >{label.degreeofInfluenceLabel}<c-info-navigation
+                                                                nav-url={label.degreeofInfluenceURL}
+                                                            ></c-info-navigation>
+                                                            <c-strength-redflag
+                                                                class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                                                rfs-data={binf.rfsMarkerWrapper.DegreeOfInfluence}
+                                                                onvalueselected={handleMarkerChange}
+                                                                read-only-view="true"
+                                                            ></c-strength-redflag>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-grid slds-p-left_x-small">
+                                                <div class="slds-col slds-size_1-of-4">
+                                                    <label>{binf.compPref}</label>
+                                                </div>
+                                                <div class="slds-col slds-size_1-of-4">
+                                                    <template if:true={binf.high}>
+                                                        <svg
+                                                            class="slds-button__icon slds-button__icon_left"
+                                                            style="color:#FFF; size:16px; background-color:#4BCA81"
+                                                        >
+                                                            <use
+                                                                xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#arrowup"
+                                                            ></use>
+                                                        </svg>
+                                                    </template>
+                                                    <template if:true={binf.medium}>
+                                                        <svg
+                                                            class="slds-button__icon slds-button__icon_left"
+                                                            style="color:#FFF; size:16px; background-color:#02A7F0"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <use
+                                                                xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#forward"
+                                                            ></use>
+                                                        </svg>
+                                                    </template>
+                                                    <template if:true={binf.low}>
+                                                        <svg
+                                                            class="slds-button__icon slds-button__icon_left"
+                                                            style="color:#FFF; size:16px; background-color: #C23934"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <use
+                                                                xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#arrowdown"
+                                                            ></use>
+                                                        </svg>
+                                                    </template>
+                                                    <label>{binf.degree}</label>
+                                                </div>
+                                            </div>
+
+                                            <!--<hr>-->
+                                            <div class="slds-m-top_medium slds-m-bottom_medium slds-border_top"></div>
+
+                                            <div class="slds-p-left_x-small">
+                                                <div class="slds-grid">
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <!-- Your lightning-output-field components here -->
+                                                        <label class="slds-form-element__label"
+                                                            >{label.personalWinsLabel}<c-info-navigation
+                                                                nav-url={label.personalWinURL}
+                                                            ></c-info-navigation>
+                                                            <c-strength-redflag
+                                                                class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                                                rfs-data={binf.rfsMarkerWrapper.PersonalWins}
+                                                                onvalueselected={handleMarkerChange}
+                                                                read-only-view="true"
+                                                            ></c-strength-redflag>
+                                                        </label>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <!-- More lightning-output-field components here -->
+                                                        <label class="slds-form-element__label"
+                                                            >{label.businessResultsLabel}<c-info-navigation
+                                                                nav-url={label.personalWinURL}
+                                                            ></c-info-navigation>
+                                                            <c-strength-redflag
+                                                                class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                                                rfs-data={binf.rfsMarkerWrapper.BusinessResults}
+                                                                onvalueselected={handleMarkerChange}
+                                                                read-only-view="true"
+                                                            ></c-strength-redflag>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="slds-p-around_small"></div>-->
+                                            </div>
+                                            <div class="slds-grid slds-p-left_x-small">
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <!-- Your lightning-output-field components here -->
+                                                    <!-- <label>{binf.personalWins}</label> -->
+                                                    <template if:true={binf.personalWins}>
+                                                        <c-show-more-show-less text-display={binf.personalWins}>
+                                                        </c-show-more-show-less>
+                                                    </template>
+                                                    <template if:false={binf.personalWins}>
+                                                        <p key={binf.id} class="slds-text-body_regular">-</p>
+                                                    </template>
+                                                </div>
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <!-- More lightning-output-field components here -->
+                                                    <template if:true={binf.businessResults}>
+                                                        <c-show-more-show-less text-display={binf.businessResults}>
+                                                        </c-show-more-show-less>
+                                                    </template>
+                                                    <template if:false={binf.businessResults}>
+                                                        <p key={binf.id} class="slds-text-body_regular">-</p>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </lightning-card>
+                                </article>
+                            </template>
+                            <template if:true={isOpenModal}>
+                                <!--<div style="height: 500px;">-->
+                                <section
+                                    role="dialog"
+                                    tabindex="-1"
+                                    aria-labelledby="modal-heading-01"
+                                    aria-modal="true"
+                                    aria-describedby="modal-content-id-1"
+                                    class="slds-modal slds-fade-in-open"
+                                >
+                                    <div class="slds-modal__container">
+                                        <header class="slds-modal__header">
+                                            <button
+                                                class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                                title={label.closeLabel}
+                                                onclick={handleCloseModal}
+                                            >
+                                                <lightning-icon
+                                                    icon-name="utility:close"
+                                                    alternative-text={label.closeLabel}
+                                                    variant="inverse"
+                                                    size="small"
+                                                ></lightning-icon>
+                                                <span class="slds-assistive-text">{label.closeLabel}</span>
+                                            </button>
+                                            <h2 class="slds-text-heading_medium slds-hyphenate">
+                                                {label.deleteBuyingInfluenceLabel}
+                                            </h2>
+                                        </header>
+                                        <div class="slds-modal__content slds-p-around_medium slds-text-align--center">
+                                            {label.deleteBuyingInfluenceMessage}
+                                        </div>
+                                        <footer class="slds-modal__footer">
+                                            <button
+                                                class="slds-button slds-button_neutral"
+                                                onclick={handleDelete}
+                                                value={recordToDelete}
+                                            >
+                                                {label.yesLabel}
+                                            </button>
+                                            <button class="slds-button slds-button_neutral" onclick={handleCloseModal}>
+                                                {label.noLabel}
+                                            </button>
+                                        </footer>
+                                    </div>
+                                </section>
+                                <div class="slds-backdrop slds-backdrop_open"></div>
+                                <!--</div>-->
+                            </template>
+                        </div>
+                    </template>
+
+                    <!--Create Form-->
+                    <div class="createRecord"></div>
+                    <template if:true={showNewRecordButton}>
+                        <div class="slds-clearfix slds-p-left_xx-small slds-p-top_xx-small slds-p-right_xx-small">
+                            <template if:true={createNewRecord}>
+                                <article class="slds-card slds-card_boundary item marginCard slds-m-bottom_x-small">
+                                    <lightning-card class="slds-text-heading_small item">
+                                        <div class="slds-p-around_small">
+                                            <div>
+                                                <div class="sizing slds-grid slds-wrap">
+                                                    <div
+                                                        class="slds-size_1-of-4  slds-form-element__control slds-p-around_x-small"
+                                                    >
+                                                        <label class="slds-form-element__label" for="textarea-id-01">
+                                                            <abbr class="slds-required" title="required">*</abbr
+                                                            >{label.NameLabel}</label
+                                                        >
+                                                        <c-custom-lookup
+                                                            iconname="standard:contact"
+                                                            objectname="Contact"
+                                                            searchfield="Name"
+                                                            conname={conname}
+                                                            selectedconname={selectedconname}
+                                                            onselectedrec={handletitle}
+                                                            onnewrec={handlenewrec}
+                                                        ></c-custom-lookup>
+                                                        <template if:true={contactId}>
+                                                            <a
+                                                                class="slds-button slds-text-body_regular"
+                                                                href="javascript:void(0);"
+                                                                onclick={navigateToEditRecordPage}
+                                                                >{label.EditContactInfoLabel}</a
+                                                            >
+                                                        </template>
+                                                    </div>
+                                                    <div
+                                                        class="slds-size_1-of-4  slds-form-element__control slds-p-around_x-small"
+                                                    >
+                                                        <label class="slds-form-element__label"
+                                                            >{label.TitleLabel}</label
+                                                        >
+                                                        <input
+                                                            type="text"
+                                                            id="text-input-id-2"
+                                                            placeholder={label.Scorecard_Template_Title_Column}
+                                                            disabled
+                                                            readonly=""
+                                                            value={contactTitle}
+                                                            class="slds-input size-x-small"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        class="slds-size_1-of-4 slds-form-element__control slds-p-around_x-small"
+                                                    >
+                                                        <label class="slds-form-element__label"
+                                                            >{label.LocationLabel}</label
+                                                        >
+                                                        <input
+                                                            type="text"
+                                                            id="text-input-id-3"
+                                                            placeholder={label.Country}
+                                                            disabled
+                                                            readonly=""
+                                                            value={contactLocation}
+                                                            class="slds-input"
+                                                        />
+                                                    </div>
+                                                    <div class="slds-size_1-of-4 slds-p-around_x-small">
+                                                        <label class="slds-form-element__label"
+                                                            >{label.StateProvinceLabel}</label
+                                                        >
+                                                        <input
+                                                            type="text"
+                                                            id="text-input-id-4"
+                                                            placeholder={label.StateProvinceLabel}
+                                                            disabled
+                                                            readonly=""
+                                                            value={contactStateProvince}
+                                                            class="slds-input"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <template if:true={editconform}>
+                                                    <section
+                                                        role="dialog"
+                                                        tabindex="-1"
+                                                        class="slds-modal slds-fade-in-open slds-modal_small"
+                                                        aria-labelledby="modal-heading-01"
+                                                        aria-modal="true"
+                                                        aria-describedby="modal-content-id-1"
+                                                    >
+                                                        <div class="slds-modal__container">
+                                                            <header class="slds-modal__header">
+                                                                <button
+                                                                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                                                    onclick={handleReset}
+                                                                    title={label.closeLabel}
+                                                                >
+                                                                    <lightning-icon
+                                                                        icon-name="utility:close"
+                                                                        icon-label="Close"
+                                                                    ></lightning-icon>
+                                                                    <span class="slds-assistive-text"
+                                                                        >{label.closeLabel}</span
+                                                                    >
+                                                                </button>
+                                                                <h2
+                                                                    id="modal-heading-01"
+                                                                    class="slds-modal__title slds-hyphenate"
+                                                                >
+                                                                    {label.EditContactLabel}
+                                                                </h2>
+                                                            </header>
+                                                            <div
+                                                                class="slds-modal__content slds-p-around_medium"
+                                                                id="modal-content-id-1"
+                                                            >
+                                                                <!--Record Edit Form-->
+                                                                <lightning-record-edit-form
+                                                                    record-id={contactId}
+                                                                    object-api-name="Contact"
+                                                                    onsuccess={handleSuccessEdit}
+                                                                    onsubmit={handleSubmitEdit}
+                                                                >
+                                                                    <lightning-messages></lightning-messages>
+                                                                    <div
+                                                                        class="slds-page-header slds-text-heading_medium"
+                                                                        style="font-size:14px; font-weight:500;  "
+                                                                    >
+                                                                        {label.ContactInformationLabel}
+                                                                    </div>
+                                                                    <div
+                                                                        class="slds-form-element__control slds-form-element__row slds-size_1-of-1 slds-form-element"
+                                                                    >
+                                                                        <div class="slds-grid slds-gutters">
+                                                                            <div class="slds-col">
+                                                                                <lightning-output-field
+                                                                                    field-name="OwnerId"
+                                                                                    aria-label="Contact Owner"
+                                                                                    label="Contact Owner"
+                                                                                ></lightning-output-field>
+                                                                                <lightning-input-field
+                                                                                    field-name="Name"
+                                                                                    aria-label="Name"
+                                                                                    required
+                                                                                ></lightning-input-field>
+                                                                                <lightning-input-field
+                                                                                    field-name="AccountId"
+                                                                                ></lightning-input-field>
+                                                                                <lightning-input-field
+                                                                                    field-name="Title"
+                                                                                ></lightning-input-field>
+                                                                            </div>
+                                                                            <div class="slds-col">
+                                                                                <lightning-input-field
+                                                                                    field-name="Phone"
+                                                                                    aria-label="Phone"
+                                                                                ></lightning-input-field>
+                                                                                <lightning-input-field
+                                                                                    field-name="MobilePhone"
+                                                                                    aria-label="Mobile"
+                                                                                ></lightning-input-field>
+                                                                                <lightning-input-field
+                                                                                    field-name="Email"
+                                                                                ></lightning-input-field>
+                                                                                <lightning-input-field
+                                                                                    field-name="Department"
+                                                                                ></lightning-input-field>
+                                                                                <lightning-input-field
+                                                                                    field-name="ReportsToId"
+                                                                                ></lightning-input-field>
+                                                                                <lightning-input-field
+                                                                                    field-name="Id"
+                                                                                    class="slds-hidden"
+                                                                                    value={conid}
+                                                                                ></lightning-input-field>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div
+                                                                        class=" slds-page-header slds-text-heading_medium"
+                                                                        style="font-size:16px; font-weight:500;"
+                                                                    >
+                                                                        {label.AddressInformationLabel}
+                                                                    </div>
+                                                                    <div
+                                                                        class="slds-form-element__control slds-form-element__row slds-size_1-of-1 slds-form-element"
+                                                                    >
+                                                                        <div class="slds-grid slds-gutters">
+                                                                            <div class="slds-col">
+                                                                                <lightning-input-field
+                                                                                    field-name="MailingAddress"
+                                                                                ></lightning-input-field>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--Record Edit Form Buttons-->
+                                                                    <footer class="slds-modal__footer">
+                                                                        <lightning-button
+                                                                            class="slds-m-top_medium slds-p-horizontal_small"
+                                                                            label={label.cancelLabel}
+                                                                            onclick={handleReset}
+                                                                        >
+                                                                        </lightning-button>
+                                                                        <lightning-button
+                                                                            variant="brand"
+                                                                            class="slds-m-top_medium slds-p-horizontal_small"
+                                                                            type="submit"
+                                                                            name="submit"
+                                                                            label={label.saveLabel}
+                                                                        >
+                                                                        </lightning-button>
+                                                                    </footer>
+                                                                </lightning-record-edit-form>
+                                                                <!--Record Edit Form-->
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                    <div class="slds-backdrop slds-backdrop_open"></div>
+                                                </template>
+                                            </div>
+
+                                            <div class="slds-m-top_medium slds-m-bottom_medium slds-border_top"></div>
+
+                                            <!--BI Section after Contact Section-->
+                                            <div class="slds-grid">
+                                                <!--1st row Left Side-->
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <div class="slds-p-left_x-small buttonsLabelsGap">
+                                                        <label class="slds-form-element__label"
+                                                            >{label.buyingInfluenceRoleLabel}<c-info-navigation
+                                                                nav-url={label.buying_InfluenceRoleURL}
+                                                            ></c-info-navigation
+                                                        ></label>
+                                                        <c-strength-redflag
+                                                            class="slds-clearfix slds-float_right"
+                                                            rfs-data={rfsDetails.BuyingInfluenceRole}
+                                                            onvalueselected={handleMarkerChange}
+                                                        ></c-strength-redflag>
+                                                    </div>
+                                                    <div class="slds-grid ">
+                                                        <div class="slds-col slds-size_1-of-4">
+                                                            <button
+                                                                style="width: 95%;"
+                                                                class={economicCss}
+                                                                data-target-value="Economic"
+                                                                data-target-id="Economic"
+                                                                data-target-class="buyingInfluence"
+                                                                onclick={handlebuyingInfluenceButtonClick}
+                                                                data-target-selected={economicSelected}
+                                                            >
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:10px; color:black"
+                                                                >
+                                                                    <span>{label.economicLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-4">
+                                                            <button
+                                                                style="width: 95%"
+                                                                class={technicalCss}
+                                                                data-target-value="Technical"
+                                                                data-target-id="Technical"
+                                                                data-target-class="buyingInfluence"
+                                                                onclick={handlebuyingInfluenceButtonClick}
+                                                                data-target-selected={technicalSelected}
+                                                            >
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:10px; color:black"
+                                                                >
+                                                                    <span>{label.technicalLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-4">
+                                                            <button
+                                                                style="width: 95%"
+                                                                class={userCss}
+                                                                data-target-value="User"
+                                                                data-target-id="User"
+                                                                data-target-class="buyingInfluence"
+                                                                onclick={handlebuyingInfluenceButtonClick}
+                                                                data-target-selected={userSelected}
+                                                            >
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:10px; color:black"
+                                                                >
+                                                                    <span>{label.userLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-4">
+                                                            <button
+                                                                style="width: 95%"
+                                                                class={coachCss}
+                                                                data-target-value="Coach"
+                                                                data-target-id="Coach"
+                                                                data-target-class="buyingInfluence"
+                                                                onclick={handlebuyingInfluenceButtonClick}
+                                                                data-target-selected={coachSelected}
+                                                            >
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:10px; color:black"
+                                                                >
+                                                                    <span>{label.coachLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--1st row Right Side-->
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <div class="slds-p-left_large buttonsLabelsGap">
+                                                        <label class="slds-form-element__label"
+                                                            >{label.degreeofInfluenceLabel}<c-info-navigation
+                                                                nav-url={label.degreeofInfluenceURL}
+                                                            ></c-info-navigation
+                                                        ></label>
+                                                        <c-strength-redflag
+                                                            class="slds-clearfix slds-float_right slds-p-right_medium"
+                                                            rfs-data={rfsDetails.DegreeOfInfluence}
+                                                            onvalueselected={handleMarkerChange}
+                                                        ></c-strength-redflag>
+                                                    </div>
+                                                    <div class="slds-grid slds-p-left_medium">
+                                                        <div class="slds-col slds-size_1-of-4">
+                                                            <button
+                                                                style="width: 95%"
+                                                                class={highCss}
+                                                                data-target-value="High"
+                                                                data-target-id="diHIgh"
+                                                                data-target-class="InfluenceDegree"
+                                                                onclick={handleDegreeInfluenceButtonClick}
+                                                                data-target-selected={highSelected}
+                                                            >
+                                                                <span class="slds-icon_container">
+                                                                    <svg
+                                                                        class="slds-button__icon slds-button__icon_left"
+                                                                        style="color:#FFF; size:16px; background-color:#4BCA81"
+                                                                    >
+                                                                        <use
+                                                                            xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#arrowup"
+                                                                        ></use>
+                                                                    </svg>
+                                                                </span>
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:11px; color:black"
+                                                                >
+                                                                    <span>{label.highLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="slds-col slds-size_1-of-4">
+                                                            <button
+                                                                style="width: 100%"
+                                                                class={mediumCss}
+                                                                data-target-value="Medium"
+                                                                data-target-id="diMedium"
+                                                                data-target-class="InfluenceDegree"
+                                                                onclick={handleDegreeInfluenceButtonClick}
+                                                                data-target-selected={mediumSelected}
+                                                            >
+                                                                <svg
+                                                                    class="slds-button__icon slds-button__icon_left"
+                                                                    style="color:#FFF; size:16px; background-color:#02A7F0"
+                                                                    aria-hidden="true"
+                                                                >
+                                                                    <use
+                                                                        xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#forward"
+                                                                    ></use>
+                                                                </svg>
+
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:11px;color:black"
+                                                                >
+                                                                    <span>{label.mediumLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="slds-col slds-size_1-of-4">
+                                                            <button
+                                                                style="width: 85%; margin-left: 15px;"
+                                                                class={lowCss}
+                                                                data-target-value="Low"
+                                                                data-target-id="diLow"
+                                                                data-target-class="InfluenceDegree"
+                                                                onclick={handleDegreeInfluenceButtonClick}
+                                                                data-target-selected={lowSelected}
+                                                            >
+                                                                <svg
+                                                                    class="slds-button__icon slds-button__icon_left"
+                                                                    style="color:#FFF; size:16px; background-color: #C23934"
+                                                                    aria-hidden="true"
+                                                                >
+                                                                    <use
+                                                                        xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#arrowdown"
+                                                                    ></use>
+                                                                </svg>
+
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:11px;color:black"
+                                                                >
+                                                                    <span>{label.lowLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="slds-m-top_medium slds-m-bottom_medium slds-border_top"></div>
+
+                                            <div class="slds-grid">
+                                                <!--2nd row Left Side-->
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <div class="slds-p-left_x-small buttonsLabelsGap">
+                                                        <label class="slds-form-element__label"
+                                                            >{label.buyingModeLabel}<c-info-navigation
+                                                                nav-url={label.buyingModeURL}
+                                                            ></c-info-navigation
+                                                        ></label>
+                                                        <c-strength-redflag
+                                                            class="slds-clearfix slds-float_right"
+                                                            rfs-data={rfsDetails.BuyingMode}
+                                                            onvalueselected={handleMarkerChange}
+                                                        ></c-strength-redflag>
+                                                    </div>
+                                                    <div class="slds-grid ">
+                                                        <div class="slds-col slds-size_1-of-4">
+                                                            <button
+                                                                style="width: 95%;"
+                                                                class={growthCss}
+                                                                data-target-value="Growth"
+                                                                data-target-id="diGrowth"
+                                                                data-target-class="BuyingMode"
+                                                                onclick={handleBuyingModeButtonClick}
+                                                                data-target-selected={growthSelected}
+                                                            >
+                                                                <svg
+                                                                    viewBox="0 0 24 24"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24"
+                                                                    height="24"
+                                                                >
+                                                                    <g class="nc-icon-wrapper" fill="#4BCA81">
+                                                                        <g stroke="none" stroke-width="1">
+                                                                            <path
+                                                                                fill="none"
+                                                                                fill-rule="evenodd"
+                                                                                d="M0 0h24v24H0z"
+                                                                            ></path>
+                                                                            <path
+                                                                                fill="#4BCA81"
+                                                                                d="M19 12h-2c-.6 0-1 .4-1 1v6c0 .6.4 1 1 1h2c.6 0 1-.4 1-1v-6c0-.6-.4-1-1-1zM7 15c.6 0 1 .4 1 1v3c0 .6-.4 1-1 1H5c-.6 0-1-.4-1-1v-3c0-.6.4-1 1-1h2zm5-11l5 6h-3v9c0 .6-.4 1-1 1h-2c-.6 0-1-.4-1-1v-9H7l5-6z"
+                                                                            ></path>
+                                                                        </g>
+                                                                    </g>
+                                                                </svg>
+                                                                &nbsp;
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:11px;color:black"
+                                                                >
+                                                                    <span>{label.growthLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="slds-col slds-size_1-of-4">
+                                                            <button
+                                                                style="width: 95%;"
+                                                                class={troubleCss}
+                                                                data-target-value="Trouble"
+                                                                data-target-id="diTrouble"
+                                                                data-target-class="BuyingMode"
+                                                                onclick={handleBuyingModeButtonClick}
+                                                                data-target-selected={troubleSelected}
+                                                            >
+                                                                <svg
+                                                                    viewBox="0 0 24 24"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24"
+                                                                    height="24"
+                                                                >
+                                                                    <g class="nc-icon-wrapper" fill="#F59A23">
+                                                                        <g stroke="none" stroke-width="1">
+                                                                            <path
+                                                                                fill="none"
+                                                                                fill-rule="evenodd"
+                                                                                d="M0 0h24v24H0z"
+                                                                            ></path>
+                                                                            <path
+                                                                                fill="#F59A23"
+                                                                                d="M12 4c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 14c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zM11 8h2v5h-2V8zm1 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+                                                                            ></path>
+                                                                        </g>
+                                                                    </g>
+                                                                </svg>
+                                                                &nbsp;
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:11px;color:black"
+                                                                >
+                                                                    <span>{label.troubleLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="slds-col slds-size_2-of-4">
+                                                            <button
+                                                                style="width: 60%;"
+                                                                class={evenkeelCss}
+                                                                data-target-value="EvenKeel"
+                                                                data-target-id="diEvenKneel"
+                                                                data-target-class="BuyingMode"
+                                                                onclick={handleBuyingModeButtonClick}
+                                                                data-target-selected={evenkeelSelected}
+                                                            >
+                                                                <svg
+                                                                    viewBox="0 0 24 24"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24"
+                                                                    height="24"
+                                                                >
+                                                                    <g class="nc-icon-wrapper" fill="#02A7F0">
+                                                                        <g stroke="none" stroke-width="1">
+                                                                            <path
+                                                                                fill="none"
+                                                                                fill-rule="evenodd"
+                                                                                d="M0 0h24v24H0z"
+                                                                            ></path>
+                                                                            <path
+                                                                                fill="#02A7F0"
+                                                                                d="M22.886 10.945l-4.071-6.107a.68.68 0 0 0-.565-.302h-5.428V3.179a.678.678 0 1 0-1.357 0v1.357H6.036a.68.68 0 0 0-.565.302L1.4 10.945a.682.682 0 0 0-.114.376c0 1.959 1.816 4.072 4.75 4.072s4.75-2.113 4.75-4.072a.682.682 0 0 0-.114-.376L7.304 5.893h4.16v12.893h1.358V5.893h4.16l-3.368 5.052a.682.682 0 0 0-.114.376c0 1.959 1.816 4.072 4.75 4.072S23 13.28 23 11.32a.682.682 0 0 0-.114-.376zM8.84 10.643H3.233l2.803-4.205 2.803 4.205zm6.608 0l2.803-4.205 2.803 4.205h-5.606zm-9.411 9.5H18.25V21.5H6.036v-1.357z"
+                                                                            ></path>
+                                                                        </g>
+                                                                    </g>
+                                                                </svg>
+                                                                &nbsp;
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:11px;color:black"
+                                                                >
+                                                                    <span>{label.evenKeelLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-p-around_xx-small"></div>
+                                                    <div class="slds-grid ">
+                                                        <div class="slds-col slds-size_2-of-3">
+                                                            <button
+                                                                class={overconfidentCss}
+                                                                data-target-value="OverConfident"
+                                                                data-target-id="diOverConfident"
+                                                                data-target-class="BuyingMode"
+                                                                onclick={handleBuyingModeButtonClick}
+                                                                data-target-selected={overconfidentSelected}
+                                                            >
+                                                                <svg
+                                                                    viewBox="0 0 24 24"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    width="24"
+                                                                    height="24"
+                                                                >
+                                                                    <g class="nc-icon-wrapper" fill="#C23934">
+                                                                        <g stroke="none" stroke-width="1">
+                                                                            <path
+                                                                                fill="none"
+                                                                                fill-rule="evenodd"
+                                                                                d="M0 0h24v24H0z"
+                                                                            ></path>
+                                                                            <path
+                                                                                fill="#C23934"
+                                                                                d="M18.934 20H5.067a.534.534 0 0 1 0-1.066h13.867a.534.534 0 0 1 0 1.066zM8.579 18.467h1.509l9.756-9.756a.533.533 0 0 0 0-.754l-4.8-4.8a.533.533 0 0 0-.754 0L4.157 13.29a.533.533 0 0 0 0 .754l4.423 4.423zm1.288-9.38l4.046 4.047-4.58 4.579-4.045-4.046 4.579-4.58z"
+                                                                            ></path>
+                                                                        </g>
+                                                                    </g>
+                                                                </svg>
+                                                                &nbsp;
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:11px;color:black"
+                                                                >
+                                                                    <span>{label.overConfidentLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--2nd row Right Side-->
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <div class="slds-p-left_x-small buttonsLabelsGap">
+                                                        <label class="slds-p-left_medium slds-form-element__label"
+                                                            >{label.competitivePreferenceLabel}<c-info-navigation
+                                                                nav-url={label.competitivePrefURL}
+                                                            ></c-info-navigation
+                                                        ></label>
+                                                        <c-strength-redflag
+                                                            class="slds-clearfix slds-float_right slds-p-right_medium"
+                                                            rfs-data={rfsDetails.CompetitivePreference}
+                                                            onvalueselected={handleMarkerChange}
+                                                        ></c-strength-redflag>
+                                                    </div>
+                                                    <div class="slds-grid slds-p-left_medium">
+                                                        <div class="slds-col slds-size_1-of-2">
+                                                            <button
+                                                                style="width: 100%;"
+                                                                class={usingbudgetCss}
+                                                                data-target-value="BudgetForElse"
+                                                                data-target-id="diBudgetForElse"
+                                                                data-target-class="CompetitivePreference"
+                                                                onclick={handleCmpPreferenceButtonClick}
+                                                                data-target-selected={usingbudgetSelected}
+                                                            >
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:9px;color:black"
+                                                                >
+                                                                    <span>{label.usingBudgetforSomethingLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="slds-col slds-size_1-of-2 slds-p-left_x-small slds-p-right_large"
+                                                        >
+                                                            <button
+                                                                class={internalresourceCss}
+                                                                data-target-value="InternalResource"
+                                                                data-target-id="diInternalResource"
+                                                                data-target-class="CompetitivePreference"
+                                                                onclick={handleCmpPreferenceButtonClick}
+                                                                data-target-selected={internalresourceSelected}
+                                                                style="width:100%"
+                                                            >
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:10px;color:black"
+                                                                >
+                                                                    <span>{label.usingInternalResourceLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-p-around_xx-small"></div>
+
+                                                    <div class="slds-grid slds-p-left_medium">
+                                                        <div class="slds-col slds-size_1-of-2">
+                                                            <button
+                                                                class={buyfromelseCss}
+                                                                data-target-value="BuyingFromElse"
+                                                                data-target-id="diBuyingFromElse"
+                                                                data-target-class="CompetitivePreference"
+                                                                onclick={handleCmpPreferenceButtonClick}
+                                                                data-target-selected={buyfromelseSelected}
+                                                                style="width:100%"
+                                                            >
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:11px;color:black"
+                                                                >
+                                                                    <span>{label.buyingFromSomeOneElseLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="slds-col slds-size_1-of-2 slds-p-left_x-small slds-p-right_large"
+                                                        >
+                                                            <button
+                                                                class={nothingCss}
+                                                                data-target-value="DoingNothing"
+                                                                data-target-id="diDoingNothing"
+                                                                data-target-class="CompetitivePreference"
+                                                                onclick={handleCmpPreferenceButtonClick}
+                                                                data-target-selected={nothingSelected}
+                                                                style="width:100%"
+                                                            >
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:11px;color:black"
+                                                                >
+                                                                    <span>{label.doingNothingLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-p-around_xx-small"></div>
+
+                                                    <div class="slds-grid slds-p-left_large">
+                                                        <div class="slds-col slds-size_1-of-2">
+                                                            <template if:true={isbuyfromelse}>
+                                                                <c-look-up-bi
+                                                                    class="lookupcomp"
+                                                                    child-object-api-name={objectForLookup}
+                                                                    target-field-api-name={lookuptargetField}
+                                                                    placeholder={label.searchCompetitior}
+                                                                    disabled
+                                                                    onvalueselected={handleValueSelcted}
+                                                                    value={selectedCompId}
+                                                                    style="font-size:small;"
+                                                                ></c-look-up-bi>
+                                                            </template>
+                                                            <template if:false={isbuyfromelse}>
+                                                                <c-look-up-bi
+                                                                    class="lookupcomp"
+                                                                    child-object-api-name={objectForLookup}
+                                                                    target-field-api-name={lookuptargetField}
+                                                                    placeholder={label.searchCompetitior}
+                                                                    onvalueselected={handleValueSelcted}
+                                                                    value={selectedCompId}
+                                                                    style="font-size:small;"
+                                                                ></c-look-up-bi>
+                                                            </template>
+                                                        </div>
+                                                        <div
+                                                            class="slds-col slds-size_1-of-2 slds-p-left_xx-small slds-p-right_large"
+                                                        >
+                                                            <button
+                                                                class={buyfromusCss}
+                                                                data-target-value="BuyFromUs"
+                                                                data-target-id="diBuyFromUs"
+                                                                data-target-class="CompetitivePreference"
+                                                                onclick={handleCmpPreferenceButtonClick}
+                                                                data-target-selected={buyfromusSelected}
+                                                                style="width:100%;"
+                                                            >
+                                                                <label
+                                                                    class="slds-button__label"
+                                                                    style="font-size:11px;color:black"
+                                                                >
+                                                                    <span>{label.buyfromusLabel}</span>
+                                                                </label>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="slds-m-top_medium slds-m-bottom_medium slds-border_top"></div>
+
+                                            <div class="slds-grid">
+                                                <!--3rd row Left Side-->
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <div class="slds-p-left_x-small buttonsLabelsGap">
+                                                        <label class="item slds-form-element__label"
+                                                            >{label.personalWinsLabel}<c-info-navigation
+                                                                nav-url={label.personalWinURL}
+                                                            ></c-info-navigation
+                                                        ></label>
+                                                        <c-strength-redflag
+                                                            class="slds-clearfix slds-float_right"
+                                                            rfs-data={rfsDetails.PersonalWins}
+                                                            onvalueselected={handleMarkerChange}
+                                                        ></c-strength-redflag>
+                                                    </div>
+                                                    <div class="slds-grid">
+                                                        <div class="slds-col slds-size_1-of-1 slds-p-left_x-small">
+                                                            <textarea
+                                                                id="textarea-id-pw"
+                                                                rows="3"
+                                                                name="personalWins"
+                                                                class="slds-textarea"
+                                                                maxlength="32000"
+                                                                placeholder={label.pwPlaceholderLabel}
+                                                                onchange={handleChange}
+                                                                onkeyup={handleMaxLimitErrorPersonalWins}
+                                                            >
+{currPersonalWins}</textarea
+                                                            >
+                                                            <template if:true={showMaxLimitErrorPW}>
+                                                                <div class="erroMsg">{label.MaxTextLimitError}</div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--3rd row Right Side-->
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <div class="slds-p-left_x-small buttonsLabelsGap">
+                                                        <label class="slds-p-left_medium slds-form-element__label"
+                                                            >{label.businessResultsLabel}<c-info-navigation
+                                                                nav-url={label.personalWinURL}
+                                                            ></c-info-navigation
+                                                        ></label>
+                                                        <c-strength-redflag
+                                                            class="slds-clearfix slds-float_right slds-p-right_medium"
+                                                            rfs-data={rfsDetails.BusinessResults}
+                                                            onvalueselected={handleMarkerChange}
+                                                        ></c-strength-redflag>
+                                                    </div>
+                                                    <div class="slds-grid">
+                                                        <div
+                                                            class="slds-col slds-size_1-of-1 slds-p-left_large slds-p-right_medium"
+                                                        >
+                                                            <textarea
+                                                                id="textarea-id-br"
+                                                                rows="3"
+                                                                name="businessResults"
+                                                                class="slds-textarea"
+                                                                maxlength="32000"
+                                                                placeholder={label.brPlaceholderLabel}
+                                                                onchange={handleChange}
+                                                                onkeyup={handleMaxLimitErrorBusinessResults}
+                                                            >
+{currBusinessResult}</textarea
+                                                            >
+                                                            <template if:true={showMaxLimitErrorBR}>
+                                                                <div class="erroMsg">{label.MaxTextLimitError}</div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="slds-p-around_small"></div>
+
+                                            <div class="slds-grid">
+                                                <!--4th row Left Side-->
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <div class="slds-p-left_x-small buttonsLabelsGap">
+                                                        <label class="slds-form-element__label"
+                                                            >{label.ratingLabel}<c-info-navigation
+                                                                nav-url={label.ratingURL}
+                                                            ></c-info-navigation
+                                                        ></label>
+                                                        <c-strength-redflag
+                                                            class="slds-clearfix slds-float_right"
+                                                            rfs-data={rfsDetails.Rating}
+                                                            onvalueselected={handleMarkerChange}
+                                                        ></c-strength-redflag>
+                                                    </div>
+                                                    <div
+                                                        class="slds-p-top_medium slds-p-left_x-small slds-p-bottom_small"
+                                                        style="height: 5px;font-size:small;"
+                                                    >
+                                                        {ratingText}
+                                                    </div>
+
+                                                    <div
+                                                        class="slds-grid slds-p-left_x-small slds-p-top_medium"
+                                                        style="width: 100%;"
+                                                    >
+                                                        <div class="ratingButtonsWidth">
+                                                            <div
+                                                                onmouseout={removeRatingText}
+                                                                onmouseover={displaynegativefive}
+                                                                class={mfiveCss}
+                                                                data-target-value="-5"
+                                                                data-target-id="-5"
+                                                                data-target-class="rating"
+                                                                onclick={handleRating}
+                                                                data-target-selected={mfiveSelected}
+                                                            >
+                                                                -5
+                                                            </div>
+                                                        </div>
+                                                        <div class="ratingButtonsWidth">
+                                                            <div
+                                                                onmouseout={removeRatingText}
+                                                                onmouseover={displaynegativefour}
+                                                                class={mfourCss}
+                                                                data-target-value="-4"
+                                                                data-target-id="-4"
+                                                                data-target-class="rating"
+                                                                onclick={handleRating}
+                                                                data-target-selected={mfourSelected}
+                                                            >
+                                                                -4
+                                                            </div>
+                                                        </div>
+                                                        <div class="ratingButtonsWidth">
+                                                            <div
+                                                                onmouseout={removeRatingText}
+                                                                onmouseover={displaynegativethree}
+                                                                class={mthreeCss}
+                                                                data-target-value="-3"
+                                                                data-target-id="-3"
+                                                                data-target-class="rating"
+                                                                onclick={handleRating}
+                                                                data-target-selected={mthreeSelected}
+                                                            >
+                                                                -3
+                                                            </div>
+                                                        </div>
+                                                        <div class="ratingButtonsWidth">
+                                                            <div
+                                                                onmouseout={removeRatingText}
+                                                                onmouseover={displaynegativetwo}
+                                                                class={mtwoCss}
+                                                                data-target-value="-2"
+                                                                data-target-id="-2"
+                                                                data-target-class="rating"
+                                                                onclick={handleRating}
+                                                                data-target-selected={mtwoSelected}
+                                                            >
+                                                                -2
+                                                            </div>
+                                                        </div>
+                                                        <div class="ratingButtonsWidth">
+                                                            <div
+                                                                onmouseout={removeRatingText}
+                                                                onmouseover={displaynegativeone}
+                                                                class={moneCss}
+                                                                data-target-value="-1"
+                                                                data-target-id="-1"
+                                                                data-target-class="rating"
+                                                                onclick={handleRating}
+                                                                data-target-selected={moneSelected}
+                                                            >
+                                                                -1
+                                                            </div>
+                                                        </div>
+                                                        <div class="ratingButtonsWidth">
+                                                            <div
+                                                                onmouseout={removeRatingText}
+                                                                onmouseover={displaypositiveone}
+                                                                class={poneCss}
+                                                                data-target-value="+1"
+                                                                data-target-id="1"
+                                                                data-target-class="rating"
+                                                                onclick={handleRating}
+                                                                data-target-selected={poneSelected}
+                                                            >
+                                                                +1
+                                                            </div>
+                                                        </div>
+                                                        <div class="ratingButtonsWidth">
+                                                            <div
+                                                                onmouseout={removeRatingText}
+                                                                onmouseover={displaypositivetwo}
+                                                                class={ptwoCss}
+                                                                data-target-value="+2"
+                                                                data-target-id="2"
+                                                                data-target-class="rating"
+                                                                onclick={handleRating}
+                                                                data-target-selected={ptwoSelected}
+                                                            >
+                                                                +2
+                                                            </div>
+                                                        </div>
+                                                        <div class="ratingButtonsWidth">
+                                                            <div
+                                                                onmouseout={removeRatingText}
+                                                                onmouseover={displaypositivethree}
+                                                                class={pthreeCss}
+                                                                data-target-value="+3"
+                                                                data-target-id="3"
+                                                                data-target-class="rating"
+                                                                onclick={handleRating}
+                                                                data-target-selected={pthreeSelected}
+                                                            >
+                                                                +3
+                                                            </div>
+                                                        </div>
+                                                        <div class="ratingButtonsWidth">
+                                                            <div
+                                                                onmouseout={removeRatingText}
+                                                                onmouseover={displaypositivefour}
+                                                                class={pfourCss}
+                                                                data-target-value="+4"
+                                                                data-target-id="4"
+                                                                data-target-class="rating"
+                                                                onclick={handleRating}
+                                                                data-target-selected={pfourSelected}
+                                                            >
+                                                                +4
+                                                            </div>
+                                                        </div>
+                                                        <div class="ratingButtonsWidth">
+                                                            <div
+                                                                onmouseout={removeRatingText}
+                                                                onmouseover={displaypositivefive}
+                                                                class={pfiveCss}
+                                                                data-target-value="+5"
+                                                                data-target-id="5"
+                                                                data-target-class="rating"
+                                                                onclick={handleRating}
+                                                                data-target-selected={pfiveSelected}
+                                                            >
+                                                                +5
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--4th row Right Side-->
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <div class="slds-p-left_x-small buttonsLabelsGap">
+                                                        <label class="slds-p-left_medium slds-form-element__label"
+                                                            >{label.ratingEvidenceLabel}<c-info-navigation
+                                                                nav-url={label.evidenceURL}
+                                                            ></c-info-navigation
+                                                        ></label>
+                                                        <c-strength-redflag
+                                                            class="slds-clearfix slds-float_right slds-p-right_medium"
+                                                            rfs-data={rfsDetails.RatingEvidence}
+                                                            onvalueselected={handleMarkerChange}
+                                                        ></c-strength-redflag>
+                                                    </div>
+                                                    <div class="slds-grid">
+                                                        <div
+                                                            class="slds-col slds-size_1-of-1 slds-p-left_large slds-p-right_medium"
+                                                        >
+                                                            <textarea
+                                                                id="textarea-id-re"
+                                                                rows="3"
+                                                                name="ratingEvidence"
+                                                                class="slds-textarea"
+                                                                maxlength="32000"
+                                                                placeholder={label.rePlaceholderLabel}
+                                                                onchange={handleChange}
+                                                                onkeyup={handleMaxLimitErrorRatingEvidence}
+                                                            >
+{currRatingEvidence}</textarea
+                                                            >
+                                                            <template if:true={showMaxLimitErrorRE}>
+                                                                <div class="erroMsg">{label.MaxTextLimitError}</div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-m-around_medium item">
+                                            <div class="slds-align_absolute-center">
+                                                <template if:true={bShowSpinner}>
+                                                    <div class="spinner">
+                                                        <lightning-spinner
+                                                            alternative-text={label.Loading}
+                                                            size="small"
+                                                        ></lightning-spinner>
+                                                    </div>
+                                                </template>
+                                                <lightning-button
+                                                    label={label.cancelLabel}
+                                                    title="Non-primary action"
+                                                    class="slds-m-left_x-small"
+                                                    onclick={cancel}
+                                                >
+                                                </lightning-button>
+                                                <lightning-button
+                                                    label={label.saveLabel}
+                                                    title="Non-primary action"
+                                                    class="slds-m-left_x-small"
+                                                    variant="brand"
+                                                    onclick={handleSave}
+                                                    disabled={disableSaveButton}
+                                                >
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </lightning-card>
+                                </article>
+                            </template>
+                            <template if:true={isCreateable}>
+                                <div class="slds-float_left">
+                                    <lightning-button
+                                        variant="brand"
+                                        label={label.addBuyingInfluenceLabel}
+                                        disabled={btnflag}
+                                        onclick={handleClickNew}
+                                    ></lightning-button>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </lightning-card>
+    </article>
+    <article
+        if:true={checkNoDataAndReadOnlyAccess}
+        class="slds-card slds-card_boundary"
+        style="text-decoration:none !important"
+    >
+        <lightning-card variant="Narrow" style="color:black;" class="slds-m-top_xx-large">
+            <div slot="title">
+                <b>{label.buyingInfluenceLabel}</b
+                ><c-info-navigation nav-url={label.buying_InfluenceHeaderURL}></c-info-navigation>
+            </div>
+            <div class="slds-m-top_x-small slds-m-bottom_x-small" style="border-top: 1px solid #dcdcdc;">
+                <!--<lightning-card>-->
+                <div class="slds-m-around_small">
+                    <c-summary-view-no-data></c-summary-view-no-data>
+                    <!--</div>-->
+                </div>
+            </div>
+        </lightning-card>
+    </article>
+</template>

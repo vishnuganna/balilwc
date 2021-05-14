@@ -1,0 +1,8 @@
+/**cs**/
+.accordiondiv {
+    width: fit-content;
+}
+
+.wrapTextCls {
+    word-wrap: break-word;
+}

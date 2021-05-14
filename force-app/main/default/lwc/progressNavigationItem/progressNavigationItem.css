@@ -1,0 +1,34 @@
+.item-progress {
+    font-weight: lighter !important;
+    text-transform: uppercase;
+}
+
+.nav-item-text {
+    font-size: 14px !important;
+}
+
+.item-progress-info {
+    font-size: small;
+}
+
+.slds-nav-vertical__action:hover {
+    box-shadow: none;
+    text-decoration: none;
+    color: black !important;
+}
+.slds-nav-vertical__action:focus {
+    box-shadow: none;
+    text-decoration: none;
+    color: black !important;
+}
+
+a:hover {
+    background-color: #f3f2f2 !important;
+    margin-left: 15px;
+    padding-left: 17px;
+    width: auto;
+}
+
+.left-section {
+    margin-left: -10px;
+}

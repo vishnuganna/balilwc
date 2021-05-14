@@ -1,0 +1,195 @@
+<template>
+    <!--Read Only View-->
+    <template if:false={showEditView}>
+        <div key={item.id} class="divClass">
+            <div class="slds-card__body">
+                <article class="slds-card slds-card_boundary item">
+                    <div class="slds-p-left_x-small ">
+                        <div class="slds-grid slds-m-left_small slds-m-right_small slds-border_bottom">
+                            <div class="slds-col slds-size_1-of-2 slds-m-top_small slds-m-bottom_small">
+                                <!--10 June Dhananjay-->
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="18"
+                                    height="20"
+                                    style="float:left;margin-right:8px"
+                                >
+                                    <g class="nc-icon-wrapper" fill="#ffffff">
+                                        <g stroke="none" stroke-width="1">
+                                            <path
+                                                fill="#00b386"
+                                                d="M17.571 6c.237 0 .429.192.429.429V17.57a.429.429 0 0 1-.429.429h-.857a.429.429 0 0 1-.428-.429v-4.714H7.714v4.714a.429.429 0 0 1-.428.429h-.857A.429.429 0 0 1 6 17.571V6.43C6 6.192 6.192 6 6.429 6h.857c.236 0 .428.192.428.429v4.714h8.572V6.429c0-.237.192-.429.428-.429h.857zM4.625 8c.207 0 .375.201.375.45v8.1c0 .249-.168.45-.375.45h-.75c-.207 0-.375-.201-.375-.45V13.4H2.375c-.207 0-.375-.201-.375-.45v-.9c0-.249.168-.45.375-.45H3.5V8.45c0-.249.168-.45.375-.45h.75zM22.5 11.6c.276 0 .5.201.5.45v.9c0 .249-.224.45-.5.45H21v3.15c0 .249-.224.45-.5.45h-1c-.276 0-.5-.201-.5-.45v-8.1c0-.249.224-.45.5-.45h1c.276 0 .5.201.5.45v3.15h1.5z"
+                                            ></path>
+                                        </g>
+                                    </g>
+                                </svg>
+                                <!--10 June Dhananjay-->
+                                <b>
+                                    <h3 class="slds-text-heading_small" key={item.id} style="word-wrap: break-word;">
+                                        {item.summary}
+                                    </h3></b
+                                >
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-m-top_small slds-m-bottom_small">
+                                <div class="slds-text-align--right">
+                                    <template if:true={isDeletable}>
+                                        <lightning-button
+                                            variant="base"
+                                            label={allLabel.Delete}
+                                            onclick={handleDeleteModal}
+                                            title={allLabel.DeleteRecord}
+                                            class="slds-p-right_x-small"
+                                        ></lightning-button>
+                                    </template>
+                                    <template if:true={isUpdateable}>
+                                        <lightning-button
+                                            label={allLabel.edit}
+                                            title={allLabel.EditRecord}
+                                            onclick={handleEdit}
+                                        ></lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-p-left_x-small slds-p-right_x-small slds-m-left_small slds-m-bottom_small">
+                        <template if:true={item.description}>
+                            <br />
+                            <h3 class="slds-p-bottom_xx-small slds-text-title" key={item.id}>{allLabel.Description}</h3>
+                            <div>
+                                <template if:true={item.description}>
+                                    <c-show-more-show-less-line
+                                        class="slds-m-top_small"
+                                        description={item.description}
+                                        no-of-lines="2"
+                                    ></c-show-more-show-less-line>
+                                </template>
+
+                                <template if:false={item.description}>
+                                    -
+                                </template>
+                            </div>
+                        </template>
+                        <template if:false={item.description}>
+                            <br />
+                            <h3 class="slds-p-bottom_xx-small slds-text-title">{allLabel.Description}</h3>
+                            <h3 class="slds-text-heading_small">-</h3>
+                        </template>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </template>
+    <!--/Read Only View-->
+
+    <!--Modal For Delete-->
+    <template if:true={ShowModal}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={allLabel.close}
+                        onclick={closeModal}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text={allLabel.close}
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                        {allLabel.DeleteStrength}
+                    </h2>
+                </header>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium slds-text-align--center" id="modal-content-id-1">
+                    <p>{allLabel.deleteStrengthMessage}</p>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={handleDeleteRec}>{allLabel.yes}</button>
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>{allLabel.no}</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!--/Modal For Delete-->
+
+    <!--Edit View-->
+    <template if:true={showEditView}>
+        <div class="slds-card__body">
+            <article class="slds-card slds-card_boundary item">
+                <lightning-card class="slds-text-heading_small item">
+                    <lightning-layout horizontal-align="spread">
+                        <lightning-layout-item padding="around-small" size="6">
+                            <lightning-input
+                                name="summary"
+                                value={summary}
+                                label={allLabel.Summary}
+                                onchange={handleSummaryChange}
+                                max-length="256"
+                                required
+                            ></lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <h3 class="slds-p-bottom_xx-small slds-text-title slds-m-left_small">{allLabel.Description}</h3>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <lightning-layout-item class="slds-p-left_small slds-p-right_small" size="12">
+                            <textarea
+                                rows="5"
+                                name="Description"
+                                onkeyup={handleMaxLimitError}
+                                onchange={handleDescChange}
+                                class="slds-textarea"
+                                maxlength="32000"
+                                style="color: black;"
+                            >
+{description}</textarea
+                            >
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <template if:true={showMaxLimitError}>
+                            <div class="slds-text-color_error slds-m-left_small">{allLabel.ErrorMax32kCharacters}</div>
+                        </template>
+                    </lightning-layout>
+                    <template if:true={isCreateable}>
+                        <div class="slds-m-top_large slds-align_absolute-center">
+                            <lightning-button
+                                label={allLabel.cancel}
+                                class="slds-p-right_x-small"
+                                variant="neutral"
+                                onclick={handleCancelClick}
+                                style="text-decoration: none;font-size:small;"
+                            ></lightning-button>
+                            <lightning-button
+                                label={allLabel.save}
+                                variant="brand"
+                                onclick={handleSaveClick}
+                                style="font-size:small;"
+                                disabled={saveDisableFlag}
+                            >
+                            </lightning-button>
+                        </div>
+                    </template>
+                </lightning-card>
+            </article>
+        </div>
+    </template>
+    <!--/Edit View-->
+</template>

@@ -1,0 +1,137 @@
+<template>
+    <template if:true={moduleData}>
+        <c-go-to-bluesheet-prompts
+            module-data={moduleData}
+            module-learning-completed={moduleLearningCompleted}
+            module-section={moduleSection}
+        ></c-go-to-bluesheet-prompts>
+    </template>
+    <article
+        if:false={checkNoDataAndReadOnlyAccess}
+        class="slds-card slds-card_boundary divClass"
+        style="text-decoration: none !important;"
+    >
+        <div
+            slot="title"
+            class="slds-grid slds-card__header hrSection slds-grid_vertical-align-center cardheader-goldsheet"
+        >
+            <div class="slds-col slds-size_2-of-3">
+                <span class="cardlabels-goldsheet"
+                    >{label.SingleSalesObjectives}
+                    <c-info-navigation nav-url={label.SSOBlueSheetURL}></c-info-navigation>
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-3">
+                <template if:true={showSavedState}>
+                    <template if:false={isSingleSalesObjectiveEmpty}>
+                        <div class="slds-clearfix slds-float_right">
+                            <template if:true={isUpdatable}>
+                                <lightning-button
+                                    label={label.edit}
+                                    title={label.edit}
+                                    onclick={handleEdit}
+                                ></lightning-button>
+                            </template>
+                        </div>
+                    </template>
+                </template>
+            </div>
+        </div>
+        <template if:true={isSingleSalesObjectiveEmpty}>
+            <template if:false={isCreateable}>
+                <div class="slds-var-p-bottom_x-small">
+                    <c-summary-view-no-data></c-summary-view-no-data>
+                </div>
+            </template>
+        </template>
+        <template if:true={showSavedState}>
+            <div class="slds-grid slds-var-m-around_medium">
+                <span>
+                    <c-strength-redflag
+                        rfs-data={rfsDetails.singleSalesObjectiveBlueSheet}
+                        read-only-view="true"
+                    ></c-strength-redflag>
+                </span>
+                <c-show-more-show-less-line description={SSOBSSavedData} no-of-lines="10"> </c-show-more-show-less-line>
+            </div>
+        </template>
+
+        <!--Create View And Edit-->
+        <template if:true={showCreateView}>
+            <div class="slds-card__body  slds-card__body_inner item">
+                <article class="slds-card item slds-card_boundary slds-p-around_small slds-size_12-of-12">
+                    <div class="slds-size_12-of-12">
+                        <lightning-card class="slds-text-heading_small item">
+                            <div class="slds-size_8-of-12">
+                                <div class="buttonsLabelsGap slds-col">
+                                    <label class="slds-form-element__label">{label.SingleSalesObjectives}</label>
+                                    <c-strength-redflag
+                                        rfs-data={rfsDetails.singleSalesObjectiveBlueSheet}
+                                        class="slds-clearfix slds-float_right"
+                                        onvalueselected={handleMarkerChange}
+                                    ></c-strength-redflag>
+                                </div>
+                                <lightning-textarea
+                                    name="input1"
+                                    label=""
+                                    placeholder={label.SSOBlueSheetInstruction}
+                                    class="slds-size_12-of-12 textAreaPosition"
+                                    max-length="32000"
+                                    value={SSOBSData}
+                                    message-when-too-long="32K Charecters allowed"
+                                    style="font-size: small;"
+                                    onkeyup={handleMaxLimitError}
+                                ></lightning-textarea>
+                            </div>
+
+                            <template if:true={showMaxLimitError}>
+                                <div class="erroMsg">{label.maxLimitError}</div>
+                            </template>
+                            <div class="slds-align_absolute-center slds-m-top_x-small slds-m-top_small">
+                                <template if:true={cvShowSpinner}>
+                                    <div class="spinner">
+                                        <lightning-spinner
+                                            alternative-text={label.Loading}
+                                            size="small"
+                                        ></lightning-spinner>
+                                    </div>
+                                </template>
+                                <lightning-button
+                                    label={label.cancel}
+                                    class="slds-p-right_x-small"
+                                    variant="neutral"
+                                    onclick={handleCancelClick}
+                                    style="text-decoration: none; font-size: small;"
+                                ></lightning-button>
+                                <lightning-button
+                                    label={label.save}
+                                    variant="brand"
+                                    disabled={disabledSaveButton}
+                                    onclick={handleSave}
+                                    style="font-size: small;"
+                                >
+                                </lightning-button>
+                            </div>
+                        </lightning-card>
+                    </div>
+                </article>
+            </div>
+        </template>
+        <!-- End Create And Edit -->
+        <template template if:true={isCreateVisible}>
+            <div class=" slds-m-bottom_x-small">
+                <template if:true={isCreateable}>
+                    <div>
+                        <lightning-button
+                            variant="brand"
+                            label={label.SSOBlueSheetAddButton}
+                            disabled={IsAddButtonDisabled}
+                            onclick={handleCreateNewSSO}
+                            class="slds-m-left_medium"
+                        ></lightning-button>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </article>
+</template>

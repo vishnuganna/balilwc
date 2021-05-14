@@ -1,0 +1,21 @@
+.textFont {
+    font-family: "ArialMT", "Arial", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #3e3e3c;
+}
+
+.textInsightFont {
+    font-family: "ArialMT", "Arial", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #080707;
+    line-height: 17px;
+}
+
+.divInsight {
+    background-color: rgba(244, 246, 249, 1);
+}

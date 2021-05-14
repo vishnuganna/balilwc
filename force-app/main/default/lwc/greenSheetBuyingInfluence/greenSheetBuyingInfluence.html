@@ -1,0 +1,474 @@
+<template>
+    <template if:true={showSavedState}>
+        <div class="slds-clearfix slds-p-left_xx-small slds-p-bottom_small abc">
+            <template for:each={greenBiList} for:item="binf">
+                <article key={binf.id} class="slds-card slds-card_boundary">
+                    <lightning-card>
+                        <div class="slds-float_left slds-p-left_x-small slds-p-right_x-small">
+                            <span class="slds-text-title_bold slds-p-left_xx-small">
+                                {binf.contactName}
+                            </span>
+                            <br />
+                            <template if:true={binf.title}>
+                                <lightning-icon icon-name="utility:user" size="x-small"></lightning-icon
+                                ><span class="slds-p-left_xx-small">{binf.title}</span>
+                            </template>
+                            &nbsp;&nbsp;
+
+                            <template if:true={binf.state}>
+                                <lightning-icon icon-name="utility:location" size="x-small"></lightning-icon
+                                ><span class="slds-p-left_xx-small">{binf.state}</span>
+                            </template>
+                            {binf.country}&nbsp;&nbsp;
+                        </div>
+                        <div class="slds-float_right slds-p-around_x-small">
+                            <template if:true={isDeletable}>
+                                <lightning-button
+                                    variant="base"
+                                    label={label.deleteLabel}
+                                    onclick={DeleteModal}
+                                    class="slds-p-right_x-small"
+                                    slot="actions"
+                                    value={binf.id}
+                                ></lightning-button>
+                            </template>
+                            <template if:true={isUpdateable}>
+                                <lightning-button
+                                    label={label.editLabel}
+                                    title="Non-primary action"
+                                    onclick={handleEdit}
+                                    slot="actions"
+                                    value={binf}
+                                ></lightning-button>
+                            </template>
+                        </div>
+                        <hr style="margin:5px" />
+
+                        <div class="slds-p-left_x-small">
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <!-- Your lightning-output-field components here -->
+                                    <label class="slds-form-element__label"
+                                        >{label.buyingInfluenceRolesLabel}<c-info-navigation
+                                            nav-url={label.buying_InfluenceRoleURL}
+                                        ></c-info-navigation>
+                                        <c-strength-redflag
+                                            class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                            rfs-data={binf.rfsMarkerWrapper.BuyingInfluenceRole}
+                                            onvalueselected={handleMarkerChange}
+                                            read-only-view="true"
+                                        ></c-strength-redflag>
+                                    </label>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <!-- More lightning-output-field components here -->
+                                    <label class="slds-form-element__label"
+                                        >{label.Concept}<c-info-navigation
+                                            nav-url={label.ConceptURL}
+                                        ></c-info-navigation>
+                                        <c-strength-redflag
+                                            class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                            rfs-data={binf.rfsMarkerWrapper.conceptBI}
+                                            onvalueselected={handleMarkerChange}
+                                            read-only-view="true"
+                                        ></c-strength-redflag>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <!-- Your lightning-output-field components here -->
+
+                                    <template if:true={binf.buyingInfluenceRole}>
+                                        {binf.buyingInfluenceRole}
+                                    </template>
+                                    <template if:false={binf.buyingInfluenceRole}>
+                                        <p key={binf.id} class="slds-text-body_regular">-</p>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <!-- More lightning-output-field components here -->
+                                    <template if:true={binf.concept}>
+                                        <c-show-more-show-less-line
+                                            class="slds-var-p-top_small "
+                                            description={binf.concept}
+                                            no-of-lines="3"
+                                        ></c-show-more-show-less-line>
+                                    </template>
+                                    <template if:false={binf.concept}>
+                                        <p key={binf.id} class="slds-text-body_regular">-</p>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </article>
+            </template>
+        </div>
+    </template>
+    <!--Create Form-->
+    <div class=""></div>
+    <template if:true={showCreateView}>
+        <div class="slds-clearfix slds-p-left_xx-small slds-p-right_xx-small slds-p-bottom_small createRecord">
+            <template if:true={createNewRecord}>
+                <!-- <article class="slds-card slds-card_boundary"> -->
+                <article class="slds-card slds-card_boundary item marginCard">
+                    <lightning-card class="slds-text-heading_small fontsize">
+                        <div class="slds-p-around_small">
+                            <div>
+                                <div class="sizing slds-grid slds-wrap">
+                                    <div class="slds-size_1-of-4  slds-form-element__control slds-p-around_x-small">
+                                        <label class="slds-form-element__label" for="textarea-id-01">
+                                            <abbr class="slds-required" title="required">*</abbr
+                                            >{label.NameLabel}</label
+                                        >
+                                        <c-custom-lookup
+                                            iconname="standard:contact"
+                                            objectname="Contact"
+                                            searchfield="Name"
+                                            conname={conname}
+                                            selectedconname={selectedconname}
+                                            onselectedrec={handletitle}
+                                            onnewrec={handlenewrec}
+                                        ></c-custom-lookup>
+                                        <template if:true={contactId}>
+                                            <a
+                                                class="slds-button slds-text-body_regular"
+                                                href="javascript:void(0);"
+                                                onclick={navigateToEditRecordPage}
+                                                >{label.EditContactInfoLabel}</a
+                                            >
+                                        </template>
+                                    </div>
+                                    <div class="slds-size_1-of-4  slds-form-element__control slds-p-around_x-small">
+                                        <label class="slds-form-element__label">{label.TitleLabel}</label>
+                                        <input
+                                            type="text"
+                                            id="text-input-id-2"
+                                            placeholder={label.Scorecard_Template_Title_Column}
+                                            disabled
+                                            readonly=""
+                                            value={contactTitle}
+                                            class="slds-input size-x-small"
+                                        />
+                                    </div>
+                                    <div class="slds-size_1-of-4 slds-form-element__control slds-p-around_x-small">
+                                        <label class="slds-form-element__label">{label.LocationLabel}</label>
+                                        <input
+                                            type="text"
+                                            id="text-input-id-3"
+                                            placeholder={label.Country}
+                                            disabled
+                                            readonly=""
+                                            value={contactLocation}
+                                            class="slds-input"
+                                        />
+                                    </div>
+                                    <div class="slds-size_1-of-4 slds-p-around_x-small">
+                                        <label class="slds-form-element__label">{label.StateProvinceLabel}</label>
+                                        <input
+                                            type="text"
+                                            id="text-input-id-4"
+                                            placeholder={label.StateProvinceLabel}
+                                            disabled
+                                            readonly=""
+                                            value={contactStateProvince}
+                                            class="slds-input"
+                                        />
+                                    </div>
+                                </div>
+                                <template if:true={editconform}>
+                                    <section
+                                        role="dialog"
+                                        tabindex="-1"
+                                        class="slds-modal slds-fade-in-open slds-modal_small"
+                                        aria-labelledby="modal-heading-01"
+                                        aria-modal="true"
+                                        aria-describedby="modal-content-id-1"
+                                    >
+                                        <div class="slds-modal__container">
+                                            <header class="slds-modal__header">
+                                                <button
+                                                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                                    onclick={handleReset}
+                                                    title={label.closeLabel}
+                                                >
+                                                    <lightning-icon
+                                                        icon-name="utility:close"
+                                                        icon-label="Close"
+                                                    ></lightning-icon>
+                                                    <span class="slds-assistive-text">{label.closeLabel}</span>
+                                                </button>
+                                                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+                                                    {label.EditContactLabel}
+                                                </h2>
+                                            </header>
+                                            <div
+                                                class="slds-modal__content slds-p-around_medium"
+                                                id="modal-content-id-1"
+                                            >
+                                                <!--Record Edit Form-->
+                                                <lightning-record-edit-form
+                                                    record-id={contactId}
+                                                    object-api-name="Contact"
+                                                    onsuccess={handleSuccessEdit}
+                                                    onsubmit={handleSubmitEdit}
+                                                >
+                                                    <lightning-messages></lightning-messages>
+                                                    <div
+                                                        class="slds-page-header slds-text-heading_medium"
+                                                        style="font-size:14px; font-weight:500;  "
+                                                    >
+                                                        {label.ContactInformationLabel}
+                                                    </div>
+                                                    <div
+                                                        class="slds-form-element__control slds-form-element__row slds-size_1-of-1 slds-form-element"
+                                                    >
+                                                        <div class="slds-grid slds-gutters">
+                                                            <div class="slds-col">
+                                                                <lightning-output-field
+                                                                    field-name="OwnerId"
+                                                                    aria-label="Contact Owner"
+                                                                    label={label.ContactOwner}
+                                                                ></lightning-output-field>
+                                                                <lightning-input-field
+                                                                    field-name="Name"
+                                                                    aria-label="Name"
+                                                                    required
+                                                                ></lightning-input-field>
+                                                                <lightning-input-field
+                                                                    field-name="AccountId"
+                                                                ></lightning-input-field>
+                                                                <lightning-input-field
+                                                                    field-name="Title"
+                                                                ></lightning-input-field>
+                                                            </div>
+                                                            <div class="slds-col">
+                                                                <lightning-input-field
+                                                                    field-name="Phone"
+                                                                    aria-label="Phone"
+                                                                ></lightning-input-field>
+                                                                <lightning-input-field
+                                                                    field-name="MobilePhone"
+                                                                    aria-label="Mobile"
+                                                                ></lightning-input-field>
+                                                                <lightning-input-field
+                                                                    field-name="Email"
+                                                                ></lightning-input-field>
+                                                                <lightning-input-field
+                                                                    field-name="Department"
+                                                                ></lightning-input-field>
+                                                                <lightning-input-field
+                                                                    field-name="ReportsToId"
+                                                                ></lightning-input-field>
+                                                                <lightning-input-field
+                                                                    field-name="Id"
+                                                                    class="slds-hidden"
+                                                                    value={conid}
+                                                                ></lightning-input-field>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class=" slds-page-header slds-text-heading_medium"
+                                                        style="font-size:16px; font-weight:500;"
+                                                    >
+                                                        {label.AddressInformationLabel}
+                                                    </div>
+                                                    <div
+                                                        class="slds-form-element__control slds-form-element__row slds-size_1-of-1 slds-form-element"
+                                                    >
+                                                        <div class="slds-grid slds-gutters">
+                                                            <div class="slds-col">
+                                                                <lightning-input-field
+                                                                    field-name="MailingAddress"
+                                                                ></lightning-input-field>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--Record Edit Form Buttons-->
+                                                    <footer class="slds-modal__footer">
+                                                        <lightning-button
+                                                            class="slds-m-top_medium slds-p-horizontal_small"
+                                                            label={label.cancelLabel}
+                                                            onclick={handleReset}
+                                                        >
+                                                        </lightning-button>
+                                                        <lightning-button
+                                                            variant="brand"
+                                                            class="slds-m-top_medium slds-p-horizontal_small"
+                                                            type="submit"
+                                                            name="submit"
+                                                            label={label.saveLabel}
+                                                        >
+                                                        </lightning-button>
+                                                    </footer>
+                                                </lightning-record-edit-form>
+                                                <!--Record Edit Form-->
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <div class="slds-backdrop slds-backdrop_open"></div>
+                                </template>
+                            </div>
+                            <div class="slds-m-top_medium slds-m-bottom_medium slds-border_top"></div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <div class="slds-p-left_x-small buttonsLabelsGap" style="width:70%">
+                                        <label class="slds-form-element__label"
+                                            >{label.buyingInfluenceRoleLabel}<c-info-navigation
+                                                nav-url={label.buying_InfluenceRoleURL}
+                                            ></c-info-navigation
+                                        ></label>
+                                        <c-strength-redflag
+                                            class="slds-clearfix slds-float_right"
+                                            rfs-data={rfsDetails.BuyingInfluenceRole}
+                                            onvalueselected={handleMarkerChange}
+                                        ></c-strength-redflag>
+                                    </div>
+                                    <div class="slds-grid" style="width:70%">
+                                        <div class="slds-col slds-size_1-of-4">
+                                            <button
+                                                style="width: 95%;"
+                                                class={economicCss}
+                                                data-target-value={label.economicLabel}
+                                                data-target-id="Economic"
+                                                data-target-class="buyingInfluence"
+                                                onclick={handlebuyingInfluenceButtonClick}
+                                                data-target-selected={economicSelected}
+                                            >
+                                                <label class="slds-button__label" style="font-size:10px; color:black">
+                                                    <span>{label.economicLabel}</span>
+                                                </label>
+                                            </button>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-4">
+                                            <button
+                                                style="width: 95%"
+                                                class={technicalCss}
+                                                data-target-value={label.technicalLabel}
+                                                data-target-id="Technical"
+                                                data-target-class="buyingInfluence"
+                                                onclick={handlebuyingInfluenceButtonClick}
+                                                data-target-selected={technicalSelected}
+                                            >
+                                                <label class="slds-button__label" style="font-size:10px; color:black">
+                                                    <span>{label.technicalLabel}</span>
+                                                </label>
+                                            </button>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-4">
+                                            <button
+                                                style="width: 95%"
+                                                class={userCss}
+                                                data-target-value={label.userLabel}
+                                                data-target-id="User"
+                                                data-target-class="buyingInfluence"
+                                                onclick={handlebuyingInfluenceButtonClick}
+                                                data-target-selected={userSelected}
+                                            >
+                                                <label class="slds-button__label" style="font-size:10px; color:black">
+                                                    <span>{label.userLabel}</span>
+                                                </label>
+                                            </button>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-4">
+                                            <button
+                                                style="width: 95%"
+                                                class={coachCss}
+                                                data-target-value={label.coachLabel}
+                                                data-target-id="Coach"
+                                                data-target-class="buyingInfluence"
+                                                onclick={handlebuyingInfluenceButtonClick}
+                                                data-target-selected={coachSelected}
+                                            >
+                                                <label class="slds-button__label" style="font-size:10px; color:black">
+                                                    <span>{label.coachLabel}</span>
+                                                </label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-p-left_x-small slds-col slds-size_1-of-2 buttonsLabelsGap">
+                                    <label class="item slds-form-element__label"
+                                        >{label.Concept}<c-info-navigation
+                                            nav-url={label.ConceptURL}
+                                        ></c-info-navigation
+                                    ></label>
+                                    <c-strength-redflag
+                                        class="slds-clearfix slds-float_right"
+                                        rfs-data={rfsDetails.conceptBI}
+                                        onvalueselected={handleMarkerChange}
+                                    ></c-strength-redflag>
+
+                                    <lightning-textarea
+                                        name="concept"
+                                        value={concept}
+                                        max-length="32000"
+                                        placeholder={label.ConceptHolder}
+                                        onchange={handleConceptChange}
+                                        message-when-too-long="32K Charecters allowed"
+                                        style="font-size: small;"
+                                    ></lightning-textarea>
+                                    <lightning-layout>
+                                        <template if:true={showMaxLimitError}>
+                                            <div class="slds-text-color_error">{label.MaxTextLimitError}</div>
+                                        </template>
+                                    </lightning-layout>
+                                </div>
+                            </div>
+                            <div class="slds-m-around_medium item">
+                                <div class="slds-align_absolute-center">
+                                    <lightning-button
+                                        label={label.cancelLabel}
+                                        title="Non-primary action"
+                                        class="slds-m-left_x-small"
+                                        onclick={handleCancel}
+                                    >
+                                    </lightning-button>
+                                    <lightning-button
+                                        label={label.saveLabel}
+                                        title="Non-primary action"
+                                        class="slds-m-left_x-small"
+                                        variant="brand"
+                                        disabled={disableSaveButton}
+                                        onclick={handleSave}
+                                    >
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </article>
+            </template>
+        </div>
+    </template>
+    <template if:true={isCreateable}>
+        <div>
+            <lightning-button
+                variant="brand"
+                label={label.addBuyingInfluence}
+                disabled={disableAddButton}
+                onclick={handleCreateNew}
+            ></lightning-button>
+        </div>
+    </template>
+
+    <template if:false={isCreateable}>
+        <template if:true={nogreenBIData}>
+            <c-summary-view-no-data></c-summary-view-no-data>
+        </template>
+    </template>
+    <template if:true={ShowDeleteModal}>
+        <c-prompt-modal
+            header-label={label.deleteBuyingInfluence}
+            body-msg={label.deleteBuyingInfluenceMessage}
+            positive-response-button={label.Yes}
+            negative-response-button={label.cancelLabel}
+            close-label={label.closeLabel}
+            onpositiveresponse={handleDelete}
+            onnegativeresponse={closeModal}
+        ></c-prompt-modal>
+    </template>
+</template>

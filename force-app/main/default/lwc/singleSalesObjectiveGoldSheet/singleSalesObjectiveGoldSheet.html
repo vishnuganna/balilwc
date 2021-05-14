@@ -1,0 +1,195 @@
+<template>
+    <div class="slds-p-left_medium slds-p-right_medium slds-grid slds-gutters">
+        <article class="slds-card slds-card_boundary slds-m-bottom_large slds-size_1-of-1">
+            <!--Create View<lightning-card class="slds-m-around_none slds-p-around_none">-->
+            <div slot="title" class="slds-grid slds-card__header slds-grid_vertical-align-center cardheader-goldsheet">
+                <div class="slds-col slds-size_2-of-3">
+                    <span class="cardlabels-goldsheet"
+                        >{allLabels.SingleSalesObjectives}
+                        <c-info-navigation nav-url={allLabels.SingleSalesObjectiveLink}></c-info-navigation>
+                    </span>
+                </div>
+
+                <div class="slds-col slds-size_1-of-3">
+                    <div class="slds-clearfix slds-text-small slds-float_right">
+                        <lightning-button
+                            label={allLabels.Export}
+                            title={allLabels.Export}
+                            onclick={downloadCSVFile}
+                            class="slds-m-right_small"
+                        ></lightning-button>
+                        <template if:true={hasCreateAccess}>
+                            <lightning-button
+                                label={allLabels.AddNew}
+                                title={allLabels.AddNew}
+                                onclick={handleCreate}
+                            ></lightning-button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-card__body slds-border_top">
+                <template if:false={hasGoldSheetSSoData}>
+                    <div class="slds-p-bottom_x-small">
+                        <c-summary-view-no-data class="slds-text-medium"></c-summary-view-no-data>
+                    </div>
+                </template>
+                <template if:true={hasGoldSheetSSoData}>
+                    <div class="SavedStateDataTable">
+                        <lightning-datatable
+                            key-field="id"
+                            data={goldSheetSSOData}
+                            columns={savedColumns}
+                            show-row-number-column
+                            hide-checkbox-column
+                            resize-column-disabled
+                            default-sort-direction={defaultSortDirection}
+                            sorted-direction={sortDirection}
+                            sorted-by={sortedBy}
+                            onsort={onHandleSort}
+                            onrowaction={handleRowAction}
+                        >
+                        </lightning-datatable>
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="slds-col slds-size_2-of-12" scope="col">
+                                        <div title={allLabels.TotalExpected}>
+                                            {allLabels.TotalExpected}
+                                        </div>
+                                    </th>
+
+                                    <th class="slds-col slds-size_7-of-12"></th>
+                                    <th scope="col" class="slds-col slds-size_3-of-12 paddingLeftSSOTotalRevenue">
+                                        <div class="slds-truncate" title={allLabels.TotalExpectedRevenue}>
+                                            <lightning-formatted-number
+                                                value={totalExpectedRevenue}
+                                                format-style="currency"
+                                            >
+                                            </lightning-formatted-number>
+                                        </div>
+                                        <!--<div class="slds-truncate" title="Confidence">{totalExpectedRevenue}</div>-->
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </template>
+            </div>
+            <!--Create View</lightning-card>-->
+        </article>
+    </div>
+    <!--Create View-->
+    <template if:true={showCreateView}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            class="slds-modal slds-fade-in-open slds-modal_medium"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={allLabels.Close}
+                        onclick={handleCreateCancel}
+                    >
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">{allLabels.Cancel}</span>
+                    </button>
+                    <h2 id="modal-heading-Create" class="slds-modal__title slds-hyphenate">
+                        {allLabels.AddSingleSalesObjectives}
+                    </h2>
+                </header>
+                <div
+                    class="slds-modal__content slds-p-left_medium slds-p-right_medium slds-card_header slds-p-bottom_medium slds-p-top_x-small"
+                    id="modal-content-id-Create"
+                >
+                    <lightning-card>
+                        <lightning-layout horizontal-align="spread">
+                            <lightning-layout-item padding="left-small right-small" size="6">
+                                <div class="slds-grid slds-gutters_medium slds-m-left_medium slds-m-bottom_medium">
+                                    <lightning-input
+                                        name="enter-search"
+                                        aria-label="hidden"
+                                        type="search"
+                                        value={searchText}
+                                        class="slds-size_1-of-2 slds-p-right_small"
+                                        onkeyup={handleKeyUp}
+                                        onblur={reloadDefaultData}
+                                        placeholder={allLabels.SearchByKey}
+                                    ></lightning-input>
+                                    <lightning-input
+                                        type="checkbox"
+                                        label={allLabels.SearchAcrossAccounts}
+                                        name="searchCheckbox"
+                                        class="slds-size_1-of-2 slds-p-top_large"
+                                        onchange={handlleSearchAllAccounts}
+                                    ></lightning-input>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <template if:true={hasSearchResultOnLoad}>
+                            <template if:false={hasSearchResult}>
+                                <div class="addScroll">
+                                    <lightning-datatable
+                                        key-field="id"
+                                        data={searchResultDataOnLoad}
+                                        columns={columns}
+                                        onrowselection={getRowData}
+                                        resize-column-disabled
+                                    >
+                                    </lightning-datatable>
+                                </div>
+                            </template>
+                        </template>
+                        <template if:true={hasSearchResult}>
+                            <div class="addScroll">
+                                <lightning-datatable
+                                    key-field="id"
+                                    data={searchResultData}
+                                    columns={columns}
+                                    onrowselection={getRowData}
+                                    resize-column-disabled
+                                >
+                                </lightning-datatable>
+                            </div>
+                        </template>
+                        <template if:false={hasSearchResult}>
+                            <template if:false={hasSearchResultOnLoad}>
+                                <lightning-datatable key-field="id" columns={columns} resize-column-disabled>
+                                </lightning-datatable>
+                                <span class="slds-align_absolute-center slds-m-top_large">{allLabels.NoResults}</span>
+                            </template>
+                        </template>
+                    </lightning-card>
+                </div>
+                <div class="slds-modal__footer slds-align_center slds-theme_default">
+                    <div class="slds-align_absolute-center">
+                        <lightning-button
+                            label={allLabels.Cancel}
+                            class="slds-p-right_x-small slds-text-small "
+                            variant="neutral"
+                            onclick={handleCreateCancel}
+                            name="cancelButton"
+                        ></lightning-button>
+                        <lightning-button
+                            label={allLabels.Save}
+                            class="slds-text-small"
+                            aria-disabled={isSaveDisabled}
+                            disabled={isSaveDisabled}
+                            variant="brand"
+                            onclick={handleSave}
+                            name="saveButton"
+                        ></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,577 @@
+<template>
+    <!-- Action Alert Configuration -->
+    <template if:true={categoryActAlert}>
+        <template if:false={viewCategoryActionAlert}>
+            <div class="container slds-p-top_medium">
+                <div class="slds-button slds-section__title-action">
+                    <span class="slds-p-right_small">{label.ActionAlertConfiguration}</span>
+                    <span onclick={handleToggleSectionAction} class="hovercls">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            class="hovercls"
+                        >
+                            <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z"></path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </template>
+        <template if:true={viewCategoryActionAlert}>
+            <div>
+                <div class="container slds-p-top_medium">
+                    <div class="slds-button slds-section__title-action">
+                        <span class="slds-p-right_small">{label.ActionAlertConfiguration}</span>
+                        <span onclick={handleToggleSectionAction} class="hovercls">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                                <path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"></path>
+                            </svg>
+                        </span>
+                    </div>
+
+                    <div class="slds-p-left_medium slds-p-right_medium slds-p-top_medium slds-grid slds-gutters">
+                        <article class="slds-card slds-m-bottom_large slds-size_2-of-2">
+                            <template if:true={showCreateEditState}>
+                                <template if:true={showNotificationError}>
+                                    <div class="slds-text-color_error">
+                                        {label.RulescheckError}
+                                    </div>
+                                </template>
+                                <table
+                                    class="slds-table slds-table_cell-buffer"
+                                    style="width: 100%; table-layout: fixed;"
+                                >
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col" style="width: 10%;">
+                                            <div class="slds-truncate"></div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 10%;">
+                                            <div class="slds-truncate">
+                                                {label.AlertEnabled}
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 10%;">
+                                            <div class="slds-truncate">
+                                                {label.OverrideText}
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 40%;">
+                                            <div class="slds-truncate">
+                                                {label.CustomText}
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 30%;">
+                                            <div class="def-text">
+                                                {label.DefaultText}
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tbody>
+                                        <tr class="slds-hint-parent" style="height: 50px">
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    {label.Header}
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            label=""
+                                                            name="isAlertEnabledAction"
+                                                            variant="label-hidden"
+                                                            disabled={disableActionAlert}
+                                                            onchange={handleIsAlertEnabledClickAction}
+                                                            checked={isAlertEnabledAction}
+                                                        ></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            label=""
+                                                            name="isHeaderOverrideEnabledAction"
+                                                            variant="label-hidden"
+                                                            disabled={disableOverrideTextAction}
+                                                            onchange={handleIsHeaderOverrideClickAction}
+                                                            checked={isHeaderOverrideEnabledAction}
+                                                        ></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 40%;">
+                                                <div class="slds-truncate">
+                                                    <lightning-input
+                                                        class="slds-m-top--xxx-small headerCustomTextAction"
+                                                        variant="label-hidden"
+                                                        aria-label="hidden"
+                                                        name="headerCustomTextAction"
+                                                        label=""
+                                                        max-length="80"
+                                                        value={headerCustomTextAction}
+                                                        disabled={disableActionAlertCustomText}
+                                                        onchange={handleheaderCustomInputsAction}
+                                                    ></lightning-input>
+                                                </div>
+                                                <template if:true={showMaxLimitErrorHeaderAction}
+                                                    ><div class="slds-text-color_error">
+                                                        {label.HeaderCustomeMaxError}
+                                                    </div></template
+                                                >
+                                            </td>
+                                            <td data-label="Header" style="width: 30%;">
+                                                <div class="slds-truncate def-text">
+                                                    {defaultAlertHeaderAction}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="slds-hint-parent" style="height: 60px">
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    {label.AlertText}
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate"></div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            label=""
+                                                            name="isAlertOverrideEnabledAction"
+                                                            variant="label-hidden"
+                                                            disabled={disableOverrideTextAction}
+                                                            onchange={handleIsAlertOverrideEnabledClickAction}
+                                                            checked={isAlertOverrideEnabledAction}
+                                                        ></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 40%;">
+                                                <div class="slds-truncate">
+                                                    <lightning-textarea
+                                                        name="alertCustomTextAction"
+                                                        onchange={handlealertCustomTextAction}
+                                                        label=""
+                                                        value={alertCustomTextAction}
+                                                        disabled={disableActionAlertCustomText}
+                                                        class="textAreaPosition handlealertCustomTextAction"
+                                                        max-length="256"
+                                                        style="font-size: small;"
+                                                    ></lightning-textarea>
+                                                    <template if:true={showMaxLimitErrorAlertAction}
+                                                        ><div class="slds-text-color_error">
+                                                            {label.AlertMaxError}
+                                                        </div></template
+                                                    >
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 30%;">
+                                                <div class="def-text def-text">
+                                                    {defaultAlertMessageAction}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </template>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </template>
+    <!-- /Action Alert Configuration -->
+
+    <!-- Seller Email Configuration-->
+    <template if:true={categorySellerAlert}>
+        <template if:false={viewCategorySellerAlert}>
+            <div class="container slds-p-top_medium">
+                <div class="slds-button slds-section__title-action">
+                    <span class="slds-p-right_small">{label.SellerEmailConfiguration}</span>
+                    <span onclick={handleToggleSectionSeller} class="hovercls">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            class="hovercls"
+                        >
+                            <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z"></path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </template>
+        <template if:true={viewCategorySellerAlert}>
+            <div>
+                <div class="container slds-p-top_medium">
+                    <div class="slds-button slds-section__title-action">
+                        <span class="slds-p-right_small">{label.SellerEmailConfiguration}</span>
+                        <span onclick={handleToggleSectionSeller} class="hovercls">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                                <path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"></path>
+                            </svg>
+                        </span>
+                    </div>
+
+                    <div class="slds-p-left_medium slds-p-right_medium slds-p-top_medium slds-grid slds-gutters">
+                        <article class="slds-card slds-m-bottom_large slds-size_2-of-2">
+                            <template if:true={showCreateEditState}>
+                                <template if:true={showNotificationError}>
+                                    <div class="slds-text-color_error">
+                                        {label.RulescheckError}
+                                    </div>
+                                </template>
+                                <table
+                                    class="slds-table slds-table_cell-buffer"
+                                    style="width: 100%; table-layout: fixed;"
+                                >
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col" style="width: 10%;">
+                                            <div class="slds-truncate"></div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 10%;">
+                                            <div class="slds-truncate">
+                                                {label.AlertEnabled}
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 10%;">
+                                            <div class="slds-truncate">
+                                                {label.OverrideText}
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 40%;">
+                                            <div class="slds-truncate">
+                                                {label.CustomText}
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 30%;">
+                                            <div class="def-text">
+                                                {label.DefaultText}
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tbody>
+                                        <tr class="slds-hint-parent" style="height: 50px">
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    {label.Header}
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            label=""
+                                                            name="isAlertEnabledSeller"
+                                                            variant="label-hidden"
+                                                            disabled={disableSellerAlert}
+                                                            onchange={handleIsAlertEnabledClickSeller}
+                                                            checked={isAlertEnabledSeller}
+                                                        ></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            label=""
+                                                            name="isHeaderOverrideEnabledSeller"
+                                                            variant="label-hidden"
+                                                            disabled={disableOverrideTextSeller}
+                                                            onchange={handleIsHeaderOverrideClickSeller}
+                                                            checked={isHeaderOverrideEnabledSeller}
+                                                        ></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 40%;">
+                                                <div class="slds-truncate">
+                                                    <lightning-input
+                                                        class="slds-m-top--xxx-small headerCustomTextSeller"
+                                                        variant="label-hidden"
+                                                        aria-label="hidden"
+                                                        name="headerCustomTextSeller"
+                                                        label=""
+                                                        max-length="80"
+                                                        value={headerCustomTextSeller}
+                                                        disabled={disableSellerAlertCustomText}
+                                                        onchange={handleheaderCustomInputsSeller}
+                                                    ></lightning-input>
+                                                </div>
+                                                <template if:true={showMaxLimitErrorHeaderSeller}
+                                                    ><div class="slds-text-color_error">
+                                                        {label.HeaderCustomeMaxError}
+                                                    </div></template
+                                                >
+                                            </td>
+                                            <td data-label="Header" style="width: 30%;">
+                                                <div class="slds-truncate def-text">
+                                                    {defaultAlertHeaderSeller}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="slds-hint-parent" style="height: 60px">
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    {label.AlertText}
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate"></div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            label=""
+                                                            name="isAlertOverrideEnabledSeller"
+                                                            variant="label-hidden"
+                                                            disabled={disableOverrideTextSeller}
+                                                            onchange={handleIsAlertOverrideEnabledClickSeller}
+                                                            checked={isAlertOverrideEnabledSeller}
+                                                        ></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 40%;">
+                                                <div class="slds-truncate">
+                                                    <lightning-textarea
+                                                        name="alertCustomTextSeller"
+                                                        onchange={handlealertCustomTextSeller}
+                                                        label=""
+                                                        value={alertCustomTextSeller}
+                                                        disabled={disableSellerAlertCustomText}
+                                                        class="textAreaPosition handlealertCustomTextSeller"
+                                                        max-length="256"
+                                                        style="font-size: small;"
+                                                    ></lightning-textarea>
+                                                    <template if:true={showMaxLimitErrorAlertSeller}
+                                                        ><div class="slds-text-color_error">
+                                                            {label.AlertMaxError}
+                                                        </div></template
+                                                    >
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 30%;">
+                                                <div class="def-text def-text">
+                                                    {defaultAlertMessageSeller}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </template>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </template>
+    <!-- /Seller Email Configuration-->
+
+    <!-- Manager Email Configuration -->
+    <template if:true={categoryMngrAlert}>
+        <template if:false={viewCategoryMngrAlert}>
+            <div class="container slds-p-top_medium">
+                <div class="slds-button slds-section__title-action">
+                    <span class="slds-p-right_small">{label.ManagerEmailConfiguration}</span>
+                    <span onclick={handleToggleSectionMngr} class="hovercls">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            class="hovercls"
+                        >
+                            <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z"></path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+        </template>
+        <template if:true={viewCategoryMngrAlert}>
+            <div>
+                <div class="container slds-p-top_medium">
+                    <div class="slds-button slds-section__title-action">
+                        <span class="slds-p-right_small">{label.ManagerEmailConfiguration}</span>
+                        <span onclick={handleToggleSectionMngr} class="hovercls">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                                <path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"></path>
+                            </svg>
+                        </span>
+                    </div>
+
+                    <div class="slds-p-left_medium slds-p-right_medium slds-p-top_medium slds-grid slds-gutters">
+                        <article class="slds-card slds-m-bottom_large slds-size_2-of-2">
+                            <template if:true={showCreateEditState}>
+                                <template if:true={showNotificationError}>
+                                    <div class="slds-text-color_error">
+                                        {label.RulescheckError}
+                                    </div>
+                                </template>
+                                <table
+                                    class="slds-table slds-table_cell-buffer"
+                                    style="width: 100%; table-layout: fixed;"
+                                >
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col" style="width: 10%;">
+                                            <div class="slds-truncate"></div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 10%;">
+                                            <div class="slds-truncate">
+                                                {label.AlertEnabled}
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 10%;">
+                                            <div class="slds-truncate">
+                                                {label.OverrideText}
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 40%;">
+                                            <div class="slds-truncate">
+                                                {label.CustomText}
+                                            </div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 30%;">
+                                            <div class="def-text">
+                                                {label.DefaultText}
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tbody>
+                                        <tr class="slds-hint-parent" style="height: 50px">
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    {label.Header}
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            label=""
+                                                            name="isAlertEnabledMngr"
+                                                            variant="label-hidden"
+                                                            disabled={disableMngrAlert}
+                                                            onchange={handleIsAlertEnabledClickMngr}
+                                                            checked={isAlertEnabledMngr}
+                                                        ></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            label=""
+                                                            name="isHeaderOverrideEnabledMngr"
+                                                            variant="label-hidden"
+                                                            disabled={disableOverrideTextMngr}
+                                                            onchange={handleIsHeaderOverrideClickMngr}
+                                                            checked={isHeaderOverrideEnabledMngr}
+                                                        ></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 40%;">
+                                                <div class="slds-truncate">
+                                                    <lightning-input
+                                                        class="slds-m-top--xxx-small headerCustomTextMngr"
+                                                        variant="label-hidden"
+                                                        aria-label="hidden"
+                                                        name="headerCustomTextMngr"
+                                                        label=""
+                                                        max-length="80"
+                                                        value={headerCustomTextMngr}
+                                                        disabled={disableMngrAlertCustomText}
+                                                        onchange={handleheaderCustomInputsMngr}
+                                                    ></lightning-input>
+                                                </div>
+                                                <template if:true={showMaxLimitErrorHeaderMngr}
+                                                    ><div class="slds-text-color_error">
+                                                        {label.HeaderCustomeMaxError}
+                                                    </div></template
+                                                >
+                                            </td>
+                                            <td data-label="Header" style="width: 30%;">
+                                                <div class="slds-truncate def-text">
+                                                    {defaultAlertHeaderMngr}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="slds-hint-parent" style="height: 60px">
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    {label.AlertText}
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate"></div>
+                                            </td>
+                                            <td data-label="Header" style="width: 10%;">
+                                                <div class="slds-truncate">
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            label=""
+                                                            name="isAlertOverrideEnabledMngr"
+                                                            variant="label-hidden"
+                                                            disabled={disableOverrideTextMngr}
+                                                            onchange={handleIsAlertOverrideEnabledClickMngr}
+                                                            checked={isAlertOverrideEnabledMngr}
+                                                        ></lightning-input>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 40%;">
+                                                <div class="slds-truncate">
+                                                    <lightning-textarea
+                                                        name="alertCustomTextMngr"
+                                                        onchange={handlealertCustomTextMngr}
+                                                        label=""
+                                                        value={alertCustomTextMngr}
+                                                        disabled={disableMngrAlertCustomText}
+                                                        class="textAreaPosition handlealertCustomTextMngr"
+                                                        max-length="256"
+                                                        style="font-size: small;"
+                                                    ></lightning-textarea>
+                                                    <template if:true={showMaxLimitErrorAlertMngr}
+                                                        ><div class="slds-text-color_error">
+                                                            {label.AlertMaxError}
+                                                        </div></template
+                                                    >
+                                                </div>
+                                            </td>
+                                            <td data-label="Header" style="width: 30%;">
+                                                <div class="def-text def-text">
+                                                    {defaultAlertMessageMngr}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </template>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </template>
+    <!-- /Manager Email Configuration -->
+</template>

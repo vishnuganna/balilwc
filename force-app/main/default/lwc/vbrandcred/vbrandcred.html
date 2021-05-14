@@ -1,0 +1,427 @@
+<template>
+    <div class="slds-card__body margin0">
+        <article class={maincontainer}>
+            <div>
+                <article if:true={isExpandableView}>
+                    <div class="slds-grid slds-m-left_small">
+                        <div
+                            class="slds-grid slds-size_1-of-1 slds-m-top_x-small slds-m-bottom_x-small"
+                            style="align-items: center;"
+                        >
+                            <div onclick={handleToggleSection}>
+                                <div class="hovercls">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                                        <path
+                                            d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="slds-grid slds-size_1-of-1">
+                                <div class="slds-grid slds-size_4-of-12">
+                                    <b class="slds-text-heading_small slds-var-m-left_xx-small slds-p-top_x-small">
+                                        {label.validbusinessheader}
+                                        <c-info-navigation nav-url={label.vbrurl}></c-info-navigation>
+                                    </b>
+                                </div>
+
+                                <div class="slds-grid slds-size_4-of-12">
+                                    <b class="slds-text-heading_small slds-var-m-left_xx-small slds-p-top_x-small">
+                                        {label.crediblityheader}
+                                        <c-info-navigation nav-url={label.crediblityurl}></c-info-navigation>
+                                    </b>
+                                </div>
+                                <template if:true={iseditclicked}>
+                                    <template if:true={isUpdateable}>
+                                        <!-- <div class="slds-grid slds-size_1-of-12" style="justify-content: center;">
+                                            
+                                        </div> -->
+                                        <div class="slds-grid slds-size_1-of-12" style="justify-content: flex-end;">
+                                            <lightning-button
+                                                label={allLabels.Delete}
+                                                title=""
+                                                variant="base"
+                                                disabled="true"
+                                                class="slds-p-right_x-small"
+                                                onclick={handledeletebutton}
+                                            ></lightning-button>
+                                            <lightning-button
+                                                label={allLabels.edit}
+                                                title={allLabels.edit}
+                                                disabled="true"
+                                                onclick={editvbrandcred}
+                                            ></lightning-button>
+                                        </div>
+                                    </template>
+                                </template>
+
+                                <template if:true={showsavedstate}>
+                                    <template if:true={isUpdateable}>
+                                        <div class="slds-grid slds-size_4-of-12" style="justify-content: flex-end;">
+                                            <lightning-button
+                                                label={allLabels.Delete}
+                                                title=""
+                                                variant="base"
+                                                class="slds-p-left-small"
+                                                onclick={handledeletebutton}
+                                                style="margin-inline-end: 10px;"
+                                            ></lightning-button>
+                                            <lightning-button
+                                                label={allLabels.edit}
+                                                title={allLabels.edit}
+                                                onclick={editvbrandcred}
+                                                style="margin-inline-end: 20px;"
+                                            ></lightning-button>
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-border_top"></div>
+                    <article>
+                        <div class="slds-grid slds-size_1-of-1 slds-p-around_small">
+                            <div class="slds-grid slds-size_1-of-1">
+                                <template if:true={noDataAdded}>
+                                    <div class="slds-align_absolute-center slds-p-bottom_x-small">
+                                        <c-summary-view-no-data></c-summary-view-no-data>
+                                    </div>
+                                </template>
+
+                                <template if:false={noDataAdded}>
+                                    <template if:true={ShowModal}>
+                                        <c-prompt-modal
+                                            header-label={allLabels.deletevbrtitle}
+                                            body-msg={allLabels.deletevbrmsg}
+                                            positive-response-button={allLabels.yes}
+                                            negative-response-button={allLabels.cancel}
+                                            close-label={label.close}
+                                            onpositiveresponse={deleteModal}
+                                            onnegativeresponse={closeModal}
+                                        ></c-prompt-modal>
+                                    </template>
+
+                                    <template if:true={showbutton}>
+                                        <template if:true={isCreateable}>
+                                            <div class="slds-m-top_medium">
+                                                <lightning-button
+                                                    variant="brand"
+                                                    label={allLabels.addcredvbrbtn}
+                                                    class="slds-m-left_medium pointer"
+                                                    onclick={addeditvbrandcred}
+                                                ></lightning-button>
+                                            </div>
+                                        </template>
+                                    </template>
+
+                                    <template if:true={editform}>
+                                        <div class="slds-col slds-size_1-of-1 slds-card slds-card_boundary">
+                                            <div class="slds-grid slds-size_1-of-1 slds-p-around_x-small">
+                                                <div class="slds-grid slds-size_5-of-12 slds-p-around_x-small ">
+                                                    <div class="slds-col">
+                                                        <label
+                                                            >{allLabels.reasonLabel}
+                                                            <c-strength-redflag
+                                                                rfs-data={rfsDetails.ReasonVBR}
+                                                                class="slds-clearfix slds-float_right"
+                                                                onvalueselected={handleMarkerChange}
+                                                            ></c-strength-redflag>
+                                                        </label>
+
+                                                        <div>
+                                                            <lightning-textarea
+                                                                value={reasonvalue}
+                                                                max-length="32000"
+                                                                onchange={handlereason}
+                                                                placeholder={allLabels.reasonplaceholder}
+                                                                message-when-too-long="32K Charecters allowed"
+                                                                style="font-size: small;"
+                                                            ></lightning-textarea>
+                                                            <lightning-layout>
+                                                                <template if:true={showMaxLimitError}
+                                                                    ><div class="slds-text-color_error">
+                                                                        {allLabels.Description_cannot_exceed_32k_characters}
+                                                                    </div></template
+                                                                >
+                                                            </lightning-layout>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="slds-grid slds-size_5-of-12 slds-var-m-left_small slds-p-top_x-small"
+                                                >
+                                                    <div class="slds-col slds-size_1-of-1">
+                                                        <span>{allLabels.credibilityLabel}</span>
+
+                                                        <div class="slds-grid slds-size_1-of-1">
+                                                            <div>
+                                                                <button
+                                                                    class={establishedCss}
+                                                                    onclick={handleCredibilityButtonClick}
+                                                                    data-target-value="Established"
+                                                                    data-target-id="idEstablished"
+                                                                    data-target-class="CredibilityButtons"
+                                                                    data-target-selected={establishedSelected}
+                                                                >
+                                                                    <lightning-icon
+                                                                        icon-name="utility:success"
+                                                                        variant="Success"
+                                                                        size="xx-small"
+                                                                    ></lightning-icon>
+                                                                    &nbsp;
+                                                                    <label
+                                                                        class="slds-button__label"
+                                                                        style="font-size:11px;color:black"
+                                                                    >
+                                                                        <span>{allLabels.EstablishedLabel}</span>
+                                                                    </label>
+                                                                </button>
+                                                            </div>
+
+                                                            <div class="slds-m-left_small">
+                                                                <button
+                                                                    class={notEstablishedCss}
+                                                                    onclick={handleCredibilityButtonClick}
+                                                                    data-target-value="NotEstablished"
+                                                                    data-target-id="idNotEstablished"
+                                                                    data-target-class="CredibilityButtons"
+                                                                    data-target-selected={notEstablishedSelected}
+                                                                >
+                                                                    <lightning-icon
+                                                                        icon-name="utility:ban"
+                                                                        variant="error"
+                                                                        size="xx-small"
+                                                                    ></lightning-icon>
+                                                                    &nbsp;
+                                                                    <label
+                                                                        class="slds-button__label"
+                                                                        style="font-size:11px;color:black"
+                                                                    >
+                                                                        <span>{allLabels.NotYetEstablishedLabel}</span>
+                                                                    </label>
+                                                                </button>
+                                                            </div>
+
+                                                            <template if:true={showerror}>
+                                                                <div
+                                                                    class="slds-grid slds-m-left_medium"
+                                                                    style="align-items: center;color: #C23934;"
+                                                                >
+                                                                    {allLabels.crediblityError}
+                                                                </div>
+                                                            </template>
+                                                        </div>
+
+                                                        <div class="slds-col slds-size_1-of-1 slds-m-top_small">
+                                                            <label
+                                                                >{allLabels.credLabel}
+                                                                <c-strength-redflag
+                                                                    rfs-data={rfsDetails.CredibilityVBR}
+                                                                    class="slds-clearfix slds-float_right"
+                                                                    onvalueselected={handleMarkerChange}
+                                                                ></c-strength-redflag>
+                                                            </label>
+
+                                                            <div>
+                                                                <lightning-textarea
+                                                                    value={increasecred}
+                                                                    max-length="32000"
+                                                                    onchange={handleincreasecred}
+                                                                    placeholder={allLabels.credPlaceholder}
+                                                                    message-when-too-long="32K Charecters allowed"
+                                                                    style="font-size: small;"
+                                                                ></lightning-textarea>
+                                                                <lightning-layout>
+                                                                    <template if:true={showMaxLimitErrorForIncreasecred}
+                                                                        ><div class="slds-text-color_error">
+                                                                            {allLabels.Description_cannot_exceed_32k_characters}
+                                                                        </div></template
+                                                                    >
+                                                                </lightning-layout>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="slds-grid slds-size_1-of-1 slds-align_absolute-center slds-m-bottom_medium"
+                                            >
+                                                <lightning-button
+                                                    label={allLabels.cancel}
+                                                    title="Non-primary action"
+                                                    class="slds-m-left_x-small"
+                                                    onclick={handlecancel}
+                                                >
+                                                </lightning-button>
+                                                <lightning-button
+                                                    label={allLabels.save}
+                                                    title="Non-primary action"
+                                                    class="slds-m-left_x-small"
+                                                    variant="brand"
+                                                    disabled={isbuttonDisabled}
+                                                    onclick={handleSave}
+                                                >
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <template if:true={showsavedstate}>
+                                        <div class="slds-grid slds-size_1-of-1 slds-p-around_x-small">
+                                            <div
+                                                class="slds-grid slds-size_5-of-12 slds-var-m-left_xx-small slds-p-top_x-small"
+                                            >
+                                                <div class="slds-col">
+                                                    <div class="slds-grid">
+                                                        <span>{allLabels.reasonLabel}</span>
+
+                                                        <c-strength-redflag
+                                                            rfs-data={rfsDetails.ReasonVBR}
+                                                            read-only-view="true"
+                                                        ></c-strength-redflag>
+                                                    </div>
+
+                                                    <div>
+                                                        <template if:true={reasonvalue}>
+                                                            <c-show-more-show-less-line
+                                                                class="slds-m-top_small"
+                                                                description={reasonvalue}
+                                                                no-of-lines="10"
+                                                            ></c-show-more-show-less-line>
+                                                        </template>
+
+                                                        <template if:false={reasonvalue}>
+                                                            -
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="slds-grid slds-size_5-of-12 slds-var-m-left_small slds-p-top_x-small"
+                                            >
+                                                <div class="slds-col">
+                                                    <div class="slds-grid">
+                                                        <span>{allLabels.credibilityLabel}</span>
+                                                        <c-strength-redflag
+                                                            rfs-data={rfsDetails.CredibilityVBR}
+                                                            read-only-view="true"
+                                                        ></c-strength-redflag>
+                                                    </div>
+
+                                                    <template if:true={credibility}>
+                                                        <div class="slds-grid" style="align-items: center;">
+                                                            <template if:true={showestablishedsvg}>
+                                                                <lightning-icon
+                                                                    icon-name="utility:success"
+                                                                    variant="Success"
+                                                                    size="x-small"
+                                                                ></lightning-icon>
+                                                            </template>
+
+                                                            <template if:false={showestablishedsvg}>
+                                                                <lightning-icon
+                                                                    icon-name="utility:ban"
+                                                                    variant="error"
+                                                                    size="xx-small"
+                                                                ></lightning-icon>
+                                                            </template>
+
+                                                            <b class="slds-m-left_x-small">{credibility}</b>
+                                                        </div>
+                                                    </template>
+
+                                                    <template if:false={credibility}>
+                                                        -
+                                                    </template>
+
+                                                    <div>
+                                                        <template if:true={increasecred}>
+                                                            <div>
+                                                                <c-show-more-show-less-line
+                                                                    class="slds-m-top_small"
+                                                                    description={increasecred}
+                                                                    no-of-lines="8"
+                                                                ></c-show-more-show-less-line>
+                                                            </div>
+                                                        </template>
+
+                                                        <template if:false={increasecred}>
+                                                            -
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+                    </article>
+                </article>
+
+                <div if:false={isExpandableView}>
+                    <div class="slds-grid slds-m-left_small">
+                        <div
+                            class="slds-grid slds-size_1-of-1 slds-m-top_x-small slds-m-bottom_x-small"
+                            style="align-items: center;"
+                        >
+                            <div onclick={handleToggleSection}>
+                                <span class="hovercls">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="12"
+                                        height="12"
+                                        viewBox="0 0 24 24"
+                                        class="hovercls"
+                                    >
+                                        <path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+
+                            <div class="slds-grid slds-size_1-of-1">
+                                <div class="slds-grid slds-size_5-of-12">
+                                    <b class="slds-text-heading_small slds-var-m-left_xx-small slds-p-top_x-small">
+                                        {label.validbusinessheader}
+                                        <c-info-navigation nav-url={label.vbrurl}></c-info-navigation>
+                                    </b>
+                                </div>
+
+                                <div class="slds-grid slds-size_5-of-12">
+                                    <b class="slds-text-heading_small slds-var-m-left_xx-small slds-p-top_x-small">
+                                        {label.crediblityheader}
+                                        <c-info-navigation nav-url={label.crediblityurl}></c-info-navigation>
+                                    </b>
+                                </div>
+                                <div class="slds-grid slds-size_1-of-12">
+                                    <!-- <lightning-button
+                                        label="Delete"
+                                        title=""
+                                        variant="base"
+                                        class="slds-p-right_x-small"
+                                        onclick={handledeletebutton}
+                                    ></lightning-button> -->
+                                </div>
+                                <div class="slds-grid slds-size_1-of-12">
+                                    <template if:true={showsavedstate}>
+                                        <template if:true={isUpdateable}>
+                                            <lightning-button
+                                                label={allLabels.edit}
+                                                title={allLabels.edit}
+                                                onclick={addeditvbrandcred}
+                                            ></lightning-button>
+                                        </template>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</template>

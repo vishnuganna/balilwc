@@ -1,0 +1,6 @@
+<aura:component
+    implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction"
+    access="global"
+>
+    <c:goldSheetPdfDownload onclosequickaction="{!c.closeQuickAction}" />
+</aura:component>

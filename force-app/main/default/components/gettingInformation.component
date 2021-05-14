@@ -1,0 +1,69 @@
+<apex:component controller="GreenSheetGettingGivingInformationPDF" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <div class="margintop15" style="padding-right: 70px">
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.gettingInformation}" />
+        </div>
+
+        <div class="margintop10">
+            <apex:repeat rendered="{!NOT(greenSheetPDFWrapper.gettingInformation.empty)}"
+                value="{!greenSheetPDFWrapper.gettingInformation}"
+                var="giObj"
+            >
+                <div class="margintop10 ">
+                    <div class="margintop20 boldfont colorgray ">
+                        <table style="margin-left: -2px;">
+                            <tr>
+                                <td class="data-bold-view" style="vertical-align: middle;">
+                                    <apex:pageBlock rendered="{! If(giObj.questionType != null ,true,false) }">
+                                        <span style="display: inline-block;margin-top: -3px">
+                                            {!giObj.questionType}</span
+                                        >
+                                        <span>
+                                            <apex:image style="width: 12px;height: 12px;padding-right: 4px;padding-left: 4px;"
+                                                url="{!URLFOR($Resource.pdf_resource, 'Icon-Golden-Silence.jpg')}"
+                                                rendered="{!IF(giObj.goldenSilence == true,true,false)}"
+                                            />
+                                        </span>
+                                    </apex:pageBlock>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <apex:repeat value="{!giObj.rfsMarkerPdfWrapper}" var="QuestionType">
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px;"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((QuestionType=='QuestionType'),IF(giObj.rfsMarkerPdfWrapper['QuestionType']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px;"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((QuestionType=='QuestionType'),IF(giObj.rfsMarkerPdfWrapper['QuestionType']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="margintop5 data-bold-view-normal" style="margin-left: 2px;">
+                        <apex:pageBlock rendered="{! If(giObj.question != null ,true,false) }">
+                            {!giObj.question}
+                        </apex:pageBlock>
+
+                        <apex:pageBlock rendered="{! If(giObj.question == null ,true,false) }">
+                            -
+                        </apex:pageBlock>
+                    </div>
+                </div>
+
+                <div class="linegray margintop10" style="width: 100% "></div>
+            </apex:repeat>
+
+            <apex:pageBlock rendered="{!(greenSheetPDFWrapper.gettingInformation.empty)}">
+                <div class="margintop10 semibold">
+                    <apex:outputLabel value="{!$Label.NodataAdded}" />
+                </div>
+            </apex:pageBlock>
+        </div>
+    </div>
+</apex:component>

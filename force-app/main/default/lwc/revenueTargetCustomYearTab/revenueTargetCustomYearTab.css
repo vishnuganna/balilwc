@@ -1,0 +1,10 @@
+p:empty {
+    width: 100px;
+    height: 20px;
+    background: transparent;
+}
+
+.errorstate {
+    border: 1px solid red;
+    border-radius: 3px;
+}

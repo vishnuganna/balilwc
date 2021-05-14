@@ -1,0 +1,268 @@
+<template>
+    <!--<div class="slds-card__body">-->
+    <template if:true={fopoRecList}>
+        <div class="slds-border_top fopDatatableClass ">
+            <c-custom-lightining-data-table
+                key-field="Id"
+                data={fopoRecList}
+                show-row-number-column
+                row-number-offset={rowOffset}
+                hide-checkbox-column
+                columns={columns}
+                resize-column-disabled
+                enable-infinite-loading
+                onrowaction={handleRowAction}
+            >
+            </c-custom-lightining-data-table>
+        </div>
+    </template>
+    <!-- </div>-->
+
+    <!-- Delete modal start -->
+    <template if:true={ShowDeleteModal}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={allLabels.close}
+                        onclick={handleDeleteModalNo}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text={allLabels.close}
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">{allLabels.close}</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                        {allLabels.fopOpportunityDelete}
+                    </h2>
+                </header>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p class="slds-align_absolute-center">{allLabels.deleteFopOpportunityMessage}</p>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={handleDeleteModalNo}>
+                        {allLabels.cancel}
+                    </button>
+                    <button class="slds-button slds-button_brand" onclick={handleDeleteModalYes}>
+                        {allLabels.yes}
+                    </button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- /Delete modal start -->
+
+    <!--Edit Model-->
+    <template if:true={showEditModel}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={allLabels.close}
+                        onclick={handleEditeModalCancel}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text={allLabels.close}
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">{allLabels.close}</span>
+                    </button>
+                </header>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                    <div class="slds-text-heading_medium slds-align--absolute-center  ">
+                        {allLabels.fieldOfPlayOpportunities}
+                    </div>
+                    <div class="slds-border_bottom slds-m-bottom_small slds-m-top_small"></div>
+
+                    <div class="slds-grid  slds-m-top_medium">
+                        <div class="slds-col">
+                            <label>
+                                {allLabels.fopOpportunityTitle}
+                                <abbr class="slds-required" title="required">*</abbr>
+                                <c-strength-redflag
+                                    rfs-data={rfsDetails.oppTitle}
+                                    class="slds-clearfix slds-float_right"
+                                    onvalueselected={handleMarkerChange}
+                                ></c-strength-redflag>
+                            </label>
+
+                            <div class="slds-m-top--xxx-small">
+                                <lightning-input
+                                    type="text"
+                                    label=""
+                                    variant="label-hidden"
+                                    aria-label="hidden"
+                                    value={editedRecData.title}
+                                    name="title"
+                                    max-length="81"
+                                    onchange={hangleTitleChange}
+                                ></lightning-input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-grid slds-m-top_medium">
+                        <div class="slds-col slds-size_6-of-12">
+                            <label
+                                >{allLabels.fopOpportunitykpi}
+                                <c-strength-redflag
+                                    rfs-data={rfsDetails.kpi}
+                                    class="slds-clearfix slds-float_right"
+                                    onvalueselected={handleMarkerChange}
+                                ></c-strength-redflag>
+                            </label>
+
+                            <div class="slds-m-top--xxx-small">
+                                <lightning-input
+                                    name="KPI"
+                                    type="text"
+                                    variant="label-hidden"
+                                    aria-label="hidden"
+                                    label=""
+                                    value={editedRecData.kpi}
+                                    onchange={handleKIPChange}
+                                ></lightning-input>
+                            </div>
+                        </div>
+
+                        <!-- <div class="slds-col slds-size_2-of-12"></div> -->
+
+                        <div class="slds-col slds-size_6-of-12">
+                            <label
+                                >{allLabels.fopOpportunityOwner}
+                                <c-strength-redflag
+                                    rfs-data={rfsDetails.strategicPlayer}
+                                    class="slds-clearfix slds-float_right"
+                                    onvalueselected={handleMarkerChange}
+                                ></c-strength-redflag>
+                            </label>
+
+                            <div class="slds-m-top--xxx-small">
+                                <c-lookup-component
+                                    child-object-api-name={objectForLookupField}
+                                    target-field-api-name={lookuptargetField}
+                                    field-label=""
+                                    value={editedRecData.ownerId}
+                                    onvalueselected={handleContactSelcted}
+                                    style="font-size:small;"
+                                ></c-lookup-component>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-grid_vertical  slds-m-top_medium">
+                        <div class="slds-col slds-size_3-of-3">
+                            <label for="textarea-id-01">{allLabels.description}</label>
+
+                            <c-strength-redflag
+                                rfs-data={rfsDetails.description}
+                                class="slds-clearfix slds-float_right"
+                                onvalueselected={handleMarkerChange}
+                            ></c-strength-redflag>
+                        </div>
+                        <!-- class="slds-form-element__control" -->
+                        <div class="slds-col slds-m-top--xxx-small">
+                            <div class="slds-size_3-of-3">
+                                <lightning-textarea
+                                    name="Description"
+                                    placeholder={allLabels.addDescription}
+                                    label=""
+                                    variant="label-hidden"
+                                    aria-label="hidden"
+                                    value={editedRecData.description}
+                                    onchange={handleDescChange}
+                                    max-length="32001"
+                                ></lightning-textarea>
+                            </div>
+                        </div>
+                        <div class="slds-col">
+                            <template if:true={showMaxLimitError}
+                                ><div class="slds-text-color_error">
+                                    {allLabels.Description_cannot_exceed_32k_characters}
+                                </div></template
+                            >
+                        </div>
+                    </div>
+
+                    <!-- <div class="slds-grid_vertical  slds-m-top_small">
+                        <div class="slds-col slds-size_3-of-3">
+                            <label for="textarea-id-01">Description</label>
+
+                            <c-strength-redflag
+                                rfs-data={rfsDetails.description}
+                                class="slds-clearfix slds-float_right"
+                                onvalueselected={handleMarkerChange}
+                            ></c-strength-redflag>
+                        </div>
+
+                        <div class="slds-col ">
+                            <div class="slds-size_3-of-3">
+                                <lightning-textarea
+                                    id="textarea-id-01"
+                                    class="slds-textarea"
+                                    placeholder="Placeholder Text"
+                                    onchange={handleDescChange}
+                                    max-length="32000"
+                                    value={editedRecData.description}
+                                >
+                                </lightning-textarea>
+                            </div>
+                        </div>
+
+                        <div class="slds-col">
+                            <template if:true={showMaxLimitError}
+                                ><div class="slds-text-color_error">
+                                    {allLabels.Description_cannot_exceed_32k_characters}
+                                </div></template
+                            >
+                        </div>
+                    </div> -->
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <lightning-button
+                        label={allLabels.cancel}
+                        variant="neutral"
+                        onclick={handleEditeModalCancel}
+                    ></lightning-button>
+                    <lightning-button
+                        label={allLabels.saveLabel}
+                        variant="brand"
+                        onclick={handleEditModalSave}
+                        class="slds-m-left_x-small"
+                        disabled={saveEnableFlag}
+                    ></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!--/Edit Model-->
+</template>

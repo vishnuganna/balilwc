@@ -1,0 +1,33 @@
+.divClass {
+    text-decoration: none !important;
+}
+.btnClicked {
+    background-color: #0070d2;
+    color: white;
+}
+.competitorpositionButtons {
+    display: grid;
+    width: 100%;
+    text-align: left;
+    text-decoration: none !important;
+}
+.competitorTypeButtons {
+    display: grid;
+    width: 100%;
+    text-align: left;
+    text-decoration: none !important;
+}
+.textAreaReadOnly {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+.erroMsg {
+    color: red;
+    font-size: 12px;
+}
+.textAreaPosition {
+    position: unset !important;
+}

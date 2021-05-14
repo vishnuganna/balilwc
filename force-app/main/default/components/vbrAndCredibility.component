@@ -1,0 +1,109 @@
+<apex:component controller="GreenSheetBIandVBRCredPDF" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <div class="margintop15" style="padding-right: 70px">
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.validbusinessheader}" />
+        </div>
+
+        <div class="margintop10">
+            <apex:repeat rendered="{!NOT(greenSheetPDFWrapper.greenSheet.empty)}"
+                value="{!greenSheetPDFWrapper.greenSheet}"
+                var="gsObj"
+            >
+                <apex:pageBlock rendered="{! If(gsObj.reason != null ,true,false) }">
+                    <div class="margintop10 ">
+                        <div class="margintop20 boldfont colorgray ">
+                            <table style="margin-left: -2px;">
+                                <tr>
+                                    <td class="data-bold-view font16 colorgray">
+                                        <apex:outputLabel value="{!$Label.reasonLabel}" />
+                                    </td>
+                                    <td style="vertical-align: top">
+                                        <apex:repeat value="{!gsObj.rfsMarkerPdfWrapper}" var="ReasonVBR">
+                                            <span>
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                    rendered="{!IF((ReasonVBR=='ReasonVBR'),IF(gsObj.rfsMarkerPdfWrapper['ReasonVBR']['redFlagSelected']==true,true,false),false)}"
+                                                />
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                    rendered="{!IF((ReasonVBR=='ReasonVBR'),IF(gsObj.rfsMarkerPdfWrapper['ReasonVBR']['strengthSelected']==true,true,false),false)}"
+                                                />
+                                            </span>
+                                        </apex:repeat>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="margintop5 data-bold-view-normal" style="margin-left: 2px;">
+                            <apex:pageBlock rendered="{! If(gsObj.reason != null ,true,false) }">
+                                {!gsObj.reason}
+                            </apex:pageBlock>
+
+                            <apex:pageBlock rendered="{! If(gsObj.reason == null ,true,false) }">
+                                -
+                            </apex:pageBlock>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+
+                <apex:pageBlock rendered="{! If( (gsObj.reason == null && gsObj.credibility==null ),true,false) }">
+                    <div class="margintop10 semibold">
+                        <apex:outputLabel value="{!$Label.NodataAdded}" />
+                    </div>
+                </apex:pageBlock>
+
+                <apex:pageBlock rendered="{! If(gsObj.credibility != null ,true,false) }">
+                    <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop15">
+                        <apex:outputLabel value="{!$Label.credibilityLabel}" />
+                    </div>
+                    <div class="margintop10 ">
+                        <div class="margintop20 boldfont colorgray ">
+                            <table style="margin-left: -2px;">
+                                <tr>
+                                    <td class="data-bold-view font16" style="vertical-align: top">
+                                        <apex:pageBlock rendered="{! If(gsObj.credibility != null ,true,false) }">
+                                            <apex:image style="width: 12px;height: 12px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'icon-status-complete.jpg')}"
+                                                rendered="{!IF(gsObj.credibility == 'Established',true,false)}"
+                                            />
+                                            <apex:image style="width: 12px;height: 12px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'Icon-Not-Established.jpg')}"
+                                                rendered="{!IF(gsObj.credibility == 'Not Yet Established',true,false)}"
+                                            />
+                                            {!gsObj.credibility}
+                                        </apex:pageBlock>
+                                    </td>
+                                    <td style="vertical-align: top">
+                                        <apex:repeat value="{!gsObj.rfsMarkerPdfWrapper}" var="CredibilityVBR">
+                                            <span>
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                    rendered="{!IF((CredibilityVBR=='CredibilityVBR'),IF(gsObj.rfsMarkerPdfWrapper['CredibilityVBR']['redFlagSelected']==true,true,false),false)}"
+                                                />
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                    rendered="{!IF((CredibilityVBR=='CredibilityVBR'),IF(gsObj.rfsMarkerPdfWrapper['CredibilityVBR']['strengthSelected']==true,true,false),false)}"
+                                                />
+                                            </span>
+                                        </apex:repeat>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="margintop5 data-bold-view-normal" style="margin-left: 2px;">
+                            <apex:pageBlock rendered="{! If(gsObj.toIncreaseCredibility != null ,true,false) }">
+                                {!gsObj.toIncreaseCredibility}
+                            </apex:pageBlock>
+
+                            <apex:pageBlock rendered="{! If(gsObj.toIncreaseCredibility == null ,true,false) }">
+                                -
+                            </apex:pageBlock>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+            </apex:repeat>
+        </div>
+    </div>
+</apex:component>

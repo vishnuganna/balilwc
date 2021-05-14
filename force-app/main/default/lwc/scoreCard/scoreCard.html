@@ -1,0 +1,514 @@
+<template>
+    <template if:true={moduleData}>
+        <c-go-to-bluesheet-prompts
+            module-data={moduleData}
+            module-learning-completed={moduleLearningCompleted}
+            module-section={moduleSection}
+        ></c-go-to-bluesheet-prompts>
+    </template>
+    <article class="slds-card slds-card_boundary container-border" style="text-decoration:none !important;">
+        <div class="slds-grid slds-gutters slds-p-top_x-small">
+            <div class="slds-col slds-size_1-of-2">
+                <span class="slds-text-heading_small">
+                    <div class="slds-p-left_medium slds-p-top_xx-small">
+                        <b>{label.Scorecard}</b
+                        ><c-info-navigation nav-url={label.ScorecardHeaderURL}></c-info-navigation>
+                    </div>
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <span>
+                    <div class="slds-p-left_x-small ">
+                        <div class="slds-grid slds-m-left_small slds-m-right_small">
+                            <div class="slds-col slds-size_1-of-1">
+                                <div class="slds-text-align--right">
+                                    <template if:false={showButtons}>
+                                        <lightning-button
+                                            label={label.exportToPdf}
+                                            class="slds-m-right_small"
+                                            title={label.exportToPdf}
+                                            onclick={exportScorecardPdf}
+                                        ></lightning-button>
+                                    </template>
+                                    <template if:true={hasEditAccess}>
+                                        <template if:false={showButtons}>
+                                            <lightning-button
+                                                label={label.deleteLabel}
+                                                class="slds-m-right_small slds-border_left slds-p-left_medium"
+                                                title={label.deleteLabel}
+                                                variant="base"
+                                                onclick={handleDelete}
+                                            ></lightning-button>
+                                            <lightning-button
+                                                label={label.edit}
+                                                disabled={disableEdit}
+                                                title={label.edit}
+                                                onclick={handleEdit}
+                                                class="slds-m-left_x-small "
+                                            ></lightning-button>
+                                        </template>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+
+        <div class="slds-m-top_x-small slds-m-bottom_x-small divClass">
+            <!--Create View of score Card-->
+            <template if:true={showCreateEditView}>
+                <div class="slds-m-left_x-small slds-m-right_x-small slds-m-top_small slds-m-bottom_small ">
+                    <div class="slds-grid slds-wrap topDivClass" style="width:100%">
+                        <article class="slds-card" style="width:100%;background-color:#F0F0F0">
+                            <div class="slds-card__body slds-card__body_inner">
+                                <div class="slds-m-top_large " style="float:left">
+                                    {label.singleSalesObjective}
+                                    <h1 style="font-weight:bold;" class="slds-text-heading_medium">{opptyName}</h1>
+                                </div>
+                                <div class="slds-m-around_large" style="float:right">
+                                    <div class="slds-grid slds-gutters">
+                                        <div class="slds-box slds-m-right_xx-small scoreDiv">
+                                            <p>
+                                                {label.potentialScore}
+                                                <span class="slds-m-left_small slds-text-heading_medium"
+                                                    >{potentialScore}</span
+                                                >
+                                            </p>
+                                        </div>
+                                        <div class="slds-box slds-m-right_xx-small scoreDiv">
+                                            <p>
+                                                {label.businessScore}
+                                                <span class="slds-m-left_small slds-text-heading_medium"
+                                                    >{businessScore}</span
+                                                >
+                                            </p>
+                                        </div>
+                                        <div class="slds-box slds-m-right_xx-small scoreDiv">
+                                            <p>
+                                                {label.opportunityScore}
+                                                <span class="slds-m-left_small slds-text-heading_medium"
+                                                    >{opptyScore}</span
+                                                >
+                                            </p>
+                                        </div>
+                                        <div class="slds-box scoreDiv">
+                                            <p>
+                                                {label.scorecardTotal}
+                                                <span class="slds-m-left_small slds-text-heading_medium"
+                                                    >{totalScore}</span
+                                                >
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <template if:true={showCreateView}>
+                            <template if:true={scoreCardCriterias}>
+                                <h1
+                                    class="slds-m-top_large slds-m-bottom_large slds-m-left_small"
+                                    style="font-weight:bold;font-size:14px"
+                                >
+                                    {label.opportunityCriteria}
+                                </h1>
+                                <table class="slds-table slds-no-row-hover">
+                                    <tbody>
+                                        <template for:each={scoreCardCriterias.templateCriteria} for:item="score">
+                                            <template if:true={score.isOpptySection}>
+                                                <tr class="slds-line-height_reset " key={score.templateCriteriaId}>
+                                                    <td>
+                                                        <lightning:layout
+                                                            class="slds-p-bottom_small  slds-p-top_small slds-grid slds-wrap"
+                                                            style="border-bottom:1px solid #D3D3D3"
+                                                        >
+                                                            <lightning:layoutItem class="slds-size_2-of-4">
+                                                                <div>
+                                                                    <div
+                                                                        style="font-weight:bold"
+                                                                        class="slds-cell-wrap"
+                                                                    >
+                                                                        {score.title}
+                                                                    </div>
+                                                                    <p
+                                                                        class="slds-m-top_small slds-cell-wrap"
+                                                                        style="line-height:18px"
+                                                                    >
+                                                                        {score.criteriaDef}
+                                                                    </p>
+                                                                </div>
+                                                            </lightning:layoutItem>
+                                                            <lightning:layoutItem
+                                                                class="slds-size_1-of-4 slds-m-left_x-small slds-m-top_large"
+                                                            >
+                                                                <button
+                                                                    value={score.templateCriteriaId}
+                                                                    onclick={selectYes}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons yesButton"
+                                                                >
+                                                                    {label.yes}
+                                                                </button>
+                                                                <button
+                                                                    value={score.templateCriteriaId}
+                                                                    onclick={selectUnknown}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons unknownButton"
+                                                                >
+                                                                    {label.unknown}
+                                                                </button>
+                                                                <button
+                                                                    value={score.templateCriteriaId}
+                                                                    onclick={selectNo}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons noButton"
+                                                                >
+                                                                    {label.no}
+                                                                </button>
+                                                                <span
+                                                                    class="slds-text-heading_medium slds-m-left_x-small"
+                                                                    style="font-weight:bold"
+                                                                    >{score.currentScore}</span
+                                                                >
+                                                            </lightning:layoutItem>
+                                                        </lightning:layout>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </template>
+                                    </tbody>
+                                </table>
+
+                                <h1
+                                    class="slds-m-top_large slds-m-bottom_large slds-m-left_small"
+                                    style="font-weight:bold;font-size:14px"
+                                >
+                                    {label.businessCriteria}
+                                </h1>
+                                <table class="slds-table slds-no-row-hover">
+                                    <tbody>
+                                        <template for:each={scoreCardCriterias.templateCriteria} for:item="score">
+                                            <template if:false={score.isOpptySection}>
+                                                <tr class="slds-line-height_reset" key={score.templateCriteriaId}>
+                                                    <td>
+                                                        <lightning:layout
+                                                            class="slds-p-bottom_small slds-p-top_small slds-grid slds-wrap"
+                                                            style="border-bottom:1px solid #D3D3D3"
+                                                        >
+                                                            <lightning:layoutItem class="slds-size_2-of-4">
+                                                                <div style="font-weight:bold" class="slds-cell-wrap">
+                                                                    {score.title}
+                                                                </div>
+                                                                <p
+                                                                    class="slds-m-top_small slds-cell-wrap"
+                                                                    style="line-height:18px"
+                                                                >
+                                                                    {score.criteriaDef}
+                                                                </p>
+                                                            </lightning:layoutItem>
+
+                                                            <lightning:layoutItem
+                                                                class="slds-size_1-of-4 slds-m-left_x-small slds-m-top_large"
+                                                            >
+                                                                <button
+                                                                    value={score.templateCriteriaId}
+                                                                    onclick={selectYes}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons yesButton"
+                                                                >
+                                                                    {label.yes}
+                                                                </button>
+                                                                <button
+                                                                    value={score.templateCriteriaId}
+                                                                    onclick={selectUnknown}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons unknownButton"
+                                                                >
+                                                                    {label.unknown}
+                                                                </button>
+                                                                <button
+                                                                    value={score.templateCriteriaId}
+                                                                    onclick={selectNo}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons noButton"
+                                                                >
+                                                                    {label.no}
+                                                                </button>
+                                                                <span
+                                                                    class="slds-text-heading_medium slds-m-left_x-small"
+                                                                    style="font-weight:bold"
+                                                                    >{score.currentScore}</span
+                                                                >
+                                                            </lightning:layoutItem>
+                                                        </lightning:layout>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                        </template>
+                        <template if:true={showEditView}>
+                            <template if:true={scoreCardData}>
+                                <h1
+                                    class="slds-m-top_large slds-m-bottom_large slds-m-left_small"
+                                    style="font-weight:bold;font-size:14px"
+                                >
+                                    {label.opportunityCriteria}
+                                </h1>
+                                <table class="slds-table slds-no-row-hover">
+                                    <tbody>
+                                        <template for:each={scoreCardData.templateCriteria} for:item="score">
+                                            <template if:true={score.isOpptySection}>
+                                                <tr class="slds-line-height_reset" key={score.id}>
+                                                    <td>
+                                                        <lightning:layout
+                                                            class="slds-p-bottom_small  slds-p-top_small slds-grid slds-wrap"
+                                                            style="border-bottom:1px solid #D3D3D3"
+                                                        >
+                                                            <lightning:layoutItem class="slds-size_2-of-4">
+                                                                <div>
+                                                                    <div
+                                                                        style="font-weight:bold"
+                                                                        class="slds-cell-wrap"
+                                                                    >
+                                                                        {score.title}
+                                                                    </div>
+                                                                    <p
+                                                                        class="slds-m-top_small slds-cell-wrap"
+                                                                        style="line-height:18px"
+                                                                    >
+                                                                        {score.criteriaDef}
+                                                                    </p>
+                                                                </div>
+                                                            </lightning:layoutItem>
+                                                            <lightning:layoutItem
+                                                                class="slds-size_1-of-4 slds-m-left_x-small slds-m-top_large"
+                                                            >
+                                                                <button
+                                                                    value={score.id}
+                                                                    onclick={selectYes}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons yesButton"
+                                                                >
+                                                                    {label.yes}
+                                                                </button>
+                                                                <button
+                                                                    value={score.id}
+                                                                    onclick={selectUnknown}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons unknownButton"
+                                                                >
+                                                                    {label.unknown}
+                                                                </button>
+                                                                <button
+                                                                    value={score.id}
+                                                                    onclick={selectNo}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons noButton"
+                                                                >
+                                                                    {label.no}
+                                                                </button>
+                                                                <span
+                                                                    class="slds-text-heading_medium slds-m-left_x-small"
+                                                                    style="font-weight:bold"
+                                                                    >{score.currentScore}</span
+                                                                >
+                                                            </lightning:layoutItem>
+                                                        </lightning:layout>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </template>
+                                    </tbody>
+                                </table>
+
+                                <h1
+                                    class="slds-m-top_large slds-m-bottom_large slds-m-left_small"
+                                    style="font-weight:bold;font-size:14px"
+                                >
+                                    {label.businessCriteria}
+                                </h1>
+                                <table class="slds-table slds-no-row-hover">
+                                    <tbody>
+                                        <template for:each={scoreCardData.templateCriteria} for:item="score">
+                                            <template if:false={score.isOpptySection}>
+                                                <tr class="slds-line-height_reset" key={score.id}>
+                                                    <td>
+                                                        <lightning:layout
+                                                            class="slds-p-bottom_small slds-p-top_small slds-grid slds-wrap"
+                                                            style="border-bottom:1px solid #D3D3D3"
+                                                        >
+                                                            <lightning:layoutItem class="slds-size_2-of-4">
+                                                                <div style="font-weight:bold" class="slds-cell-wrap">
+                                                                    {score.title}
+                                                                </div>
+                                                                <p
+                                                                    class="slds-m-top_small slds-cell-wrap"
+                                                                    style="line-height:18px"
+                                                                >
+                                                                    {score.criteriaDef}
+                                                                </p>
+                                                            </lightning:layoutItem>
+
+                                                            <lightning:layoutItem
+                                                                class="slds-size_1-of-4 slds-m-left_x-small slds-m-top_large"
+                                                            >
+                                                                <button
+                                                                    value={score.id}
+                                                                    onclick={selectYes}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons yesButton"
+                                                                >
+                                                                    {label.yes}
+                                                                </button>
+                                                                <button
+                                                                    value={score.id}
+                                                                    onclick={selectUnknown}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons unknownButton"
+                                                                >
+                                                                    {label.unknown}
+                                                                </button>
+                                                                <button
+                                                                    value={score.id}
+                                                                    onclick={selectNo}
+                                                                    class="slds-button slds-button_neutral slds-col slds-text-align_left scoreButtons noButton"
+                                                                >
+                                                                    {label.no}
+                                                                </button>
+                                                                <span
+                                                                    class="slds-text-heading_medium slds-m-left_x-small"
+                                                                    style="font-weight:bold"
+                                                                    >{score.currentScore}</span
+                                                                >
+                                                            </lightning:layoutItem>
+                                                        </lightning:layout>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                        </template>
+                        <div class="slds-m-top_medium slds-m-bottom_medium slds-align_absolute-center">
+                            <lightning-button
+                                label={label.cancel}
+                                disabled={disableCancel}
+                                onclick={handleCancel}
+                                class="slds-m-right_small"
+                            ></lightning-button>
+                            <lightning-button
+                                variant="brand"
+                                label={label.save}
+                                disabled={disableSave}
+                                onclick={handleSave}
+                            ></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <template if:false={showCreateEditView}>
+            <template if:true={showDefault}>
+                <template if:true={hasEditAccess}>
+                    <div>
+                        <lightning-layout horizontal-align="center" class="slds-p-around_small">
+                            <lightning-layout-item>
+                                <div>
+                                    <lightning-combobox
+                                        name=""
+                                        aria-label="hidden"
+                                        value={selectedScoreCard}
+                                        options={selectOptions}
+                                        onchange={handleChangeScoreCard}
+                                    ></lightning-combobox>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item padding="around-small">
+                                <div class="slds-m-top_x-small">
+                                    <lightning-button
+                                        variant="brand"
+                                        label={label.addScoreCard}
+                                        disabled={disableAddButton}
+                                        onclick={handleCreateNew}
+                                    ></lightning-button>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </template>
+                <template if:false={hasEditAccess}>
+                    <div class="slds-m-top_medium slds-m-bottom_medium">
+                        <c-summary-view-no-data></c-summary-view-no-data>
+                    </div>
+                </template>
+            </template>
+
+            <template if:false={showDefault}>
+                <lightning-layout horizontal-align="">
+                    <lightning-layout-item
+                        size="3"
+                        padding="around-small"
+                        class="slds-border_right slds-m-bottom_small"
+                    >
+                        <h1>{label.totalScores}</h1>
+                        <div>{totalScore}</div>
+                        <!--<div>{scoreCardData.totalPoints}</div>-->
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="3">
+                        {label.businessCriteria}
+                        <div>{businessScore}</div>
+                        <!--<div>{scoreCardData.businessScore}</div>-->
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="3">
+                        <div>
+                            {label.opportunityCriteria}
+                        </div>
+                        <div>{opptyScore}</div>
+                        <!--<div>{scoreCardData.opportunityScore}</div>-->
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </template>
+    </article>
+    <!--Show Edit View-->
+
+    <!-- modal start -->
+    <template if:true={ShowModal}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={label.close}
+                        onclick={closeModal}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text={label.close}
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">{label.close}</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                        {label.deleteScoreMsg}
+                    </h2>
+                </header>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium slds-text-align--center" id="modal-content-id-1">
+                    <p>{label.deleteScoreCardMessage}</p>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={deleteModal}>{label.yes}</button>
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>{label.no}</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- modal end -->
+</template>

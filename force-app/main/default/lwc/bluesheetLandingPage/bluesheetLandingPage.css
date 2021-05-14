@@ -1,0 +1,10 @@
+/* comment KFS-3 bug under line on the hovering of the card
+a:hover {
+    text-decoration:none !important;
+    display: inline-block;
+}
+*/
+
+.divider-top {
+    margin: -8px 0px -8px 15px !important;
+}

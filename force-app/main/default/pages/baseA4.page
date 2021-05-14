@@ -1,0 +1,1316 @@
+<!-- <apex:page applyBodyTag="false" applyHtmlTag="false" showHeader="false" sidebar="false" standardStylesheets="false"> -->
+
+<apex:page applyBodyTag="false"
+    applyHtmlTag="false"
+    showHeader="false"
+    sidebar="false"
+    controller="BlueSheetPDFController"
+    standardStylesheets="false"
+    renderAs="pdf"
+>
+    <html>
+        <!-- renderAs="pdf" -->
+        <!-- controller="DataDisplayController" -->
+
+        <head>
+            <style>
+                @page { margin-top: 30mm; margin-bottom: 90px; @top-left { content: element(header); } @bottom-left {
+                border-top: 1px solid #919191; color: #919191; content: element(footer); } size:A4; /* Put page numbers
+                in the top right corner of each page in the pdf document. */ @bottom-right { border-top: 1px solid
+                #919191; color: #919191; content: counter(page); } } body { line-height: 12px; letter-spacing:
+                0.8px;font-size: 9px;font-family: sans-serif; } table.footer { position: running(footer); width: 100%;
+                /* margin-bottom: 10px; */ } .repeatTableHeader { -fs-table-paginate: paginate; } .maincontainer {
+                width: 100%; } .width100 { width: 100% } div.mainHeader { position: running(header); } table.header {
+                table-layout: auto; width: 100%; } .dividerhr { border-bottom: 4px solid #007bc7; } .action-plan-text {
+                vertical-align: super; margin-left: 5px; } .linegray { border-bottom: 1px solid #d7d9d8; } .font20 {
+                font-size: 20px; } .boldfont { font-weight: bold; } .font9 { font-size: 9px; } .font16 { font-size:
+                16px; } .paddingleft5 { padding-left: 5px; } .capitalword { text-transform: uppercase; } .margintop10 {
+                margin-top: 10px; } div { padding-left: 3px; } .tableclass { width: 50%; vertical-align: text-top }
+                .blueborder { border: 2px solid #007bc7; padding: 10px; } .letterspacingtitle { letter-spacing: 1.5px; }
+                .scorecardscore { padding: 5px; background-color: #007bc7; border: 1px solid #007bc7; color: white;
+                border-radius: 50%; /* -moz-border-radius: 50%; -webkit-border-radius: 50%; -khtml-border-radius: 50%;
+                */ } .scorecardscore div{padding-left:0px} .squareborder { padding: 10px; background-color: #007bc7;
+                color: white; } .title {
+                font-family:ProximaNova;font-size:20px;font-weight:600;font-stretch:normal;font-style:normal;line-height:1.15;letter-spacing:1.5px;color:
+                black; text-transform: uppercase; } .marginleft5 { margin-left: 5px; } .colorgray { color: #302a2c; }
+                .margintop5 { margin-top: 5px; } .marginbottom24 { margin-bottom: 24px; } .marginbottom12 {
+                margin-bottom: 12px; } .marginleft12 { margin-left: -12px; } .lineheight23 { line-height: 23px; }
+                .margintop32 { margin-top: 32px; } .margintop12 { margin-top: 12px; } .margintop24 { margin-top: 24px; }
+                .scorecardscorecat { padding: 5px; border: 1px solid #007bc7; color: black; border-radius: 50%; /*
+                -moz-border-radius: 50%; -webkit-border-radius: 50%; -khtml-border-radius: 50%; */ } .scorecardscorecat
+                div{padding-left:0px}.secondFont{font-family:ProximaNova;font-size:9px;font-weight:600;font-stretch:normal;font-style:normal;line-height:1.33;letter-spacing:0.2px;color:
+                black;}
+                .subSecondFont{font-family:ProximaNova;font-size:9px;font-weight:normal;font-stretch:normal;font-style:normal;line-height:1.33;letter-spacing:0.2px;color:
+                black;}
+                .dataFirstHeading{font-family:ProximaNova;font-size:16px;font-weight:600;font-stretch:normal;font-style:normal;line-height:1.44;letter-spacing:0.4px;
+                color: black;}
+                .dataSecondHeading{font-family:ProximaNova;font-size:9px;font-weight:600;font-stretch:normal;font-style:normal;line-height:1.33;letter-spacing:0.8px;
+                color: black; text-transform: uppercase;}
+                .dataSecondGrayHeading{font-family:ProximaNova;font-size:9px;font-weight:600;font-stretch:normal;font-style:normal;line-height:1.33;letter-spacing:0.8px;
+                color: #302a2c;} .dataText{vertical-align:
+                text-top;font-family:ProximaNova;font-size:9px;font-weight:normal;font-stretch:normal;font-style:normal;line-height:1.33;letter-spacing:0.2px;color:
+                #302a2c} .textImage img{vertical-align: -webkit-baseline-middle;vertical-align: middle;margin-right:
+                2%;margin-left: 2%;} .socreBg{position:absolute;color:#fff;top:11px;width: 71%; text-align: center;}
+                .socreBlank{position:absolute;color:#000;top:13px;width: 71%; text-align: center;}
+                .socreBlankNext{position:absolute;color:#000;top:13px;width: 71%; text-align: center;} .auto {
+                line-break: auto; } .semibold { font-weight: 600; } .lineheight20 { line-height: 20px; }
+                .main-heading-bar{line-height:23px;font-size:16px;letter-spacing:0.4px;font-family:
+                ProximaNova;font-weight: 600;} .data-bold-view{font-family: ProximaNova; font-size: 9px;font-weight:
+                600; font-stretch: normal; font-style: normal; line-height: 1.33; letter-spacing: 0.2px;color:#302a2c}
+                .data-bold-view-normal{font-family: ProximaNova; font-size: 9px;font-weight: normal; font-stretch:
+                normal; font-style: normal; line-height: 1.33; letter-spacing: 0.2px;color:#302a2c}
+            </style>
+        </head>
+
+        <body>
+            <div class="mainHeader">
+                <table class="header">
+                    <tr>
+                        <td style="width: 50%;vertical-align: text-top">
+                            <span class="title boldfont font20 capitalword letterspacingtitle lineheight23">
+                                {!blueSheetPDFWrapper.blueSheet.blueSheetName}
+                            </span>
+                            <br></br>
+                            <span class="margintop5 subSecondFont">
+                                <apex:outputLabel value="{!$Label.StrategicAnalysisBlueSheet}" />
+                            </span>
+                        </td>
+
+                        <td style="width: 50%;vertical-align: text-top">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td class="padding5" style="vertical-align: text-top">
+                                        <span class="secondFont">
+                                            <apex:outputLabel value="{!$Label.AccountName}" />
+                                        </span>
+                                        <br></br>
+                                        <span class="subSecondFont">{!blueSheetPDFWrapper.blueSheet.accountName}</span>
+                                    </td>
+                                    <td style="vertical-align: text-top">
+                                        <span class="secondFont auto">
+                                            <apex:outputLabel value="{!$Label.CloseDate}" />
+                                        </span>
+                                        <br></br>
+                                        <span class="subSecondFont">
+                                            <apex:outputText value="{0,date,MM/dd/yy}">
+                                                <apex:param value="{!blueSheetPDFWrapper.blueSheet.closeDate}" />
+                                            </apex:outputText>
+                                        </span>
+                                    </td>
+
+                                    <td class="padding5" style="vertical-align: text-top">
+                                        <span class="secondFont">
+                                            <apex:outputLabel value="{!$Label.Amount}" />
+                                        </span>
+                                        <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.blueSheet.amount != null ,true,false) }"
+                                        >
+                                            <span class="subSecondFont" style=" margin-left: -9px;"
+                                                >{!blueSheetPDFWrapper.blueSheet.amount}</span
+                                            >
+                                        </apex:pageBlock>
+                                    </td>
+
+                                    <td class="padding5" style="vertical-align: text-top">
+                                        <span class="secondFont">
+                                            <apex:outputLabel value="{!$Label.OpportunityOwner}" />
+                                        </span>
+                                        <br></br>
+                                        <span class="subSecondFont">{!blueSheetPDFWrapper.blueSheet.ownerName}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <div class="width100 margintop10 ">
+                    <div class="dividerhr"></div>
+                </div>
+            </div>
+            <table class="footer">
+                <tr style="width: 100% ;padding:0px !important ">
+                    <td style="color: #919191" class="font9"
+                        >&copy; Korn Ferry 2020. All Rights Reserved. Confidential</td
+                    >
+                </tr>
+            </table>
+
+            <div id="maincontainer">
+                <!-- Start Single Sales Objective -->
+                <div class="margintop10 dataFirstHeading paddingleft5 ">
+                    <apex:outputLabel value="{!$Label.ssoPDF}" />
+                </div>
+                <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.singleSalesObjective != null ,true,false) }">
+                    <div class="margintop10  paddingleft5 font9  " style="margin-left: -8px;">
+                        <span>
+                            <apex:image style="width: 15px;height: 15px ; vertical-align: middle;"
+                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                rendered="{! If(blueSheetPDFWrapper.singleSalesObjective.redFlagSelected ,true,false) }"
+                            />
+                            <apex:image style="width: 15px;height: 15px ; vertical-align: middle;"
+                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                rendered="{! If(blueSheetPDFWrapper.singleSalesObjective.strengthSelected ,true,false) }"
+                            />
+                        </span>
+                        {!blueSheetPDFWrapper.singleSalesObjective.singleSalesObjectiveBS}
+                    </div>
+                </apex:pageBlock>
+
+                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.singleSalesObjective.singleSalesObjectiveBS==null ,true,false) }"
+                >
+                    <div class="margintop10 semibold">
+                        <apex:outputLabel value="{!$Label.NodataAdded}" />
+                    </div>
+                </apex:pageBlock>
+
+                <!--End  Single Sales Objective -->
+                <div class="margintop10 dataFirstHeading paddingleft5">
+                    <apex:outputLabel value="{!$Label.singleSalesObjective}" />
+                </div>
+                <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.singleSalesObjectives != null,true,false) }">
+                    <table style=" width:100%; margin-top: 10px;">
+                        <tr>
+                            <td class="tableclass">
+                                <table>
+                                    <tr>
+                                        <td style="padding-left: 0px !important">
+                                            <table style="width:100%">
+                                                <tr>
+                                                    <td
+                                                        class="dataSecondHeading"
+                                                        style="text-align: left;vertical-align: top;width: 178px;"
+                                                    >
+                                                        <div class="dataSecondHeading " style=" margin-left: -15px;">
+                                                            <apex:outputLabel value="{!$Label.Customer_Timing_for_Priorities}"
+                                                            />
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.singleSalesObjectives !=null ,true,false) }"
+                                                        >
+                                                            <span>
+                                                                <apex:repeat value="{!blueSheetPDFWrapper.singleSalesObjectives.rfsMarkerPdfWrapper}"
+                                                                    var="CustomerTimingforPriorities"
+                                                                >
+                                                                    <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                        url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                        rendered="{!IF((CustomerTimingforPriorities=='CustomerTimingforPriorities'),IF(blueSheetPDFWrapper.singleSalesObjectives.rfsMarkerPdfWrapper['CustomerTimingforPriorities']['redFlagSelected']==true,true,false),false)}"
+                                                                    />
+                                                                    <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                        url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                        rendered="{!IF((CustomerTimingforPriorities=='CustomerTimingforPriorities'),IF(blueSheetPDFWrapper.singleSalesObjectives.rfsMarkerPdfWrapper['CustomerTimingforPriorities']['strengthSelected']==true,true,false),false)}"
+                                                                    />
+                                                                </apex:repeat>
+                                                            </span>
+                                                        </apex:pageBlock>
+
+                                                        <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.singleSalesObjectives != null ,true,false) }"
+                                                        >
+                                                        </apex:pageBlock>
+                                                    </td>
+
+                                                    <td style="width: 40%"></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="margintop5">
+                                            <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.singleSalesObjectives.custTimingPriorities != null ,true,false) }"
+                                            >
+                                                <div class="dataText" style="margin-left: -20px;">
+                                                    {!blueSheetPDFWrapper.singleSalesObjectives.custTimingPriorities}
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding-left: 0px !important">
+                                            <table style="width:100%">
+                                                <tr>
+                                                    <td style="text-align: left;vertical-align: top;width: 135px;">
+                                                        <div class="dataSecondHeading" style="margin-left: -15px;">
+                                                            <apex:outputLabel value="{!$Label.Evaluation_of_Objective}"
+                                                            />
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.singleSalesObjectives !=null ,true,false) }"
+                                                        >
+                                                            <span>
+                                                                <apex:repeat value="{!blueSheetPDFWrapper.singleSalesObjectives.rfsMarkerPdfWrapper}"
+                                                                    var="EvaluationofObjectives"
+                                                                >
+                                                                    <apex:image style="width: 15px;height: 15px ; vertical-align: middle;"
+                                                                        url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                        rendered="{!IF((EvaluationofObjectives=='EvaluationofObjectives'),IF(blueSheetPDFWrapper.singleSalesObjectives.rfsMarkerPdfWrapper['EvaluationofObjectives']['redFlagSelected']==true,true,false),false)}"
+                                                                    />
+                                                                    <apex:image style="width: 15px;height: 15px ; vertical-align: middle;"
+                                                                        url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                        rendered="{!IF((EvaluationofObjectives=='EvaluationofObjectives'),IF(blueSheetPDFWrapper.singleSalesObjectives.rfsMarkerPdfWrapper['EvaluationofObjectives']['strengthSelected']==true,true,false),false)}"
+                                                                    />
+                                                                </apex:repeat>
+                                                            </span>
+                                                        </apex:pageBlock>
+                                                    </td>
+
+                                                    <td style="width: 50%"></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="margintop5">
+                                            <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.singleSalesObjectives.evaluationOfObjectives != null ,true,false) }"
+                                            >
+                                                <div class="dataText" style="margin-left: -20px;">
+                                                    {!blueSheetPDFWrapper.singleSalesObjectives.evaluationOfObjectives}
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                            <td class="tableclass">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <table style="width:100%">
+                                                <tr>
+                                                    <td
+                                                        class="dataSecondHeading"
+                                                        style="text-align: left;vertical-align: top;width: 182px;"
+                                                    >
+                                                        <div class="dataSecondHeading">
+                                                            <apex:outputLabel value="{!$Label.csoPDF}" />
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.singleSalesObjectives !=null ,true,false) }"
+                                                        >
+                                                            <span>
+                                                                <apex:repeat value="{!blueSheetPDFWrapper.singleSalesObjectives.rfsMarkerPdfWrapper}"
+                                                                    var="CustomersStatedObjectives"
+                                                                >
+                                                                    <apex:image style="width: 15px;height: 15px"
+                                                                        url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                        rendered="{!IF((CustomersStatedObjectives=='CustomersStatedObjectives'),IF(blueSheetPDFWrapper.singleSalesObjectives.rfsMarkerPdfWrapper['CustomersStatedObjectives']['redFlagSelected']==true,true,false),false)}"
+                                                                    />
+                                                                    <apex:image style="width: 15px;height: 15px"
+                                                                        url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                        rendered="{!IF((CustomersStatedObjectives=='CustomersStatedObjectives'),IF(blueSheetPDFWrapper.singleSalesObjectives.rfsMarkerPdfWrapper['CustomersStatedObjectives']['strengthSelected']==true,true,false),false)}"
+                                                                    />
+                                                                </apex:repeat>
+                                                            </span>
+                                                        </apex:pageBlock>
+                                                    </td>
+
+                                                    <td style="width: 40%"></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="margintop5 dataText">
+                                            <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.singleSalesObjectives.customerStatedObjective != null ,true,false) }"
+                                            >
+                                                {!blueSheetPDFWrapper.singleSalesObjectives.customerStatedObjective}
+                                            </apex:pageBlock>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </apex:pageBlock>
+                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.singleSalesObjectives== null ,true,false) }">
+                    <div class="margintop10 semibold">
+                        <apex:outputLabel value="{!$Label.NodataAdded}" />
+                    </div>
+                </apex:pageBlock>
+                <!-- <Current Position> -->
+                <div class="margintop10 dataFirstHeading paddingleft5 ">
+                    <apex:outputLabel value="{!$Label.currentPosition}" />
+                </div>
+                <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.currentPostion != null ,true,false) }">
+                    <div class="margintop10 capitalword paddingleft5 font9  " style="margin-left: -8px;">
+                        <div style="padding: 10px 10px 10px 0px">
+                            <span class="blueborder capitalword boldfont">
+                                {!blueSheetPDFWrapper.currentPostion}
+                            </span>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+
+                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.currentPostion.empty ,true,false) }">
+                    <div class="margintop10 semibold">
+                        <apex:outputLabel value="{!$Label.NodataAdded}" />
+                    </div>
+                </apex:pageBlock>
+                <!-- </Current Position> -->
+                <!-- <Scorecard> -->
+                <div class="margintop10 dataFirstHeading paddingleft5">
+                    <apex:outputLabel value="{!$Label.Scorecard}" />
+                </div>
+                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.scoreCard != null ,true,false) }">
+                    <div class="margintop10 paddingleft5 dataSecondHeading">
+                        <apex:outputLabel value="{!$Label.StrategicSellingScorecards}" />
+                    </div>
+
+                    <div class="margintop10">
+                        <table class="header">
+                            <tr>
+                                <td style="width: 20%;">
+                                    <table>
+                                        <tr>
+                                            <td class=" font16 lineheight23 " style="position: relative">
+                                                <div class="socreBg">
+                                                    <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.scoreCard.totalPoints != null ,true,false) }"
+                                                    >
+                                                        {!blueSheetPDFWrapper.scoreCard.totalPoints}
+                                                    </apex:pageBlock>
+                                                </div>
+                                                <apex:image style="width: 50px;"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'round_bg.PNG')}"
+                                                    rendered="{! If(blueSheetPDFWrapper.scoreCard.totalPoints != null ,true,false) }"
+                                                />
+                                            </td>
+                                            <td class="boldfont font9 colorgray">
+                                                <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.scoreCard.potentialScore != null ,true,false) }"
+                                                >
+                                                    Total Score (out of {!blueSheetPDFWrapper.scoreCard.potentialScore})
+                                                </apex:pageBlock>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <td style="width: 20%; ">
+                                    <table>
+                                        <tr>
+                                            <td class="font16 lineheight23" style="position: relative">
+                                                <div class="socreBlank">
+                                                    <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.scoreCard.businessScore != null ,true,false) }"
+                                                    >
+                                                        {!blueSheetPDFWrapper.scoreCard.businessScore}
+                                                    </apex:pageBlock>
+                                                </div>
+                                                <apex:image style="width: 50px;"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'round_no_bg.PNG')}"
+                                                    rendered="{! If(blueSheetPDFWrapper.scoreCard.businessScore != null ,true,false) }"
+                                                />
+                                            </td>
+                                            <td class="boldfont font9 colorgray">
+                                                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.scoreCard.businessScore != null,true,false) }"
+                                                >
+                                                    <apex:outputLabel value="{!$Label.businessScore}" />
+                                                </apex:pageBlock>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <td style="width: 20%; ">
+                                    <table>
+                                        <tr>
+                                            <td class="font16 lineheight23" style="position: relative">
+                                                <div class="socreBlankNext">
+                                                    <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.scoreCard.opportunityScore != null ,true,false) }"
+                                                    >
+                                                        {!blueSheetPDFWrapper.scoreCard.opportunityScore}
+                                                    </apex:pageBlock>
+                                                </div>
+                                                <apex:image style="width: 50px;"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'round_no_bg.PNG')}"
+                                                    rendered="{! If(blueSheetPDFWrapper.scoreCard.opportunityScore != null ,true,false) }"
+                                                />
+                                            </td>
+                                            <td class="boldfont marginleft5 font9 colorgray">
+                                                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.scoreCard.opportunityScore != null,true,false) }"
+                                                >
+                                                    <apex:outputLabel value="{!$Label.opportunityScore}" />
+                                                </apex:pageBlock>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <td style="width: 40%; "> </td>
+                            </tr>
+                        </table>
+                    </div>
+                </apex:pageBlock>
+                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.scoreCard== null ,true,false) }">
+                    <div class="margintop10 semibold">
+                        <apex:outputLabel value="{!$Label.NodataAdded}" />
+                    </div>
+                </apex:pageBlock>
+                <!-- </Scorecard> -->
+                <!-- <Competition> -->
+                <div class="margintop10 dataFirstHeading paddingleft5">
+                    <apex:outputLabel value="{!$Label.competition}" />
+                </div>
+                <div>
+                    <apex:repeat rendered="{!NOT(blueSheetPDFWrapper.competitions.empty)}"
+                        value="{!blueSheetPDFWrapper.competitions}"
+                        var="competitionObj"
+                    >
+                        <div>
+                            <apex:pageBlock rendered="{! If(competitionObj.accountName != null ,true,false) }">
+                                <div class="boldfont dataSecondHeading marginleft12">
+                                    {!competitionObj.accountName}
+                                    <apex:repeat value="{!competitionObj.rfsMarkerPdfWrapper}" var="competitor">
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px;vertical-align: middle;"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((competitor=='competitor'),IF(competitionObj.rfsMarkerPdfWrapper['competitor']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px;vertical-align: middle;"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((competitor=='competitor'),IF(competitionObj.rfsMarkerPdfWrapper['competitor']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </div>
+                            </apex:pageBlock>
+                            <apex:pageBlock rendered="{! If(competitionObj.competitiorTyepName != null ,true,false) }">
+                                <div class="boldfont capitalword font9 marginleft12">
+                                    {!competitionObj.competitiorTyepName}
+                                    <apex:repeat value="{!competitionObj.rfsMarkerPdfWrapper}" var="competitor">
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((competitor=='competitor'),IF(competitionObj.rfsMarkerPdfWrapper['competitor']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((competitor=='competitor'),IF(competitionObj.rfsMarkerPdfWrapper['competitor']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </div>
+                            </apex:pageBlock>
+                        </div>
+                        <div class="linegray marginbottom12" style="width: 100% "></div>
+                        <table style="width:100%;color: #4d4d4f">
+                            <tbody>
+                                <tr>
+                                    <td class="dataSecondGrayHeading" width="25%">
+                                        <apex:outputLabel value="{!$Label.competitionType}" />
+                                    </td>
+                                    <td width="25%"></td>
+                                    <td class="dataSecondGrayHeading" width="25%">
+                                        <apex:outputLabel value="{!$Label.myPositionvsCompetitior}" />
+                                    </td>
+                                    <td width="25%"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table style="width:100%;color: #4d4d4f">
+                            <tbody>
+                                <tr>
+                                    <td width="25%">
+                                        <div class="dataText marginbottom12 marginleft12" style="padding-right: 40px;">
+                                            <apex:pageBlock rendered="{! If(competitionObj.competitorType != null ,true,false) }"
+                                            >
+                                                {!competitionObj.competitorType}
+                                            </apex:pageBlock>
+                                            <apex:pageBlock rendered="{! If(competitionObj.competitorType == null ,true,false) }"
+                                            >
+                                                -
+                                            </apex:pageBlock>
+                                        </div>
+                                    </td>
+                                    <td width="25%"></td>
+                                    <td width="2%" style="display: block">
+                                        <div class="marginleft12 textImage">
+                                            <apex:pageBlock rendered="{! If(competitionObj.myPositionVsCompetitor != null ,true,false) }"
+                                            >
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'frontRunner.jpg')}"
+                                                    rendered="{!competitionObj.myPositionVsCompetitor == 'Front Runner'}"
+                                                />
+
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'shared.jpg')}"
+                                                    rendered="{!competitionObj.myPositionVsCompetitor == 'Shared'}"
+                                                />
+
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'zero.jpg')}"
+                                                    rendered="{!competitionObj.myPositionVsCompetitor == 'Zero'}"
+                                                />
+
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'onlyAlternative.jpg')}"
+                                                    rendered="{!competitionObj.myPositionVsCompetitor == 'Only Alternative'}"
+                                                />
+                                            </apex:pageBlock>
+                                        </div>
+                                    </td>
+                                    <td width="25%">
+                                        <div class="dataText marginbottom12 marginleft12" style="padding-right: 40px;">
+                                            <apex:pageBlock rendered="{! If(competitionObj.myPositionVsCompetitor != null ,true,false) }"
+                                            >
+                                                {!competitionObj.myPositionVsCompetitor}
+                                            </apex:pageBlock>
+                                            <apex:pageBlock rendered="{! If(competitionObj.myPositionVsCompetitor == null ,true,false) }"
+                                            >
+                                                -
+                                            </apex:pageBlock>
+                                        </div>
+                                    </td>
+                                    <td width="23%"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table style="width:100%;color: #4d4d4f">
+                            <tbody>
+                                <tr>
+                                    <td class="dataSecondGrayHeading" width="75%">
+                                        <apex:outputLabel value="{!$Label.competitiveDetail}" />
+                                        <apex:repeat value="{!competitionObj.rfsMarkerPdfWrapper}"
+                                            var="competitiveDetail"
+                                        >
+                                            <span>
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                    rendered="{!IF((competitiveDetail=='competitiveDetail'),IF(competitionObj.rfsMarkerPdfWrapper['competitiveDetail']['redFlagSelected']==true,true,false),false)}"
+                                                />
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                    rendered="{!IF((competitiveDetail=='competitiveDetail'),IF(competitionObj.rfsMarkerPdfWrapper['competitiveDetail']['strengthSelected']==true,true,false),false)}"
+                                                />
+                                            </span>
+                                        </apex:repeat>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table style="width:100%;color: #4d4d4f">
+                            <tbody>
+                                <tr>
+                                    <td width="75%">
+                                        <div class="dataText marginbottom24 marginleft12" style="padding-right: 40px;">
+                                            <apex:pageBlock rendered="{! If(competitionObj.competitiveDetail != null ,true,false) }"
+                                            >
+                                                {!competitionObj.competitiveDetail}
+                                            </apex:pageBlock>
+                                            <apex:pageBlock rendered="{! If(competitionObj.competitiveDetail == null ,true,false) }"
+                                            >
+                                                -
+                                            </apex:pageBlock>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </apex:repeat>
+                </div>
+                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.competitions.empty ,true,false) }">
+                    <div class="margintop10 semibold">
+                        <apex:outputLabel value="{!$Label.NodataAdded}" />
+                    </div>
+                </apex:pageBlock>
+                <!-- </Competition> -->
+                <!-- <Buying Influence> -->
+                <div class="margintop10 dataFirstHeading paddingleft5"
+                    ><apex:outputLabel value="{!$Label.buyingInfluence}"
+                /></div>
+                <div>
+                    <apex:repeat rendered="{!NOT(blueSheetPDFWrapper.buyingInfluences.empty)}"
+                        value="{!blueSheetPDFWrapper.buyingInfluences}"
+                        var="buyingInfluenceObj"
+                    >
+                        <div class="margintop12">
+                            <table style="width:100%; margin-left: -15px;">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 50%;text-align: left;">
+                                            <span class="boldfont font9">
+                                                <apex:pageBlock rendered="{! If((buyingInfluenceObj.contactFname != null &&buyingInfluenceObj.contactLname !=null) ,true,false) }"
+                                                >
+                                                    <div class="boldfont capitalword font9 marginleft15">
+                                                        {!buyingInfluenceObj.contactFname}
+                                                        {!buyingInfluenceObj.contactLname}, {!buyingInfluenceObj.title}
+                                                    </div>
+                                                </apex:pageBlock>
+                                            </span>
+                                        </td>
+                                        <td style="width: 40%;text-align: right;">
+                                            <span class="boldfont font9">
+                                                <apex:pageBlock rendered="{! If((buyingInfluenceObj.MailingState != null && buyingInfluenceObj.MailingCountry !=null) ,true,false) }"
+                                                >
+                                                    <div class="boldfont capitalword font9 "
+                                                        >{!buyingInfluenceObj.MailingState}
+                                                        {!buyingInfluenceObj.MailingCountry}
+                                                    </div>
+                                                </apex:pageBlock>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="linegray marginbottom12" style="width: 100% "></div>
+                        <div>
+                            <table style="width:100%; margin-left: -5px">
+                                <tbody>
+                                    <tr>
+                                        <td class="dataSecondGrayHeading" style="width: 25%;text-align: left;">
+                                            <apex:outputLabel value="{!$Label.buyingInfluenceRole}" />
+                                        </td>
+                                        <td class="dataSecondGrayHeading" style="width: 25%;text-align: left;">
+                                            <apex:outputLabel value="{!$Label.buyingMode}" />
+                                        </td>
+                                        <td class="dataSecondGrayHeading" style="width: 50%;text-align: left;">
+                                            <apex:outputLabel value="{!$Label.ratingEvidence}" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table style="width:100%; margin-left: -16px">
+                                <tbody>
+                                    <tr>
+                                        <td class="dataText" style="width: 25%;text-align: left;">
+                                            <apex:pageBlock rendered="{! If(buyingInfluenceObj.biRoleListWithSpaces !=null ,true,false) }"
+                                            >
+                                                <div class="dataText"
+                                                    >{!buyingInfluenceObj.biRoleListWithSpaces}
+                                                    <apex:repeat value="{!buyingInfluenceObj.rfsMarkerPdfWrapper}"
+                                                        var="BuyingInfluenceRole"
+                                                    >
+                                                        <span>
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((BuyingInfluenceRole=='BuyingInfluenceRole'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['BuyingInfluenceRole']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((BuyingInfluenceRole=='BuyingInfluenceRole'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['BuyingInfluenceRole']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                        <td class="dataText" style="width: 25%;text-align: left;">
+                                            <apex:pageBlock rendered="{! If(buyingInfluenceObj.mode !=null ,true,false) }"
+                                            >
+                                                <div class=" textImage">
+                                                    <apex:image style="width: 15px;height: 15px"
+                                                        url="{!URLFOR($Resource.pdf_resource, 'overConfident.jpg')}"
+                                                        rendered="{!buyingInfluenceObj.mode == 'Over Confident'}"
+                                                    />
+
+                                                    <apex:image style="width: 15px;height: 15px"
+                                                        url="{!URLFOR($Resource.pdf_resource, 'trouble.jpg')}"
+                                                        rendered="{!buyingInfluenceObj.mode == 'Trouble'}"
+                                                    />
+
+                                                    <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                        url="{!URLFOR($Resource.pdf_resource, 'evenKneel.jpg')}"
+                                                        rendered="{!buyingInfluenceObj.mode == 'Even Keel'}"
+                                                    />
+
+                                                    <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                        url="{!URLFOR($Resource.pdf_resource, 'growth.jpg')}"
+                                                        rendered="{!buyingInfluenceObj.mode == 'Growth'}"
+                                                    />
+                                                    <span class="dataText">{!buyingInfluenceObj.mode}</span>
+                                                    <apex:repeat value="{!buyingInfluenceObj.rfsMarkerPdfWrapper}"
+                                                        var="BuyingMode"
+                                                    >
+                                                        <span>
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((BuyingMode=='BuyingMode'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['BuyingMode']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((BuyingMode=='BuyingMode'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['BuyingMode']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                        <td class="dataText" style="width: 50%;text-align: left;">
+                                            <apex:pageBlock rendered="{! If(buyingInfluenceObj.ratingEvidence !=null ,true,false) }"
+                                            >
+                                                <div class="dataText"
+                                                    >{!buyingInfluenceObj.ratingEvidence}
+                                                    <apex:repeat value="{!buyingInfluenceObj.rfsMarkerPdfWrapper}"
+                                                        var="RatingEvidence"
+                                                    >
+                                                        <span>
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((RatingEvidence=='RatingEvidence'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['RatingEvidence']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((RatingEvidence=='RatingEvidence'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['RatingEvidence']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table class="margintop10" style="width:100%; margin-left: -5px">
+                                <tbody>
+                                    <tr>
+                                        <td class="boldfont colorgray font9" style="width: 25%;text-align: left;">
+                                            <apex:outputLabel value="{!$Label.competitivePreference}" />
+                                        </td>
+                                        <td class="boldfont colorgray font9" style="width: 25%;text-align: left;">
+                                            <apex:outputLabel value="{!$Label.degreeofInfluence}" />
+                                        </td>
+                                        <td class="boldfont colorgray font9" style="width: 50%;text-align: left;">
+                                            <apex:outputLabel value="{!$Label.rating}" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table style="width:100%; margin-left: -16px">
+                                <tbody>
+                                    <tr>
+                                        <td class="colorgray font9" style="width: 25%;text-align: left;">
+                                            <apex:pageBlock rendered="{! If(buyingInfluenceObj.compPref !=null ,true,false) }"
+                                            >
+                                                <div class=" colorgray margintop5 font9"
+                                                    >{!buyingInfluenceObj.compPref}
+                                                    <apex:repeat value="{!buyingInfluenceObj.rfsMarkerPdfWrapper}"
+                                                        var="CompetitivePreference"
+                                                    >
+                                                        <span>
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((CompetitivePreference=='CompetitivePreference'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['CompetitivePreference']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((CompetitivePreference=='CompetitivePreference'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['CompetitivePreference']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                        <td class="colorgray font9" style="width: 25%;text-align: left;">
+                                            <apex:pageBlock rendered="{! If(buyingInfluenceObj.degree !=null ,true,false) }"
+                                            >
+                                                <div class="margintop5 textImage">
+                                                    <apex:image style="width: 15px;height: 14px; vertical-align: middle;"
+                                                        url="{!URLFOR($Resource.pdf_resource, 'icon-doi-low.jpg')}"
+                                                        rendered="{!buyingInfluenceObj.degree == 'Low'}"
+                                                    />
+
+                                                    <apex:image style="width: 15px;height: 14px; vertical-align: middle;"
+                                                        url="{!URLFOR($Resource.pdf_resource, 'icon-doi-medium.jpg')}"
+                                                        rendered="{!buyingInfluenceObj.degree == 'Medium'}"
+                                                    />
+
+                                                    <apex:image style="width: 15px;height: 14px; vertical-align: middle;"
+                                                        url="{!URLFOR($Resource.pdf_resource, 'icon-doi-high.jpg')}"
+                                                        rendered="{!buyingInfluenceObj.degree == 'High'}"
+                                                    />
+                                                    <span class="dataText">{!buyingInfluenceObj.degree}</span>
+                                                    <apex:repeat value="{!buyingInfluenceObj.rfsMarkerPdfWrapper}"
+                                                        var="DegreeOfInfluence"
+                                                    >
+                                                        <span class="textImage">
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((DegreeOfInfluence=='DegreeOfInfluence'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['DegreeOfInfluence']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((DegreeOfInfluence=='DegreeOfInfluence'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['DegreeOfInfluence']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                        <td class="colorgray font9" style="width: 50%;text-align: left;">
+                                            <apex:pageBlock rendered="{! If(buyingInfluenceObj.rating !=null ,true,false) }"
+                                            >
+                                                <div>
+                                                    <span class="squareborder   font9 ">
+                                                        {!buyingInfluenceObj.rating} </span
+                                                    >&nbsp;
+                                                    <apex:repeat value="{!buyingInfluenceObj.rfsMarkerPdfWrapper}"
+                                                        var="Rating"
+                                                    >
+                                                        <span>
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((Rating=='Rating'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['Rating']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((Rating=='Rating'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['Rating']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table class="margintop10" style="width:100%; margin-left: -5px">
+                                <tbody>
+                                    <tr>
+                                        <td class="boldfont colorgray font9" style="width: 50%;text-align: left;">
+                                            <apex:outputLabel value="{!$Label.businessResultsPDF}" />
+                                        </td>
+                                        <td class="boldfont colorgray font9" style="width: 50%;text-align: left;">
+                                            <apex:outputLabel value="{!$Label.PersonalWinsPDF}" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table style="width:100%; margin-left: -16px">
+                                <tbody>
+                                    <tr>
+                                        <td class="colorgray font9" style="width: 50%;text-align: left;">
+                                            <apex:pageBlock rendered="{! If(buyingInfluenceObj.businessResults !=null ,true,false) }"
+                                            >
+                                                <div class=" colorgray margintop5 font9"
+                                                    >{!buyingInfluenceObj.businessResults}
+                                                    <apex:repeat value="{!buyingInfluenceObj.rfsMarkerPdfWrapper}"
+                                                        var="BusinessResults"
+                                                    >
+                                                        <span>
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((BusinessResults=='BusinessResults'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['BusinessResults']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((BusinessResults=='BusinessResults'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['BusinessResults']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:pageBlock>
+                                            <apex:pageBlock rendered="{! If(buyingInfluenceObj.businessResults ==null ,true,false) }"
+                                            >
+                                                <div class=" colorgray margintop5 font9"
+                                                    >-
+                                                    <apex:repeat value="{!buyingInfluenceObj.rfsMarkerPdfWrapper}"
+                                                        var="BusinessResults"
+                                                    >
+                                                        <span>
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((BusinessResults=='BusinessResults'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['BusinessResults']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((BusinessResults=='BusinessResults'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['BusinessResults']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                        <td class="colorgray font9" style="width: 50%;text-align: left;">
+                                            <apex:pageBlock rendered="{! If(buyingInfluenceObj.personalWins !=null ,true,false) }"
+                                            >
+                                                <div class="margintop5 colorgray font9"
+                                                    >{!buyingInfluenceObj.personalWins}
+                                                    <apex:repeat value="{!buyingInfluenceObj.rfsMarkerPdfWrapper}"
+                                                        var="PersonalWins"
+                                                    >
+                                                        <span>
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((PersonalWins=='PersonalWins'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['PersonalWins']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((PersonalWins=='PersonalWins'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['PersonalWins']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:pageBlock>
+                                            <apex:pageBlock rendered="{! If(buyingInfluenceObj.personalWins ==null ,true,false) }"
+                                            >
+                                                <div class="margintop5 colorgray font9"
+                                                    >-
+                                                    <apex:repeat value="{!buyingInfluenceObj.rfsMarkerPdfWrapper}"
+                                                        var="PersonalWins"
+                                                    >
+                                                        <span>
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                                rendered="{!IF((PersonalWins=='PersonalWins'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['PersonalWins']['redFlagSelected']==true,true,false),false)}"
+                                                            />
+                                                            <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                                rendered="{!IF((PersonalWins=='PersonalWins'),IF(buyingInfluenceObj.rfsMarkerPdfWrapper['PersonalWins']['strengthSelected']==true,true,false),false)}"
+                                                            />
+                                                        </span>
+                                                    </apex:repeat>
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </apex:repeat>
+                </div>
+                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.buyingInfluences.empty ,true,false) }">
+                    <div class="margintop10 semibold">
+                        <apex:outputLabel value="{!$Label.NodataAdded}" />
+                    </div>
+                </apex:pageBlock>
+                <!-- </Buying Influence> -->
+                <!-- <Summary of My Position> -->
+                <div class="margintop10 dataFirstHeading paddingleft5">
+                    <apex:outputLabel value="{!$Label.summaryOfMyPositionToday}" />
+                </div>
+                <apex:pageBlock rendered="{!If(NOT(blueSheetPDFWrapper.positionSummarys.strengths.empty) ,true,false) }"
+                >
+                    <div class="margintop10 dataSecondHeading paddingleft5">
+                        <apex:outputLabel value="{!$Label.STRENGTHS}" />
+                    </div>
+                </apex:pageBlock>
+                <div>
+                    <apex:repeat rendered="{!NOT(blueSheetPDFWrapper.positionSummarys.strengths.empty)}"
+                        value="{!blueSheetPDFWrapper.positionSummarys.strengths}"
+                        var="strengthObj"
+                    >
+                        <div class="linegray margintop12" style="width: 100% "></div>
+
+                        <div class="margintop10 paddingleft5">
+                            <div class="colorgray font9">
+                                <table style="margin-left: -18px">
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <apex:pageBlock rendered="{! If(strengthObj.summary !=null ,true,false) }">
+                                                <div class="dataSecondGrayHeading textImage">
+                                                    {!strengthObj.summary}
+                                                    <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                        url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                    />
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="colorgray font9">
+                                                <apex:pageBlock rendered="{! If(strengthObj.description !=null ,true,false) }"
+                                                >
+                                                    {!strengthObj.description}
+                                                </apex:pageBlock>
+                                                <apex:pageBlock rendered="{! If(strengthObj.description ==null ,true,false) }"
+                                                >
+                                                    -
+                                                </apex:pageBlock>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </apex:repeat>
+                </div>
+                <apex:pageBlock rendered="{!If(NOT(blueSheetPDFWrapper.positionSummarys.redflags.empty) ,true,false) }">
+                    <div class="margintop24 capitalword boldfont paddingleft5 font9">
+                        <apex:outputLabel value="{!$Label.RED_FLAGS}" />
+                    </div>
+                </apex:pageBlock>
+                <div class="margintop10 paddingleft5">
+                    <apex:repeat rendered="{!NOT(blueSheetPDFWrapper.positionSummarys.redflags.empty)}"
+                        value="{!blueSheetPDFWrapper.positionSummarys.redflags}"
+                        var="redflagObj"
+                    >
+                        <div class="linegray margintop12" style="width: 100% "></div>
+
+                        <div class="margintop10 paddingleft5">
+                            <div class="colorgray font9">
+                                <table style="margin-left: -18px">
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <apex:pageBlock rendered="{! If(redflagObj.summary !=null ,true,false) }">
+                                                <div class="dataSecondGrayHeading ">
+                                                    {!redflagObj.summary}
+                                                    <span class="textImage" style="margin-top: 10px">
+                                                        <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                            url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                        />
+                                                    </span>
+                                                </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 100%">
+                                            <div class="margintop5 colorgray font9">
+                                                <apex:pageBlock rendered="{! If(redflagObj.description !=null ,true,false) }"
+                                                >
+                                                    {!redflagObj.description}
+                                                </apex:pageBlock>
+                                                <apex:pageBlock rendered="{! If(redflagObj.description ==null ,true,false) }"
+                                                >
+                                                    -
+                                                </apex:pageBlock>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </apex:repeat>
+                </div>
+                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.positionSummarys.redflags.empty ,true,false) }">
+                    <div class="margintop10 semibold">
+                        <apex:outputLabel value="{!$Label.NodataAdded}" />
+                    </div>
+                </apex:pageBlock>
+                <!-- </Summary of My Position> -->
+                <!-- <Action Plan> -->
+                <div class="margintop10 dataFirstHeading paddingleft5">
+                    <apex:outputLabel value="{!$Label.actionPlan}" />
+                </div>
+
+                <apex:repeat value="{!blueSheetPDFWrapper.actionPlans}" var="actionplanobj">
+                    <table style="width: 100%" class="margintop10">
+                        <tr>
+                            <td style="width: 80%;text-align: left">
+                                <apex:pageBlock rendered="{! If(actionplanobj.name != null ,true,false) }">
+                                    <span class="boldfont capitalword font9" style="margin-left: -8px;"
+                                        >{!actionplanobj.name}</span
+                                    >
+                                </apex:pageBlock>
+                            </td>
+
+                            <td style="width:20%;text-align: right">
+                                <apex:outputPanel rendered="{! If(actionplanobj.bestAction==true ,true,false) }">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="padding-left: 0px !important;width: 100%">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <td
+                                                            class="capitalword font9  "
+                                                            style="text-align: left;vertical-align: top"
+                                                        >
+                                                            <div class="font9 colorgray " style="text-align: right">
+                                                                <apex:image style="width: 15px;height: 15px; vertical-align: middle;"
+                                                                    url="{!URLFOR($Resource.pdf_resource, 'actionPlanGreenStar.jpg')}"
+                                                                    rendered="{!actionplanobj.bestAction == true}"
+                                                                />
+                                                                <span
+                                                                    class="action-plan-text"
+                                                                    style="vertical-align: middle;"
+                                                                >
+                                                                    <apex:outputLabel value="{!$Label.BestActionPDF}" />
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </apex:outputPanel>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="linegray " style="width: 100% "></div>
+
+                    <div class="colorgray paddingleft5 font9" style="margin-left:-8px;">
+                        <apex:pageBlock rendered="{! If(actionplanobj.summary != null ,true,false) }">
+                            {!actionplanobj.summary}
+                        </apex:pageBlock>
+                    </div>
+                    <div class="margintop10 colorgray boldfont paddingleft5 font9">
+                        <apex:outputLabel value="{!$Label.Description}" />
+                    </div>
+                    <div class="margintop10 colorgray paddingleft5 font9" style="margin-left: -8px">
+                        <apex:pageBlock rendered="{! If(actionplanobj.description != null ,true,false) }">
+                            {!actionplanobj.description}
+                        </apex:pageBlock>
+                    </div>
+                    <div class="margintop10 colorgray paddingleft5 font9" style="margin-left: -8px">
+                        <apex:pageBlock rendered="{! If(actionplanobj.description == null ,true,false) }">
+                            -
+                        </apex:pageBlock>
+                    </div>
+
+                    <table class="header margintop10">
+                        <tr>
+                            <td style="width:25%;vertical-align: text-top ">
+                                <div class="colorgray boldfont font9">
+                                    <apex:outputLabel value="{!$Label.Priority}" />
+                                </div>
+                                <div class="colorgray margintop5 font9 " style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.priority != null ,true,false) }">
+                                        {!actionplanobj.priority}</apex:pageBlock>
+                                </div>
+                                <div class="colorgray margintop5 font9 " style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.priority == null ,true,false) }">
+                                        -</apex:pageBlock>
+                                </div>
+                            </td>
+
+                            <td style="width:25%;vertical-align: text-top ">
+                                <div class="colorgray boldfont font9">
+                                    <apex:outputLabel value="{!$Label.Contact}" />
+                                </div>
+                                <div class="colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.contactName != null ,true,false) }">
+                                        {!actionplanobj.contactName}
+                                    </apex:pageBlock>
+                                </div>
+                                <div class="colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.contactName == null ,true,false) }">
+                                        -
+                                    </apex:pageBlock>
+                                </div>
+                            </td>
+
+                            <td style="width:25%;vertical-align: text-top ">
+                                <div class="colorgray boldfont font9">
+                                    <apex:outputLabel value="{!$Label.Start_Date}" />
+                                </div>
+                                <div class=" colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.startDate != null ,true,false) }">
+                                        {!actionplanobj.startDate}
+                                    </apex:pageBlock>
+                                </div>
+                                <div class=" colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.startDate == null ,true,false) }">
+                                        -
+                                    </apex:pageBlock>
+                                </div>
+                            </td>
+
+                            <td style="width:25%;vertical-align: text-top ">
+                                <div class="colorgray boldfont font9">
+                                    <apex:outputLabel value="{!$Label.ActionType}" />
+                                </div>
+                                <div class="colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.actionType != null ,true,false) }"
+                                        >{!actionplanobj.actionType}
+                                    </apex:pageBlock>
+                                </div>
+                                <div class="colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.actionType == null ,true,false) }"
+                                        >-
+                                    </apex:pageBlock>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="header ">
+                        <tr>
+                            <td style="width:25%;vertical-align: text-top ">
+                                <div class="colorgray boldfont font9">
+                                    <apex:outputLabel value="{!$Label.Status}" />
+                                </div>
+                                <div class="colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.status != null ,true,false) }">
+                                        {!actionplanobj.status}</apex:pageBlock>
+                                </div>
+                                <div class="colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.status == null ,true,false) }">
+                                        -</apex:pageBlock>
+                                </div>
+                            </td>
+
+                            <td style="width:25%;vertical-align: text-top ">
+                                <div class="colorgray boldfont font9">
+                                    <apex:outputLabel value="{!$Label.Assigned_To}" />
+                                </div>
+                                <div class="colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.assignedToName != null ,true,false) }"
+                                    >
+                                        {!actionplanobj.assignedToName}
+                                    </apex:pageBlock>
+                                </div>
+                                <div class="colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.assignedToName == null ,true,false) }"
+                                    >
+                                        -
+                                    </apex:pageBlock>
+                                </div>
+                            </td>
+
+                            <td style="width:25%;vertical-align: text-top ">
+                                <div class="colorgray boldfont font9">
+                                    <apex:outputLabel value="{!$Label.Due_Date}" />
+                                </div>
+                                <div class=" colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.dueDate != null ,true,false) }">
+                                        {!actionplanobj.dueDate}
+                                    </apex:pageBlock>
+                                </div>
+                                <div class=" colorgray margintop5 font9" style="margin-left: -8px">
+                                    <apex:pageBlock rendered="{! If(actionplanobj.dueDate == null ,true,false) }">
+                                        -
+                                    </apex:pageBlock>
+                                </div>
+                            </td>
+
+                            <td style="width:25%;vertical-align: text-top "> </td>
+                        </tr>
+                    </table>
+
+                    <div class="margintop10 colorgray boldfont paddingleft5 font9">
+                        <apex:outputLabel value="{!$Label.PerspectiveDescriptionPDF}" />
+                    </div>
+
+                    <div class="margintop10 colorgray paddingleft5 font9" style="margin-left: -8px">
+                        <apex:pageBlock rendered="{! If(actionplanobj.howWillYouProvidePerspective != null ,true,false) }"
+                        >
+                            {!actionplanobj.howWillYouProvidePerspective}
+                        </apex:pageBlock>
+                    </div>
+                    <div class="margintop10 colorgray paddingleft5 font9" style="margin-left: -8px">
+                        <apex:pageBlock rendered="{! If(actionplanobj.howWillYouProvidePerspective == null ,true,false) }"
+                        >
+                            -
+                        </apex:pageBlock>
+                    </div>
+                </apex:repeat>
+                <apex:pageBlock rendered="{!If(blueSheetPDFWrapper.actionPlans.empty ,true,false) }">
+                    <div class="margintop10 semibold">
+                        <apex:outputLabel value="{!$Label.NodataAdded}" />
+                    </div>
+                </apex:pageBlock>
+                <!-- </Action Plan> -->
+                <!-- <apex:image url="{!$Resource.BlueSheetLogo} " width="150 " height="50 " /> -->
+            </div>
+        </body>
+    </html>
+</apex:page>

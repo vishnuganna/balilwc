@@ -1,0 +1,392 @@
+<template>
+    <div class="slds-p-left_medium slds-p-right_medium slds-grid slds-gutters">
+        <article class="slds-card slds-m-bottom_large slds-card_boundary slds-size_1-of-1">
+            <!--Create View<lightning-card class="slds-m-around_none slds-p-around_none">-->
+            <div slot="title" class="slds-grid slds-card__header slds-grid_vertical-align-center cardheader-goldsheet">
+                <div class="slds-col slds-size_2-of-3">
+                    <span class="strategic-players"
+                        >{allLabels.StrategicPlayerMain}
+                        <c-info-navigation nav-url={allLabels.StrategicPlayerURL}></c-info-navigation>
+                    </span>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <div class="slds-clearfix slds-text-small slds-float_right">
+                        <template if:true={hasEditAccess}>
+                            <lightning-button
+                                class="slds-float_right slds-text-small slds-m-medium"
+                                slot="actions"
+                                name="addNew"
+                                label={allLabels.AddNewStrategicPlayer}
+                                variant="neutral"
+                                onclick={handleCreate}
+                            ></lightning-button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-card__body slds-border_top">
+                <template if:false={hasStrategicData}>
+                    <div class="slds-p-bottom_x-small">
+                        <c-summary-view-no-data class="slds-text-medium"></c-summary-view-no-data>
+                    </div>
+                </template>
+                <template if:true={hasStrategicData}>
+                    <div class="slds-border_top strategicPlayerDatatableClass">
+                        <c-custom-lightining-data-table
+                            key-field="Id"
+                            data={records}
+                            show-row-number-column
+                            row-number-offset={rowOffset}
+                            hide-checkbox-column
+                            columns={columns}
+                            column-widths-mode="auto"
+                            resize-column-disabled
+                            enable-infinite-loading
+                            wrap-text-max-lines="3"
+                            onloadmore={loadMoreData}
+                            onrowaction={handleRowAction}
+                        >
+                        </c-custom-lightining-data-table>
+                    </div>
+                </template>
+            </div>
+            <!-- </lightning-card> -->
+        </article>
+    </div>
+    <!--Create View-->
+    <template if:true={showCreateView}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            class="slds-modal slds-fade-in-open slds-modal_x-small"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={allLabels.Close}
+                        onclick={handleCreateCancel}
+                    >
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">{allLabels.Cancel}</span>
+                    </button>
+                    <h2 id="modal-heading-Create" class="slds-modal__title slds-hyphenate">
+                        {allLabels.StrategicPlayer}
+                    </h2>
+                </header>
+                <div
+                    class="slds-modal__content slds-p-left_medium slds-p-right_medium slds-card_header slds-p-bottom_medium slds-p-top_x-small addNewModal"
+                    id="modal-content-id-Create"
+                >
+                    <lightning-card>
+                        <lightning-layout class="slds-grid slds-wrap slds-m-bottom_medium">
+                            <lightning-layout-item size="6" class="slds-p-right_small">
+                                <label class="slds-form-element__label slds-m-bottom_x-small" for="textarea-id-01">
+                                    <abbr class="slds-required" title="required">*</abbr>{allLabels.Name}</label
+                                >
+                                <c-custom-lookup
+                                    iconname="standard:contact"
+                                    objectname="Contact"
+                                    searchfield="Name"
+                                    conname={conname}
+                                    selectedconname={selectedconname}
+                                    onselectedrec={handleTitle}
+                                    onnewrec={handlenewrec}
+                                    accountid={accountId}
+                                    backdrophide="true"
+                                ></c-custom-lookup>
+                                <template if:false={isSaveDisabled}>
+                                    <a
+                                        class="slds-button slds-text-body_regular"
+                                        href="javascript:void(0);"
+                                        onclick={navigateToEditRecordPage}
+                                        >{allLabels.StrategicPlayerEditContactInfoLabel}</a
+                                    >
+                                </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6">
+                                <label class="slds-form-element__label slds-m-bottom_x-small"
+                                    >{allLabels.TitleLabel}</label
+                                >
+                                <input
+                                    type="text"
+                                    id="contactTitle"
+                                    placeholder=""
+                                    disabled
+                                    readonly=""
+                                    value={contactTitle}
+                                    class="slds-input size-x-small"
+                                />
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout class="slds-grid slds-wrap slds-border_bottom slds-p-bottom_medium">
+                            <lightning-layout-item size="6" class="slds-p-right_small">
+                                <label
+                                    >{allLabels.Role}
+                                    <c-info-navigation nav-url={allLabels.RoleStrategicPlayerURL}></c-info-navigation>
+                                    <c-strength-redflag
+                                        rfs-data={rfsDetails.role}
+                                        class="slds-clearfix slds-float_right"
+                                        onvalueselected={handleMarkerChange}
+                                    ></c-strength-redflag>
+                                </label>
+
+                                <lightning-combobox
+                                    name={allLabels.Role}
+                                    label=""
+                                    variant="label-hidden"
+                                    value={roleValue}
+                                    placeholder={allLabels.SelectRole}
+                                    options={rolePicklistOptions}
+                                    onchange={handleRoleSelected}
+                                    class="picklist slds-m-top_x-small"
+                                ></lightning-combobox>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="6">
+                                <label
+                                    >{allLabels.BuySellPositionNow}
+                                    <c-info-navigation
+                                        nav-url={allLabels.BuySellStrategicPlayerURL}
+                                    ></c-info-navigation>
+                                    <c-strength-redflag
+                                        rfs-data={rfsDetails.buySellPosition}
+                                        class="slds-clearfix slds-float_right"
+                                        onvalueselected={handleMarkerChange}
+                                    ></c-strength-redflag>
+                                </label>
+                                <lightning-combobox
+                                    name={allLabels.BuySellPositionNow}
+                                    label=""
+                                    value={buySellPosition}
+                                    variant="label-hidden"
+                                    placeholder={allLabels.SelectLevel}
+                                    options={buySellPicklistOptions}
+                                    onchange={handleBuySellSelected}
+                                    class="picklist slds-m-top_x-small"
+                                >
+                                </lightning-combobox>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout class="slds-grid slds-wrap slds-p-top_x-small">
+                            <lightning-layout-item size="6" class="slds-p-right_small">
+                                <label class="slds-form-element__label slds-m-bottom_x-small"
+                                    >{allLabels.OurTeamMember}</label
+                                >
+                                <c-lookup-component
+                                    child-object-api-name={objectForLookup}
+                                    target-field-api-name={lookuptargetField}
+                                    field-label=""
+                                    onvalueselected={handleTeamMemberSelected}
+                                    style="font-size: small;"
+                                    value={teamMemberId}
+                                ></c-lookup-component>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="6">
+                                <label class="slds-form-element__label slds-m-bottom_x-small"
+                                    >{allLabels.TitleLabel}</label
+                                >
+                                <input
+                                    type="text"
+                                    id="userTitle"
+                                    placeholder=""
+                                    disabled
+                                    readonly=""
+                                    value={userTitle}
+                                    class="slds-input size-x-small"
+                                />
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-card>
+                </div>
+                <div class="slds-modal__footer slds-align_right slds-theme_default">
+                    <lightning-button
+                        label={allLabels.Cancel}
+                        class="slds-p-right_x-small slds-text-small"
+                        variant="neutral"
+                        onclick={handleCreateCancel}
+                    ></lightning-button>
+                    <lightning-button
+                        label={allLabels.Save}
+                        class="slds-text-small"
+                        aria-disabled={isSaveDisabled}
+                        disabled={isSaveDisabled}
+                        variant="brand"
+                        onclick={handleSave}
+                    ></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- Create mode End-->
+    <!-- Delete modal start -->
+    <template if:true={ShowDeleteModal}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={allLabels.Cancel}
+                        onclick={closeDeleteModal}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text={allLabels.Cancel}
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">{allLabels.Cancel}</span>
+                    </button>
+                    <h2 id="modal-heading-delete" class="slds-text-heading_medium slds-hyphenate">
+                        {allLabels.DeleteStrategicPlayerLabel}
+                    </h2>
+                </header>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-delete">
+                    <p style="text-align: center;">{allLabels.DeleteStrategicPlayerMessage}</p>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeDeleteModal}>
+                        {allLabels.Cancel}
+                    </button>
+                    <button class="slds-button slds-button_brand" onclick={deleteRecord}>{allLabels.Yes}</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!--Delete modal end -->
+    <!-- Edit Contact Info Modal Start-->
+    <template if:true={editContactForm}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            class="slds-modal slds-fade-in-open slds-modal_small"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        onclick={handleReset}
+                        title={allLabels.Cancel}
+                    >
+                        <lightning-icon icon-name="utility:close" icon-label={allLabels.Cancel}></lightning-icon>
+                        <span class="slds-assistive-text">{allLabels.Cancel}</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+                        {allLabels.EditContactLabel}
+                    </h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <!--Record Edit Form-->
+                    <lightning-record-edit-form
+                        record-id={contactId}
+                        object-api-name="Contact"
+                        onsuccess={handleSuccessEdit}
+                        onsubmit={handleSubmitEdit}
+                    >
+                        <lightning-messages></lightning-messages>
+                        <div
+                            class="slds-page-header slds-text-heading_medium"
+                            style="font-size:14px; font-weight:500;  "
+                        >
+                            {allLabels.ContactInformationLabel}
+                        </div>
+                        <div
+                            class="slds-form-element__control slds-form-element__row slds-size_1-of-1 slds-form-element"
+                        >
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col">
+                                    <lightning-output-field
+                                        field-name="OwnerId"
+                                        aria-label="Contact Owner"
+                                        label="Contact Owner"
+                                    ></lightning-output-field>
+                                    <lightning-input-field
+                                        field-name="Name"
+                                        aria-label="Name"
+                                        required
+                                    ></lightning-input-field>
+                                    <lightning-input-field field-name="AccountId"></lightning-input-field>
+                                    <lightning-input-field field-name="Title"></lightning-input-field>
+                                </div>
+                                <div class="slds-col">
+                                    <lightning-input-field
+                                        field-name="Phone"
+                                        aria-label="Phone"
+                                    ></lightning-input-field>
+                                    <lightning-input-field
+                                        field-name="MobilePhone"
+                                        aria-label="Mobile"
+                                    ></lightning-input-field>
+                                    <lightning-input-field field-name="Email"></lightning-input-field>
+                                    <lightning-input-field field-name="Department"></lightning-input-field>
+                                    <lightning-input-field field-name="ReportsToId"></lightning-input-field>
+                                    <lightning-input-field
+                                        field-name="Id"
+                                        class="slds-hidden"
+                                        value={conid}
+                                    ></lightning-input-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class=" slds-page-header slds-text-heading_medium"
+                            style="font-size:16px; font-weight:500;"
+                        >
+                            {allLabels.AddressInformationLabel}
+                        </div>
+                        <div
+                            class="slds-form-element__control slds-form-element__row slds-size_1-of-1 slds-form-element"
+                        >
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col">
+                                    <lightning-input-field field-name="MailingAddress"></lightning-input-field>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Record Edit Form Buttons-->
+                        <div class="slds-modal__footer">
+                            <lightning-button
+                                class="slds-m-top_medium slds-p-horizontal_small"
+                                label={allLabels.Cancel}
+                                onclick={handleReset}
+                            >
+                            </lightning-button>
+                            <lightning-button
+                                variant="brand"
+                                class="slds-m-top_medium slds-p-horizontal_small"
+                                type="submit"
+                                name="submit"
+                                label={allLabels.Save}
+                            >
+                            </lightning-button>
+                        </div>
+                    </lightning-record-edit-form>
+                    <!--Record Edit Form-->
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- Edit Contact Info Modal End -->
+</template>

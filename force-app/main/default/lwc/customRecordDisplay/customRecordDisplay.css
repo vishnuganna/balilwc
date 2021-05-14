@@ -1,0 +1,37 @@
+.field-desc {
+    white-space: normal !important;
+}
+
+.custom-record-container {
+    display: inline-flex;
+    padding: 5px;
+}
+
+.css-truncate .css-truncate-target {
+    display: inline-block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: top;
+}
+.css-truncate.expandable.css-truncate-target {
+    max-width: 100px !important;
+}
+table tbody tr {
+    /* display: flex; */
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.slds-table tbody tr {
+    counter-increment: row-number;
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+}
+.red-flag {
+    top: 4px;
+    position: relative;
+}

@@ -1,0 +1,164 @@
+<template>
+    <p class="slds-text-heading_small">{label.addNewPossibleAction}</p>
+    <lightning-layout multiple-rows="true">
+        <lightning-layout-item size="12">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-border_bottom horizontalLine" style="width: 50%">
+                    <b>{label.sso}</b>
+                    <ul class="slds-m-around_medium">
+                        <template for:each={ssoNames} for:item="ssoName" for:index="indx">
+                            <div key={ssoName.id} style="display: flex; flex-direction: row">
+                                <div style="flex: 2">
+                                    <li>
+                                        <lightning-input
+                                            type="checkbox"
+                                            label={ssoName.label}
+                                            name={ssoName.name}
+                                            value={ssoName.id}
+                                            onchange={handleSsoChange}
+                                        ></lightning-input>
+                                    </li>
+                                </div>
+                                <div if:true={ssoName.isStrength} style="flex: 0.5; vertical-align: center">
+                                    <img alt="" src={isStrength} />
+                                </div>
+                                <div if:true={ssoName.isRedFlag} style="flex: 0.5; vertical-align: center">
+                                    <img alt="" src={isRedFlag} />
+                                </div>
+                            </div>
+                        </template>
+                    </ul>
+                </div>
+                <div class="slds-col slds-border_bottom horizontalLine" style="width: 50%">
+                    <b>{label.bi}</b>
+                    <ul class="slds-m-around_medium">
+                        <template for:each={biNames} for:item="biName" for:index="indx">
+                            <div key={biName.id} style="display: flex; flex-direction: row">
+                                <div style="flex: 2">
+                                    <li>
+                                        <lightning-input
+                                            type="checkbox"
+                                            label={biName.label}
+                                            name={biName.name}
+                                            value={biName.id}
+                                            onchange={handleBiChange}
+                                        ></lightning-input>
+                                    </li>
+                                </div>
+                                <div if:true={biName.isStrength} style="flex: 0.5; vertical-align: center">
+                                    <img alt="" src={isStrength} />
+                                </div>
+                                <div if:true={biName.isRedFlag} style="flex: 0.5; vertical-align: center">
+                                    <img alt="" src={isRedFlag} />
+                                </div>
+                            </div>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-border_bottom horizontalLine" style="width: 50%">
+                    <b>{label.competition}</b>
+                    <ul class="slds-m-around_medium">
+                        <template for:each={competitionNames} for:item="compName" for:index="indx">
+                            <div key={compName.Id} style="display: flex; flex-direction: row">
+                                <div style="flex: 2">
+                                    <li>
+                                        <lightning-input
+                                            type="checkbox"
+                                            label={compName.label}
+                                            name={compName.name}
+                                            value={compName.id}
+                                            onchange={handleCompChange}
+                                        ></lightning-input>
+                                    </li>
+                                </div>
+                                <div if:true={compName.isStrength} style="flex: 0.5; vertical-align: center">
+                                    <img alt="" src={isStrength} />
+                                </div>
+                                <div if:true={compName.isRedFlag} style="flex: 0.5; vertical-align: center">
+                                    <img alt="" src={isRedFlag} />
+                                </div>
+                            </div>
+                        </template>
+                    </ul>
+                </div>
+                <div class="slds-col slds-border_bottom horizontalLine" style="width: 50%">
+                    <b>{label.positionSummary}</b>
+                    <ul class="slds-m-around_medium">
+                        <template for:each={sompNames} for:item="sompName" for:index="indx">
+                            <div key={sompName.Id} style="display: flex; flex-direction: row">
+                                <div style="flex: 2">
+                                    <li>
+                                        <lightning-input
+                                            type="checkbox"
+                                            label={sompName.label}
+                                            name={sompName.name}
+                                            value={sompName.id}
+                                            onchange={handleSompChange}
+                                        ></lightning-input>
+                                    </li>
+                                </div>
+                                <div if:true={sompName.isStrength} style="flex: 0.5; vertical-align: center">
+                                    <img alt="" src={isStrength} />
+                                </div>
+                                <div if:true={sompName.isRedFlag} style="flex: 0.5; vertical-align: center">
+                                    <img alt="" src={isRedFlag} />
+                                </div>
+                            </div>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-border_bottom horizontalLine" style="width: 50%">
+                    <b>{label.suggested}</b>
+                    <ul class="slds-m-around_medium">
+                        <template for:each={suggestedNames} for:item="suggestedName" for:index="indx">
+                            <div key={suggestedNames.Id} style="display: flex; flex-direction: row">
+                                <div style="flex: 2">
+                                    <li>
+                                        <lightning-input
+                                            type="checkbox"
+                                            label={suggestedName.label}
+                                            name={suggestedName.name}
+                                            value={suggestedName.id}
+                                            onchange={handleSugChange}
+                                        ></lightning-input>
+                                    </li>
+                                </div>
+                                <div if:true={suggestedName.isStrength} style="flex: 0.5; vertical-align: center">
+                                    <img alt="" src={isStrength} />
+                                </div>
+                                <div if:true={suggestedName.isRedFlag} style="flex: 0.5; vertical-align: center">
+                                    <img alt="" src={isRedFlag} />
+                                </div>
+                            </div>
+                        </template>
+                    </ul>
+                </div>
+                <div class="slds-col slds-border_bottom horizontalLine" style="width: 50%">
+                    <span>&nbsp;</span>
+                </div>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+    <div class="slds-align_absolute-center">
+        <lightning-button
+            label={label.save}
+            title={label.save}
+            variant="brand"
+            onclick={saveActionList}
+        ></lightning-button>
+        <lightning-button
+            label={label.cancel}
+            title={label.cancel}
+            class="centreButtonClass"
+            onclick={cancelAddFromListPopup}
+        ></lightning-button>
+    </div>
+</template>

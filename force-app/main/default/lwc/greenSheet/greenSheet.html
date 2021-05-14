@@ -1,0 +1,64 @@
+<template>
+    <template if:true={showgreensheet}>
+        <lightning-card>
+            <div class="slds-m-left_small slds-m-right_small">
+                <template if:true={showSSo}>
+                    <c-collapsible-component
+                        title-header={allLabel.ssoHeader}
+                        get-id-from-parent={recordId}
+                        sso-view="true"
+                        sso-header-nav-u-r-l={allLabel.ssoGreenSheetURL}
+                    ></c-collapsible-component>
+                </template>
+                <c-collapsible-component
+                    title-header={allLabel.OurCompanyAttendees}
+                    object-text={allLabel.LWCComponentPlace}
+                    company-view="true"
+                    isadd-new="true"
+                    show-icon="true"
+                    get-id-from-parent={recordId}
+                    sso-header-nav-u-r-l={allLabel.GSbuying_InfluenceHeaderURL}
+                ></c-collapsible-component>
+                <!--<template if:true={showSSo}>-->
+                <c-collapsible-component
+                    title-header={allLabel.buyingInfluence}
+                    object-text={allLabel.PlaceBILWC}
+                    bi-view="true"
+                    get-id-from-parent={recordId}
+                    sso-header-nav-u-r-l={allLabel.GSbuying_InfluenceHeaderURL}
+                ></c-collapsible-component>
+                <!--/template>-->
+
+                <!-- <c-Vbrandcred get-id-from-parent={recordId}></c-Vbrandcred> -->
+
+                <c-Vbrandcred get-id-from-parent={recordId} is-expandable-view="false"></c-Vbrandcred>
+
+                <c-collapsible-component
+                    title-header={allLabel.giving_Info_Giving_Information}
+                    giving-info="true"
+                    get-id-from-parent={recordId}
+                    sso-header-nav-u-r-l={allLabel.givingInfoHeaderURL}
+                >
+                </c-collapsible-component>
+                <c-collapsible-component
+                    title-header={allLabel.gettingInformation}
+                    get-id-from-parent={recordId}
+                    gi-view="true"
+                    sso-header-nav-u-r-l={allLabel.gettingInformationHeaderURL}
+                ></c-collapsible-component>
+                <c-collapsible-component
+                    title-header={allLabel.GSGetting_Commitment}
+                    commitment-view="true"
+                    get-id-from-parent={recordId}
+                    sso-header-nav-u-r-l={allLabel.GSGetting_CommitmentURL}
+                ></c-collapsible-component>
+                <c-collapsible-component
+                    title-header={allLabel.basicIssueHeader}
+                    get-id-from-parent={recordId}
+                    issue-view="true"
+                    sso-header-nav-u-r-l={allLabel.basicIssueHeaderURL}
+                ></c-collapsible-component>
+            </div>
+        </lightning-card>
+    </template>
+</template>

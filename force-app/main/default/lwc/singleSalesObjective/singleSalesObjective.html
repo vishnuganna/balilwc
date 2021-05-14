@@ -1,0 +1,291 @@
+<template>
+    <!--<article class="slds-card slds-card_boundary">
+	  <lightning-card  data-id="XXXreadlcso1-up"  variant="Narrow"  class="slds-text-title_bold" title="Single Sales Objective">
+		  <template if:true={showeditbutton}>
+			  <lightning-button onclick={handleClickEdit} style="color:black" label="Edit" variant="border-filled" slot="actions"></lightning-button>
+			  <lightning-button onclick={deleteSSO} style="color:black" label="Delete" variant="border-filled" slot="actions"></lightning-button>
+		  </template>
+		  <hr style="margin:0">
+		  <div class="slds-border_bottom"></div>
+		  <div class="slds-p-top_x-small"></div>
+			 <br/>  
+			 
+			  <template if:true={showNewRecordButton}>
+				  <div class="slds-clearfix">
+					  <div class="slds-float_left">
+						  <lightning-button variant="brand" label="Complete Single Sales Objective" onclick={handleClickNew}  class="slds-m-left_x-small"></lightning-button>
+					  </div>
+				  </div>
+				  <lightning-button variant="brand" label="" title="Primary action" class="slds-m-left_x-small" ></lightning-button>
+			  </template>
+			  		  
+	  </lightning-card> 
+
+	  <template if:true={createNewRecord}>
+	  
+		  <div class="slds-card__body slds-card__body_inner item">
+			  <article class="slds-card slds-card_boundary item">
+				  <lightning-card class="slds-text-heading_small item" >
+				  
+					  <div class="slds-p-left_x-small item" style="margin-bottom: 2px;">
+  
+						<label class="slds-form-element__label">Customer Timing for Priorities</label>
+  
+					  </div>
+  
+					  <div class="slds-p-left_x-small item">
+						  <div class="slds-checkbox_button-group item">
+  
+							  <span class="slds-button slds-checkbox_button">
+  
+								  <input type="checkbox" id="unique-id-urgent" value="Urgent" name="checkbox" checked={urgentCheck} onchange={handleChange3} />
+  
+								  <label class="slds-checkbox_button__label" for="unique-id-urgent">
+  
+									<span class="slds-checkbox_faux">Urgent</span>
+  
+								  </label>
+  
+							  </span>
+  
+						  </div>
+  
+						  &nbsp;
+  
+						  <div class="slds-checkbox_button-group item">
+  
+							  <span class="slds-button slds-checkbox_button">
+  
+								  <input type="checkbox" id="unique-id-active" value="Active" name="checkbox" checked={activeCheck} onchange={handleChange3} />
+  
+								  <label class="slds-checkbox_button__label" for="unique-id-active">
+  
+									<span class="slds-checkbox_faux">Active</span>
+  
+								  </label>
+  
+							  </span>
+  
+						  </div>
+  
+						  &nbsp;
+  
+						  <div class="slds-checkbox_button-group item">
+  
+							  <span class="slds-button slds-checkbox_button">
+  
+								  <input type="checkbox" id="unique-id-work-it-in" value="Work It In" name="checkbox" checked={workCheck} onchange={handleChange3} />
+  
+								  <label class="slds-checkbox_button__label"  for="unique-id-work-it-in">
+  
+									<span class="slds-checkbox_faux">Work It In</span>
+  
+								  </label>
+  
+							  </span>
+  
+						  </div>
+  
+						  &nbsp;
+  
+						  <div class="slds-checkbox_button-group item">
+  
+							  <span class="slds-button slds-checkbox_button item">
+  
+								  <input type="checkbox" id="unique-id-later" value="Later" name="checkbox" checked={laterCheck} onchange={handleChange3}/>
+  
+								  <label class="slds-checkbox_button__label"  for="unique-id-later">
+  
+									<span class="slds-checkbox_faux item">Later</span>
+  
+								  </label>
+  
+							  </span>
+  
+						  </div>
+  
+					  </div>
+					  
+					  <br/>					
+					  <div class="slds-p-left_x-small">
+						<div class="slds-p-right_x-small">
+						  <div class="slds-grid slds-gutters">
+						  <template if:false={showErrorCus}>
+							  <div class="slds-col">
+								  <div class="slds-form-element">
+									  <div class="slds-float_left">
+									  <label class="slds-form-element__label" for="textarea-id-01">Customer Stated Objective</label>
+									  </div>
+									  <div class="slds-form-element__control">
+									  <textarea id="textarea-id-01" rows=5 name="statedobjective" onkeyup={handlemaxlengthCus} onchange={handleChange} class="slds-textarea" maxlength="32000" style="color: black;" placeholder="A threat the customer wants to resolve, or an opportunity the customer wants to capitalize on.">{customersStatedObjective}</textarea>
+									  </div>
+								  </div>
+								</div>
+						  </template>
+						  <template if:true={showErrorCus}>
+							  <div class="slds-col">
+								<div class="slds-form-element">
+									<div class="slds-float_left">
+									  <div class="slds-form-element slds-has-error">
+									<label class="slds-form-element__label" for="textarea-id-01">Customer Stated Objective</label>
+									</div>
+									<div class="slds-form-element__control">
+									<textarea id="textarea-id-01-Error" rows=5 name="evalutionobjective" onkeyup={handlemaxlengthCus} onchange={handleChange} class="slds-textarea" maxlength="32000" style="color:black" placeholder="A threat the customer wants to resolve, or an opportunity the customer wants to capitalize on.">{customersStatedObjective}</textarea>
+									</div>
+									<div class="slds-form-element__help" id="error-02" style="color:rgb(255, 34, 5)">Maximum number of 32,000 characters has been reached</div>
+								  </div>
+								</div>
+							  </div>
+						  </template>
+						  <template if:false={showErrorEval}>
+							<div class="slds-col">
+							  <div class="slds-form-element">
+								  <div class="slds-float_left">
+								  <label class="slds-form-element__label" for="textarea-id-02">Evaluation of Objective</label>
+								  </div>
+								  <div class="slds-form-element__control">
+								  <textarea id="textarea-id-02" rows=5 name="evalutionobjective" onkeyup={handlemaxlengtheval} onchange={handleChange2} class="slds-textarea" maxlength="32000" style="color:black" placeholder="Examining the customer's stated objective for opportunities to add value and insight that exceed the customer's expectations.">{evaluationOfObjective}</textarea>
+								  </div>
+							  </div>
+							</div>
+						  </template>
+						  <template if:true={showErrorEval}>
+							  <div class="slds-col">
+								<div class="slds-form-element">
+									<div class="slds-float_left">
+									  <div class="slds-form-element slds-has-error">
+									<label class="slds-form-element__label" for="textarea-id-02">Evaluation of Objective</label>
+									</div>
+									<div class="slds-form-element__control">
+									<textarea id="textarea-id-02-Error" rows=5 name="evalutionobjective" onkeyup={handlemaxlengtheval} onchange={handleChange2} class="slds-textarea" maxlength="32000" placeholder="Examining the customer's stated objective for opportunities to add value and insight that exceed the customer's expectations.">{evaluationOfObjective}</textarea>
+									</div>
+									<div class="slds-form-element__help" id="error-01" style="color:rgb(255, 34, 5)">Maximum number of 32,000 characters has been reached</div>
+								  </div>
+								</div>
+							  </div>
+						  </template>
+						  </div>
+						</div>
+					  </div>
+					  <div class="slds-m-around_medium item">
+						  <div class="slds-align_absolute-center">
+							  <lightning-button label="Cancel"  class="slds-m-left_x-small" onclick={handleCancel}>
+							  </lightning-button>
+							  <lightning-button variant="brand" label="Save"  class="slds-m-left_x-small" onclick={saveSSORec}>
+							  </lightning-button>
+						  </div>
+					  </div>
+				  </lightning-card>
+			  </article>
+		  </div>
+	  </template>
+	  
+	  create record part-->
+    <!--
+	  <template if:true={createNewRecord}>
+		  <lightning-card>
+			  <div class="slds-box">
+			  <div class="slds-p-left_x-small">
+				  <lightning-radio-group name="radioGroup"
+							 label="Customer Timing for Priorities"
+							 options={options}
+							 value={value}
+							 type="button"
+							 onchange={handleradiochange}>
+				 </lightning-radio-group>
+			  </div>
+			  <br/>
+			  <div class="slds-p-left_x-small">
+				<div class="slds-p-right_x-small">
+				  <div class="slds-grid slds-gutters">
+					<div class="slds-col">
+					  <div class="slds-form-element">
+						  <label class="slds-m-left_x-small" for="textarea-id-01">Customer’s Stated Objective</label>
+						  <div class="slds-form-element__control">
+						  <textarea id="textarea-id-01" rows=5 name="statedobjective" onchange={handleChange} class="slds-textarea" maxlength="32000" placeholder="A threat the customer wants to resolve, or an opportunity the customer wants to capitalize on.">{customersStatedObjective}</textarea>
+						  </div>
+					  </div>
+					</div>
+					<div class="slds-col">
+					  <div class="slds-form-element">
+						  <label class="slds-m-left_x-small" for="textarea-id-02">Evaluation of Objective</label>
+						  <div class="slds-form-element__control">
+						  <textarea id="textarea-id-02" rows=5 name="evalutionobjective" onchange={handleChange2} class="slds-textarea" maxlength="32000" placeholder="Examining the customer's stated objective for opportunities to add value and insight that exceed the customer's expectations.">{evaluationOfObjective}</textarea>
+						  </div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			  <div class="slds-m-around_medium">
+				  <div class="slds-align_absolute-center">
+					  <lightning-button label="Cancel" title="Non-primary action" class="slds-m-left_x-small" onclick={handleCancel}>
+					  </lightning-button>
+					  <lightning-button variant="brand" label="Save" title="Non-primary action" class="slds-m-left_x-small" onclick={saveSSORec}>
+					  </lightning-button>
+				  </div>
+			  </div>
+		  </div>
+		  </lightning-card>
+	  </template>-->
+    <!--create record part end-->
+
+    <!--view record part-->
+    <!-- <template if:true={showeditbutton}>
+			<div class="divClass">
+				<div class="slds-card__body slds-card__body_inner item">
+				    <article class="slds-card slds-card_boundary item">
+						<div class="slds-p-left_x-small ">
+							<div class="slds-grid slds-m-left_small slds-m-right_small">
+								<div class="slds-col slds-size_1-of-2 slds-m-top_small slds-m-bottom_small">
+									<div class="slds-text-body_small">Customer Timing For Priorities</div>
+									<div class="slds-text-body_regular"> {value}</div>
+								</div>
+								<div class="slds-col slds-size_1-of-2 slds-m-top_small slds-m-bottom_small">
+									<div class="slds-text-align-right">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="slds-p-left_x-small ">
+							<div class="slds-grid slds-m-left_small slds-m-right_small">
+								<div class="slds-col slds-size_1-of-2 slds-m-top_small slds-m-bottom_small">
+									<div class="slds-text-body_small">Customer Stated Objective</div>
+									<div class="slds-text-body_regular textAreaReadOnly"> {customersStatedObjective1}
+										<template if:true={customersStatedObjective2}>
+											<template if:true={ShowMoreText}>
+											 <a  onclick={handleShowMore}>...Show More</a>
+											</template>
+										   <template if:true={showText}>
+											  {customersStatedObjective2}
+											</template>
+											<template if:true={ShowLessText}>
+												<a  onclick={handleShowLess}>...Show Less</a>
+											</template>
+										</template>
+									</div>
+								</div> &nbsp;  &nbsp;&nbsp;  &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp; 
+								<div class="slds-col slds-size_1-of-2 slds-m-top_small slds-m-bottom_small">
+									<div class="slds-text-body_small">Evaluation Of Objective</div>
+									<div class="slds-text-body_regular textAreaReadOnly">{evaluationOfObjective1}
+									<template if:true={evaluationOfObjective2}>
+										<template if:true={ShowMoreTextEval}>
+										 <a  onclick={handleShowMoreEval}>...Show More</a>
+										</template>
+									   <template if:true={showTextEval}>
+										  {evaluationOfObjective2}
+										</template>
+										<template if:true={ShowLessTextEval}>
+											<a  onclick={handleShowLessEval}>...Show Less</a>
+										</template>
+									</template>
+									</div>
+								</div>
+							</div>
+						</div>
+			   </div>
+			</div>
+		  </template>
+	 
+	</article>-->
+</template>

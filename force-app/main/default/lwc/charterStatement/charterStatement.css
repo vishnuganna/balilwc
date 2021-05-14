@@ -1,0 +1,105 @@
+.editbutton {
+    padding: 10px;
+    border: 1px solid gainsboro;
+    color: grey;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.showmore {
+    color: #0070d2;
+}
+
+.title {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.showmoredesc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    width: 100%;
+    line-height: 16px;
+    /* The number of lines to be displayed */
+    -webkit-box-orient: vertical;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.margintop5 {
+    margin-top: 5px;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+.normal_text {
+    font-weight: normal;
+    background-color: #e3f2ff;
+    font-size: 0.9vw;
+    line-height: 2.2em;
+    color: rgb(128, 126, 126);
+}
+
+.lighter_text {
+    font-weight: lighter;
+}
+
+.background {
+    background-color: #f5faff;
+}
+
+.textAreaPosition {
+    position: unset !important;
+}
+
+.THIS .tallTextArea textarea {
+    height: 20rem;
+}
+
+.theTemplate {
+    width: 10%;
+    height: 3%;
+    position: relative;
+    border-bottom: 1px solid black;
+}
+
+.willTemplate {
+    width: 20%;
+    height: 3%;
+    position: relative;
+    border-bottom: 1px solid black;
+}
+
+.byTemplate {
+    width: 15%;
+    height: 3%;
+    position: relative;
+    border-bottom: 1px solid black;
+}
+
+.receiveTemplate {
+    width: 12%;
+    height: 3%;
+    position: relative;
+    border-bottom: 1px solid black;
+}
+.bottomText {
+    clear: both;
+}
+.displayCenterData {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}

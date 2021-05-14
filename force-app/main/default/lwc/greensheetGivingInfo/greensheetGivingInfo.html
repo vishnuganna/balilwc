@@ -1,0 +1,422 @@
+<template>
+    <div class="slds-card__body margin0">
+        <article>
+            <div class="slds-grid slds-size_1-of-1 slds-p-around_small">
+                <div class="slds-col slds-size_1-of-1">
+                    <template if:true={noDataAdded}>
+                        <div class="slds-align_absolute-center slds-p-bottom_x-small">
+                            <c-summary-view-no-data></c-summary-view-no-data>
+                        </div>
+                    </template>
+
+                    <template if:false={noDataAdded}>
+                        <template if:true={ShowModal}>
+                            <c-prompt-modal
+                                header-label={label.giving_Info_Delete_Label}
+                                body-msg={label.giving_Info_Delete_Label_des}
+                                positive-response-button={label.yes}
+                                negative-response-button={label.cancel}
+                                close-label="label.Close"
+                                onpositiveresponse={deleteModal}
+                                onnegativeresponse={closeModal}
+                            ></c-prompt-modal>
+                        </template>
+                        <!-- view -->
+                        <template if:true={editViewForm}>
+                            <div class="abc">
+                                <template if:false={editform} for:each={apidata} for:item="apiobj">
+                                    <div
+                                        key={apiobj.id}
+                                        class="slds-card slds-card_boundary slds-p-around_small heightCount"
+                                    >
+                                        <div class="slds-grid slds-size_1-of-1">
+                                            <div class="slds-grid slds-size_8-of-12 slds-grid_vertical-align-center ">
+                                                <label class="slds-text-heading_small">
+                                                    <strong>{apiobj.title}</strong>
+                                                </label>
+                                                <c-strength-redflag
+                                                    class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                                    rfs-data={apiobj.rfsMarkerWrapper.strengthTitle}
+                                                    onvalueselected={handleMarkerChange}
+                                                    read-only-view="true"
+                                                ></c-strength-redflag>
+                                            </div>
+
+                                            <div
+                                                if:true={isUpdateable}
+                                                class="slds-grid slds-size_4-of-12"
+                                                style="justify-content: flex-end"
+                                            >
+                                                <lightning-button
+                                                    label={label.deleteLabel}
+                                                    variant="base"
+                                                    class="slds-p-right_medium"
+                                                    value={apiobj.id}
+                                                    onclick={handledelete}
+                                                ></lightning-button>
+                                                <template if:true={isUpdateable}>
+                                                    <lightning-button
+                                                        label={label.editLabel}
+                                                        data-target-id={apiobj.id}
+                                                        onclick={handleedit}
+                                                        value={apiobj}
+                                                    >
+                                                    </lightning-button>
+                                                </template>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-border_top slds-m-top_small slds-m-bottom_small"></div>
+
+                                        <div class="slds-grid slds-size_1-of-1">
+                                            <div class="slds-col" style="width: 30%">
+                                                <span class="gi-heading">{label.giving_Info_Description}</span>
+                                                <template if:true={apiobj.description}>
+                                                    <c-show-more-show-less-line
+                                                        class="slds-m-top_small gi-text"
+                                                        description={apiobj.description}
+                                                        no-of-lines="5"
+                                                    ></c-show-more-show-less-line>
+                                                </template>
+
+                                                <template if:false={apiobj.description}>
+                                                    <p class="slds-text-body_regular">-</p>
+                                                </template>
+                                            </div>
+
+                                            <div class="slds-col" style="width: 30%">
+                                                <span class="gi-heading">{label.giving_Info_So_What}</span>
+                                                <template if:true={apiobj.soWhat}>
+                                                    <c-show-more-show-less-line
+                                                        class="slds-m-top_small gi-text"
+                                                        description={apiobj.soWhat}
+                                                        no-of-lines="5"
+                                                    ></c-show-more-show-less-line>
+                                                </template>
+
+                                                <template if:false={apiobj.soWhat}>
+                                                    <p class="slds-text-body_regular">-</p>
+                                                </template>
+                                            </div>
+
+                                            <div class="slds-col" style="width: 30%">
+                                                <span class="gi-heading">{label.giving_Info_ProveIt}</span>
+                                                <template if:true={apiobj.proveIt}>
+                                                    <c-show-more-show-less-line
+                                                        class="slds-m-top_small gi-text"
+                                                        description={apiobj.proveIt}
+                                                        no-of-lines="5"
+                                                    ></c-show-more-show-less-line>
+                                                </template>
+
+                                                <template if:false={apiobj.proveIt}>
+                                                    <p class="slds-text-body_regular">-</p>
+                                                </template>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-col slds-size_1-of-1 slds-m-top_small">
+                                            <span class="gi-heading">{label.giving_Info_Perspective}</span>
+                                            <c-show-more-show-less-line
+                                                class="slds-m-top_small slds-size_8-of-12 gi-text"
+                                                description={apiobj.perspective}
+                                                no-of-lines="3"
+                                            ></c-show-more-show-less-line>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <!-- create -->
+                        <template if:true={editform}>
+                            <template if:false={editViewForm}>
+                                <div class="abc">
+                                    <template for:each={apidata1} for:item="apiobj">
+                                        <div
+                                            key={apiobj.id}
+                                            class="slds-card slds-card_boundary slds-p-around_small heightCount"
+                                        >
+                                            <div class="slds-grid slds-size_1-of-1">
+                                                <div class="slds-grid slds-size_8-of-12">
+                                                    <span class="gi-title">{apiobj.title}</span>
+                                                    <c-strength-redflag
+                                                        class="slds-clearfix slds-float_right slds-m-left_x-small"
+                                                        rfs-data={apiobj.rfsMarkerWrapper.strengthTitle}
+                                                        onvalueselected={handleMarkerChange}
+                                                        read-only-view="true"
+                                                    ></c-strength-redflag>
+                                                </div>
+
+                                                <div
+                                                    if:true={isUpdateable}
+                                                    class="slds-grid slds-size_4-of-12"
+                                                    style="justify-content: flex-end"
+                                                >
+                                                    <lightning-button
+                                                        label={label.deleteLabel}
+                                                        variant="base"
+                                                        class="slds-p-right_medium"
+                                                        value={apiobj.id}
+                                                        onclick={handledelete}
+                                                    ></lightning-button>
+                                                    <template if:true={isUpdateable}>
+                                                        <lightning-button
+                                                            label={label.editLabel}
+                                                            data-target-id={apiobj.id}
+                                                            onclick={handleedit}
+                                                        >
+                                                        </lightning-button>
+                                                    </template>
+                                                </div>
+                                            </div>
+
+                                            <div class="slds-border_top slds-m-top_medium"></div>
+
+                                            <div class="slds-grid slds-size_1-of-1">
+                                                <div class="slds-col" style="width: 30%">
+                                                    <span class="gi-heading">{label.giving_Info_Description}</span>
+                                                    <template if:true={apiobj.description}>
+                                                        <c-show-more-show-less-line
+                                                            class="slds-m-top_small gi-text"
+                                                            description={apiobj.description}
+                                                            no-of-lines="5"
+                                                        ></c-show-more-show-less-line>
+                                                    </template>
+
+                                                    <template if:false={apiobj.description}>
+                                                        <p class="slds-text-body_regular">-</p>
+                                                    </template>
+                                                </div>
+
+                                                <div class="slds-col" style="width: 30%">
+                                                    <span class="gi-heading">{label.giving_Info_So_What}</span>
+                                                    <template if:true={apiobj.soWhat}>
+                                                        <c-show-more-show-less-line
+                                                            class="slds-m-top_small gi-text"
+                                                            description={apiobj.soWhat}
+                                                            no-of-lines="5"
+                                                        ></c-show-more-show-less-line>
+                                                    </template>
+
+                                                    <template if:false={apiobj.soWhat}>
+                                                        <p class="slds-text-body_regular">-</p>
+                                                    </template>
+                                                </div>
+
+                                                <div class="slds-col" style="width: 30%">
+                                                    <span class="gi-heading">{label.giving_Info_ProveIt}</span>
+                                                    <template if:true={apiobj.proveIt}>
+                                                        <c-show-more-show-less-line
+                                                            class="slds-m-top_small gi-text"
+                                                            description={apiobj.proveIt}
+                                                            no-of-lines="5"
+                                                        ></c-show-more-show-less-line>
+                                                    </template>
+
+                                                    <template if:false={apiobj.proveIt}>
+                                                        <p class="slds-text-body_regular">-</p>
+                                                    </template>
+                                                </div>
+                                            </div>
+
+                                            <div class="slds-col slds-size_1-of-1 slds-m-top_small">
+                                                <span class="gi-heading">{label.giving_Info_Perspective}</span>
+                                                <c-show-more-show-less-line
+                                                    class="slds-m-top_small slds-size_8-of-12 gi-text"
+                                                    description={apiobj.perspective}
+                                                    no-of-lines="3"
+                                                ></c-show-more-show-less-line>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <div class="gap"></div>
+                            <div class="slds-col slds-size_1-of-1 slds-card slds-card_boundary slds-p-around_small">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <label
+                                        >{label.giving_Info_Title}<abbr class="slds-required" title="required">*</abbr>
+                                        <c-strength-redflag
+                                            rfs-data={rfsDetails.strengthTitle}
+                                            class="slds-clearfix slds-float_right"
+                                            onvalueselected={handleMarkerChange}
+                                        ></c-strength-redflag>
+                                    </label>
+
+                                    <div>
+                                        <lightning-input
+                                            max-length="80"
+                                            value={strengthTitleValue}
+                                            style="font-size: small"
+                                            onchange={handleTitle}
+                                        ></lightning-input>
+                                    </div>
+                                    <template if:true={showMaxLimitErrorTitle}
+                                        ><div class="slds-text-color_error">
+                                            {label.Trend_cannot_exceed_80_characters}
+                                        </div></template
+                                    >
+                                </div>
+
+                                <div class="slds-grid slds-size_1-of-1 slds-m-top_small">
+                                    <div class="slds-col" style="width: 30%">
+                                        <lightning-textarea
+                                            max-length="32000"
+                                            value={strengthDescValue}
+                                            label={label.giving_Info_Description}
+                                            placeholder={label.giving_Info_Des_place_Holder}
+                                            message-when-too-long={label.CharLimit}
+                                            style="font-size: small"
+                                            onchange={handleDescription}
+                                        ></lightning-textarea>
+                                        <lightning-layout>
+                                            <template if:true={showMaxLimitError}
+                                                ><div class="slds-text-color_error">
+                                                    {label.Description_cannot_exceed_32k_characters}
+                                                </div></template
+                                            >
+                                        </lightning-layout>
+                                    </div>
+
+                                    <div class="slds-col" style="width: 30%; padding-left: 10px; padding-right: 10px">
+                                        <lightning-textarea
+                                            max-length="32000"
+                                            value={soWhatValue}
+                                            label="So what?"
+                                            placeholder={label.StrengthValid}
+                                            message-when-too-long={label.CharLimit}
+                                            style="font-size: small"
+                                            onchange={handleWhatsfor}
+                                        ></lightning-textarea>
+                                        <lightning-layout>
+                                            <template if:true={soWhatValueshowMaxLimitError}
+                                                ><div class="slds-text-color_error">
+                                                    {label.Description_cannot_exceed_32k_characters}
+                                                </div></template
+                                            >
+                                        </lightning-layout>
+                                    </div>
+
+                                    <div class="slds-col" style="width: 30%; padding-left: 10px">
+                                        <lightning-textarea
+                                            max-length="32000"
+                                            label={label.giving_Info_ProveIt}
+                                            value={proveItValue}
+                                            placeholder={label.WeAreOne}
+                                            message-when-too-long={label.CharLimit}
+                                            style="font-size: small"
+                                            onchange={handleProveit}
+                                        ></lightning-textarea>
+                                        <lightning-layout>
+                                            <template if:true={proveItValueshowMaxLimitError}
+                                                ><div class="slds-text-color_error">
+                                                    {label.Description_cannot_exceed_32k_characters}
+                                                </div></template
+                                            >
+                                        </lightning-layout>
+                                    </div>
+                                </div>
+
+                                <span>
+                                    {label.giving_Info_Providing_Perspective}
+                                    <c-info-navigation nav-url={label.providingPerspectiveURL}></c-info-navigation>
+                                </span>
+
+                                <div class="slds-form-element__control slds-p-top_small">
+                                    <button
+                                        class={yesCss}
+                                        data-target-value="Yes"
+                                        data-target-id="diYes"
+                                        data-target-class="InfluenceDegree"
+                                        onclick={handleButtonClick}
+                                        data-target-selected={yesSelected}
+                                    >
+                                        <span class="slds-icon_container">
+                                            <svg class="slds-button__icon slds-button__icon_left">
+                                                <use
+                                                    xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#check"
+                                                ></use>
+                                            </svg>
+                                        </span>
+                                        <label>
+                                            <span> {label.yes} </span>
+                                        </label>
+                                    </button>
+                                    <button
+                                        class={noCss}
+                                        data-target-value="No"
+                                        data-target-id="diNo"
+                                        data-target-class="InfluenceDegree"
+                                        onclick={handleButtonClick}
+                                        data-target-selected={noSelected}
+                                    >
+                                        <span class="slds-icon_container">
+                                            <svg class="slds-button__icon slds-button__icon_left">
+                                                <use
+                                                    xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#close"
+                                                ></use>
+                                            </svg>
+                                        </span>
+                                        <label>
+                                            <span> {label.no} </span>
+                                        </label>
+                                    </button>
+                                </div>
+
+                                <template if:true={providingPerspective}>
+                                    <lightning-textarea
+                                        class="slds-size_8-of-12 slds-m-top_small"
+                                        max-length="32000"
+                                        label={label.HowWillYouProvidePerspective}
+                                        value={providingperspectivevalue}
+                                        message-when-too-long={label.CharLimit}
+                                        style="font-size: small"
+                                        onchange={handlePerspective}
+                                    ></lightning-textarea>
+                                    <lightning-layout>
+                                        <template if:true={providingperspectivevalueshowMaxLimitError}
+                                            ><div class="slds-text-color_error">
+                                                {label.Description_cannot_exceed_32k_characters}
+                                            </div></template
+                                        >
+                                    </lightning-layout>
+                                </template>
+
+                                <div
+                                    class="slds-grid slds-size_1-of-1 slds-align_absolute-center slds-m-bottom_medium slds-m-top_medium"
+                                >
+                                    <lightning-button
+                                        label={label.cancel}
+                                        title="Non-primary action"
+                                        class="slds-m-left_x-small"
+                                        onclick={handlecancel}
+                                    >
+                                    </lightning-button>
+                                    <lightning-button
+                                        label={label.save}
+                                        title="Non-primary action"
+                                        class="slds-m-left_x-small"
+                                        variant="brand"
+                                        disabled={istitlevalue}
+                                        onclick={handleSave}
+                                    >
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div if:true={isCreateable} class="slds-m-top_medium">
+                            <lightning-button
+                                variant="brand"
+                                label={label.AddUniqueStrength}
+                                disabled={isshowbuttonclicked}
+                                class="slds-m-left_medium pointer"
+                                onclick={addGivingInfo}
+                            ></lightning-button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </article>
+    </div>
+</template>

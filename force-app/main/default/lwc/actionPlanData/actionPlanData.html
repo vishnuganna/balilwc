@@ -1,0 +1,660 @@
+<template>
+    <!--Read only View-->
+    <template if:false={showEditView}>
+        <template if:false={showEditView}>
+            <div key={item.id} class="divClass">
+                <div class="slds-card__body">
+                    <article class="slds-card slds-card_boundary item slds-m-left_xx-small">
+                        <div class="slds-p-left_x-small">
+                            <div class="slds-grid slds-m-left_small slds-m-right_small slds-border_bottom">
+                                <div class="slds-col slds-size_5-of-12 slds-m-top_small slds-m-bottom_small">
+                                    <h3 class="slds-text-heading_small wrapTextCls" key={item.id}>{item.summary}</h3>
+                                </div>
+                                <div class="slds-col slds-size_7-of-12 slds-m-top_small slds-m-bottom_small">
+                                    <div class="slds-text-align--right">
+                                        <!--255 Starts-->
+                                        <template if:true={bestAction}>
+                                            <span if:false={providingPerspective}>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="33"
+                                                    height="38"
+                                                    viewBox="0 0 24 24"
+                                                    style="fill: #c9c7c5; padding-right: 10px; padding-top: 15px;"
+                                                >
+                                                    <path
+                                                        d="M 19.5555555555556 6.84411764705882  C 19.6666666666667 6.61470588235294  19.6666666666667 6.38529411764706  19.5555555555556 6.15588235294118  C 17.8148148148148 2.52352941176471  14.1851851851852 0  10 0  C 5.81481481481481 0  2.18518518518518 2.52352941176471  0.444444444444443 6.15588235294118  C 0.333333333333332 6.38529411764706  0.333333333333332 6.65294117647059  0.444444444444443 6.84411764705882  C 2.18518518518518 10.4764705882353  5.81481481481481 13  10 13  C 14.1851851851852 13  17.8148148148148 10.4764705882353  19.5555555555556 6.84411764705882  Z M 14.0740740740741 6.5  C 14.0740740740741 8.83235294117647  12.2592592592593 10.7058823529412  10 10.7058823529412  C 7.74074074074074 10.7058823529412  5.92592592592592 8.83235294117647  5.92592592592592 6.5  C 5.92592592592592 4.16764705882353  7.74074074074074 2.29411764705882  10 2.29411764705882  C 12.2592592592593 2.29411764705882  14.0740740740741 4.16764705882353  14.0740740740741 6.5  Z M 12.5925925925926 6.5  C 12.5925925925926 5.00882352941176  11.4444444444444 3.82352941176471  10 3.82352941176471  C 8.55555555555556 3.82352941176471  7.40740740740741 5.00882352941176  7.40740740740741 6.5  C 7.40740740740741 7.99117647058823  8.55555555555556 9.1764705882353  10 9.1764705882353  C 11.4444444444444 9.1764705882353  12.5925925925926 7.99117647058823  12.5925925925926 6.5  Z"
+                                                    ></path>
+                                                </svg>
+                                            </span>
+                                        </template>
+                                        <template if:true={bestAction}>
+                                            <span if:true={providingPerspective}>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="33"
+                                                    height="38"
+                                                    viewBox="0 0 24 24"
+                                                    style="fill: #94c31a; padding-right: 10px; padding-top: 15px;"
+                                                >
+                                                    <path
+                                                        d="M 19.5555555555556 6.84411764705882  C 19.6666666666667 6.61470588235294  19.6666666666667 6.38529411764706  19.5555555555556 6.15588235294118  C 17.8148148148148 2.52352941176471  14.1851851851852 0  10 0  C 5.81481481481481 0  2.18518518518518 2.52352941176471  0.444444444444443 6.15588235294118  C 0.333333333333332 6.38529411764706  0.333333333333332 6.65294117647059  0.444444444444443 6.84411764705882  C 2.18518518518518 10.4764705882353  5.81481481481481 13  10 13  C 14.1851851851852 13  17.8148148148148 10.4764705882353  19.5555555555556 6.84411764705882  Z M 14.0740740740741 6.5  C 14.0740740740741 8.83235294117647  12.2592592592593 10.7058823529412  10 10.7058823529412  C 7.74074074074074 10.7058823529412  5.92592592592592 8.83235294117647  5.92592592592592 6.5  C 5.92592592592592 4.16764705882353  7.74074074074074 2.29411764705882  10 2.29411764705882  C 12.2592592592593 2.29411764705882  14.0740740740741 4.16764705882353  14.0740740740741 6.5  Z M 12.5925925925926 6.5  C 12.5925925925926 5.00882352941176  11.4444444444444 3.82352941176471  10 3.82352941176471  C 8.55555555555556 3.82352941176471  7.40740740740741 5.00882352941176  7.40740740740741 6.5  C 7.40740740740741 7.99117647058823  8.55555555555556 9.1764705882353  10 9.1764705882353  C 11.4444444444444 9.1764705882353  12.5925925925926 7.99117647058823  12.5925925925926 6.5  Z"
+                                                    ></path>
+                                                </svg>
+                                            </span>
+                                        </template>
+                                        <!--255 Ends-->
+                                        <div
+                                            if:false={bestActionCheck}
+                                            class="slds-button slds-m-right_medium star-icon"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="18"
+                                                height="20"
+                                                viewBox="0 0 24 24"
+                                                style="fill: #c9c7c5;"
+                                            >
+                                                <path
+                                                    d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
+                                                ></path>
+                                            </svg>
+                                        </div>
+
+                                        <div
+                                            if:true={bestActionCheck}
+                                            class="slds-button slds-m-right_medium star-icon"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="18"
+                                                height="20"
+                                                viewBox="0 0 24 24"
+                                                style="fill: #94c31a;"
+                                            >
+                                                >
+                                                <path
+                                                    d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
+                                                ></path>
+                                            </svg>
+                                        </div>
+                                        &nbsp; &nbsp;
+                                        <!-- <lightning-button-icon icon-name="utility:delete"    alternative-text="Delete"   class="slds-m-left_xx-small" title="Delete" value={item.id} onclick={handleDelete}></lightning-button-icon>-->
+                                        <template if:true={isDeletable}>
+                                            <lightning-button
+                                                variant="base"
+                                                label={label.deleteLabel}
+                                                title={label.DeleteRecord}
+                                                onclick={handleDelete}
+                                                class="slds-p-left_medium slds-p-right_medium slds-p-top_x-small slds-p-bottom_x-small slds-border_left"
+                                            ></lightning-button>
+                                        </template>
+                                        <template if:true={isUpdateable}>
+                                            <lightning-button
+                                                label={label.editLabel}
+                                                title={label.EditRecord}
+                                                onclick={handleEdit}
+                                            ></lightning-button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-m-left_small slds-m-right_small slds-m-bottom_x-small">
+                            <template if:true={item.description}>
+                                <br />
+                                <!--div class="slds-p-left_x-small slds-m-left_small slds-m-top_small slds-m-bottom_small"-->
+                                <!--<div class="slds-text-body_small">{label.competitiveDetail}</div>-->
+                                <h3 key={item.id} class="slds-p-bottom_xx-small slds-text-title">
+                                    {label.Description}
+                                </h3>
+                                <!--<c-show-more-show-less text-display={description}> </c-show-more-show-less>-->
+                                <!--/div-->
+                                <div class="slds-text-body_regular textAreaReadOnly wrapTextCls">
+                                    {shortActionPlanDetils}
+                                    <template if:true={shortActionPlanDetils}>
+                                        <template if:true={ShowMoreText}>
+                                            <a onclick={handleShowMore}>...{label.showMore}</a>
+                                        </template>
+                                        <template if:true={showText}>
+                                            {longActionPlanDetils}
+                                        </template>
+                                        <template if:true={ShowLessText}>
+                                            <a onclick={handleShowLess}> &nbsp; {label.showLess}</a>
+                                        </template>
+                                    </template>
+                                </div>
+                            </template>
+                            <div class="slds-grid slds-gutters slds-m-top_small">
+                                <div class="slds-col slds-size_1-of-4">
+                                    <span>
+                                        <h3 key={item.id} class="slds-p-bottom_xx-small slds-text-title">
+                                            {label.Priority}
+                                        </h3>
+                                        <template if:true={item.priority}>
+                                            <p key={item.id} class="slds-text-body_regular">{item.priority}</p>
+                                        </template>
+                                        <template if:false={item.priority}>
+                                            <p key={item.id} class="slds-text-body_regular">-</p>
+                                        </template>
+                                    </span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <span>
+                                        <h3 key={item.id} class="slds-p-bottom_xx-small slds-text-title">
+                                            {label.Status}
+                                        </h3>
+                                        <template if:true={item.status}>
+                                            <p key={item.id} class="slds-text-body_regular">{item.status}</p>
+                                        </template>
+                                        <template if:false={item.status}>
+                                            <p key={item.id} class="slds-text-body_regular">-</p>
+                                        </template>
+                                    </span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <span>
+                                        <h3 key={item.id} class="slds-p-bottom_xx-small slds-text-title">
+                                            {label.ActionType}
+                                        </h3>
+                                        <template if:true={item.actionType}>
+                                            <p key={item.id} class="slds-text-body_regular">{item.actionType}</p>
+                                        </template>
+                                        <template if:false={item.actionType}>
+                                            <p key={item.id} class="slds-text-body_regular">-</p>
+                                        </template>
+                                    </span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <span>
+                                        <h3 key={item.id} class="slds-p-bottom_xx-small slds-text-title">
+                                            {label.Contact}
+                                        </h3>
+                                        <template if:true={item.contact}>
+                                            <p key={item.id} class="slds-text-body_regular">{item.contactName}</p>
+                                        </template>
+                                        <template if:false={item.contact}>
+                                            <p key={item.id} class="slds-text-body_regular">-</p>
+                                        </template>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-gutters slds-m-top_small">
+                                <div class="slds-col slds-size_1-of-4">
+                                    <span>
+                                        <h3 key={item.id} class="slds-p-bottom_xx-small slds-text-title">
+                                            {label.Assigned_To}
+                                        </h3>
+                                        <template if:true={item.assignedTo}>
+                                            <p key={item.id} class="slds-text-body_regular">{item.assignedToName}</p>
+                                        </template>
+                                        <template if:false={item.assignedTo}>
+                                            <p key={item.id} class="slds-text-body_regular">-</p>
+                                        </template>
+                                    </span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <span>
+                                        <h3 key={item.id} class="slds-p-bottom_xx-small slds-text-title">
+                                            {label.Start_Date}
+                                        </h3>
+                                        <template if:true={item.startDate}>
+                                            <lightning-formatted-date-time
+                                                value={item.startDate}
+                                                month="numeric"
+                                                year="numeric"
+                                                day="numeric"
+                                            ></lightning-formatted-date-time>
+                                        </template>
+                                        <template if:false={item.startDate}>
+                                            <p key={item.id} class="slds-text-body_regular">-</p>
+                                        </template>
+                                    </span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4">
+                                    <span>
+                                        <h3 key={item.id} class="slds-p-bottom_xx-small slds-text-title">
+                                            {label.Due_Date}
+                                        </h3>
+                                        <template if:true={item.dueDate}>
+                                            <lightning-formatted-date-time
+                                                value={item.dueDate}
+                                                month="numeric"
+                                                year="numeric"
+                                                day="numeric"
+                                            ></lightning-formatted-date-time>
+                                        </template>
+                                        <template if:false={item.dueDate}>
+                                            <p key={item.id} class="slds-text-body_regular">-</p>
+                                        </template>
+                                    </span>
+                                </div>
+                            </div>
+                            <template if:true={providingPerspective}>
+                                <!--KFS-255 Starts-->
+                                <template if:true={howWillYouProvidePerspective}>
+                                    <br />
+                                    <!--div class="slds-p-left_x-small slds-m-left_small slds-m-top_small slds-m-bottom_small"-->
+                                    <!--<div class="slds-text-body_small">{label.competitiveDetail}</div>-->
+                                    <div class="slds-m-top_medium slds-m-bottom_medium slds-border_top"></div>
+                                    <h3 key={item.id} class="slds-p-bottom_xx-small slds-text-title">
+                                        {label.HowWillYouProvidePerspective}
+                                    </h3>
+                                    <!--<c-show-more-show-less text-display={description}> </c-show-more-show-less> -->
+                                    <!--/div-->
+                                    <div class="slds-text-body_regular textAreaReadOnly wrapTextCls">
+                                        {shortActionPlanDetilsProvidePerspective}
+                                        <template if:true={shortActionPlanDetilsProvidePerspective}>
+                                            <template if:true={ShowMoreTextProvidePerspective}>
+                                                <a onclick={handleShowMoreProvidePerspective}>...{label.showMore}</a>
+                                            </template>
+                                            <template if:true={showTextProvidePerspective}>
+                                                {longActionPlanDetilsProvidePerspective}
+                                            </template>
+                                            <template if:true={ShowLessTextProvidePerspective}>
+                                                <a onclick={handleShowLessProvidePerspective}>
+                                                    &nbsp; {label.showLess}</a
+                                                >
+                                            </template>
+                                        </template>
+                                    </div>
+                                    {jsonData}
+                                </template>
+                            </template>
+                            <!-- KFS 255 ENDS-->
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </template>
+    </template>
+
+    <!--Edit View-->
+    <template if:true={showEditView}>
+        <div class="slds-box slds-size--9-of-10 slds-theme_default slds-m-bottom_medium">
+            <fieldset class="slds-form-element slds-form-element_compound">
+                <div class="slds-form-element__control">
+                    <div class="slds-form-element__row">
+                        <div class="slds-size_1-of-2">
+                            <div class="slds-form-element slds-m-top_xx-small">
+                                <div class="slds-form-element__control">
+                                    <lightning-input
+                                        type="text"
+                                        label={label.Summary}
+                                        name="summary"
+                                        placeholder={label.AddSummary}
+                                        onchange={validateInputs}
+                                        max-length="256"
+                                        value={item.summary}
+                                        required
+                                    ></lightning-input>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="slds-size_1-of-2">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <button
+                                        class="slds-button slds-button_neutral slds-m-left_medium slds-m-top_large"
+                                        onclick={openAddListlookup}
+                                    >
+                                        {label.addFromList}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>-->
+                    </div>
+
+                    <div class="slds-form-element__row slds-m-top_medium">
+                        <div class="slds-size_1-of-1">
+                            <div class="slds-form-element slds-m-top_xx-small">
+                                <div class="slds-form-element__control">
+                                    <lightning-textarea
+                                        name="Description"
+                                        placeholder={label.AddDescription}
+                                        label={label.Description}
+                                        onchange={validateInputs}
+                                        value={item.description}
+                                        max-length="32000"
+                                    ></lightning-textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-m-top_medium slds-m-bottom_medium slds-border_top"></div>
+
+                    <div class="slds-form-element__row">
+                        <div class="slds-size_1-of-3">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <lightning-combobox
+                                        name="ActionType"
+                                        label={label.ActionType}
+                                        value={item.actionType}
+                                        placeholder=" "
+                                        options={ActionTypePicklistValues}
+                                        onchange={handleActionTypePicklistValue}
+                                        class="picklist"
+                                    >
+                                    </lightning-combobox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-size_1-of-3">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <c-lookup-component
+                                        child-object-api-name={objectForLookup}
+                                        target-field-api-name={contactFieldName}
+                                        field-label={label.Contact}
+                                        placeholder={label.Contact}
+                                        value={item.contact}
+                                        onvalueselected={handleContactChange}
+                                        style="font-size: small;"
+                                    ></c-lookup-component>
+                                    <!--<c-look-Up onconid = {getContactId} value={item.contactName}></c-look-Up>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-size_1-of-3">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <c-lookup-component
+                                        child-object-api-name={objectForLookup}
+                                        target-field-api-name={assignedToFieldName}
+                                        field-label={label.Assigned_To}
+                                        placeholder={label.Contact}
+                                        value={item.assignedTo}
+                                        onvalueselected={handleUserChange}
+                                        style="font-size: small;"
+                                        show-required-star={showRequired}
+                                        required
+                                    ></c-lookup-component>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element__row slds-m-top_large">
+                        <div class="slds-size_1-of-3">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <lightning-combobox
+                                        name="Status"
+                                        label={label.Status}
+                                        value={item.status}
+                                        placeholder="  "
+                                        options={StatusPicklistValues}
+                                        onchange={handleStatusPicklistValue}
+                                        class="picklist"
+                                    >
+                                    </lightning-combobox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-size_1-of-3">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <lightning-input
+                                        type="date"
+                                        date-style="short"
+                                        name="startDate"
+                                        label={label.Start_Date}
+                                        value={item.startDate}
+                                        onchange={validateInputs}
+                                    ></lightning-input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-size_1-of-3">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <lightning-input
+                                        type="date"
+                                        date-style="short"
+                                        name="dueDate"
+                                        label={label.Due_Date}
+                                        onchange={validateInputs}
+                                        value={item.dueDate}
+                                    ></lightning-input>
+                                </div>
+                            </div>
+                            <template if:true={validationcheck}>
+                                <div class="slds-text-color_error slds-p-left_medium">
+                                    {label.ErrorDueDateBeforeStart}
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element__row slds-m-top_large">
+                        <div class="slds-size_1-of-3">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <lightning-combobox
+                                        name="Priority"
+                                        label={label.Priority}
+                                        value={item.priority}
+                                        placeholder="  "
+                                        options={PriorityPicklistValues}
+                                        onchange={handlePriorityTypePicklistValue}
+                                        class="picklist"
+                                    >
+                                    </lightning-combobox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-size_1-of-3 toggleAlign">
+                            <span class="slds-form-element__label slds-m-bottom_none slds-grid"
+                                >{label.Is_a_Best_Action}<c-info-navigation
+                                    nav-url={label.bestActionURL}
+                                ></c-info-navigation
+                            ></span>
+                            <div class="slds-form-element" style="width: 20%;">
+                                <!--
+                    <label class="slds-checkbox_toggle slds-grid">
+                      <lightning-input type="checkbox" name="checkbox-toggle-16" label={label.Is_a_Best_Action}  aria-describedby="checkbox-toggle-16" checked={item.bestAction} onchange={handleonChange}></lightning-input>
+                    </label>
+                    -->
+                                <label class="toggleDisplay">
+                                    <div class="slds-checkbox_toggle slds-grid">
+                                        <input
+                                            type="checkbox"
+                                            name="checkbox-toggle-16"
+                                            value="checkbox-toggle-16"
+                                            aria-describedby="checkbox-toggle-16"
+                                            checked={bestActionCheck}
+                                            onchange={handleonChange}
+                                        />
+                                        <!--146-->
+                                        <span
+                                            id="checkbox-toggle-16"
+                                            class="slds-checkbox_faux_container"
+                                            aria-live="assertive"
+                                        >
+                                            <span class="slds-checkbox_faux"></span>
+                                            <span class="slds-checkbox_on"></span>
+                                            <span class="slds-checkbox_off"></span>
+                                        </span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <template if:true={bestAction}>
+                            <!--KFS 255 Starts-->
+                            <div class="slds-size_1-of-3">
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <span class="slds-form-element__label slds-m-bottom_none slds-p-left_small">
+                                            {label.WillYouBeProvidePerspective}
+                                            <c-info-navigation
+                                                nav-url={label.providingPerspectiveURL}
+                                            ></c-info-navigation>
+                                        </span>
+                                        <div class="slds-form-element__control slds-p-top_small">
+                                            <button
+                                                class={yesCss}
+                                                data-target-value="Yes"
+                                                data-target-id="diYes"
+                                                data-target-class="InfluenceDegree"
+                                                onclick={handleButtonClick}
+                                                data-target-selected={yesSelected}
+                                            >
+                                                <span class="slds-icon_container">
+                                                    <svg class="slds-button__icon slds-button__icon_left ">
+                                                        <use
+                                                            xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#check"
+                                                        ></use>
+                                                    </svg>
+                                                </span>
+                                                <label>
+                                                    <span> {label.yes} </span>
+                                                </label>
+                                            </button>
+
+                                            <button
+                                                class={noCss}
+                                                data-target-value="No"
+                                                data-target-id="diNo"
+                                                data-target-class="InfluenceDegree"
+                                                onclick={handleButtonClick}
+                                                data-target-selected={noSelected}
+                                            >
+                                                <span class="slds-icon_container">
+                                                    <svg class="slds-button__icon slds-button__icon_left ">
+                                                        <use
+                                                            xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#close"
+                                                        ></use>
+                                                    </svg>
+                                                </span>
+                                                <label>
+                                                    <span> {label.no} </span>
+                                                </label>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <!--KFS 255 ENDS-->
+                    </div>
+                    <template if:true={bestAction}>
+                        <!--KFS Starts-->
+                        <template if:true={isCheck}>
+                            <div class="slds-form-element__row slds-m-top_medium">
+                                <div class="slds-size_1-of-1">
+                                    <div class="slds-form-element slds-m-top_xx-small">
+                                        <div class="slds-form-element__control">
+                                            <lightning-textarea
+                                                name="Perspective"
+                                                label={label.HowWillYouProvidePerspective}
+                                                onchange={validateInputs}
+                                                value={howWillYouProvidePerspective}
+                                                max-length="32000"
+                                            ></lightning-textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                    <!--KFS 255 Ends-->
+                    <div class="slds-align_absolute-center saveAndCancelBtn">
+                        <lightning-button
+                            label={label.cancel}
+                            variant="neutral"
+                            onclick={handleCancel}
+                        ></lightning-button>
+                        &nbsp; &nbsp;
+                        <lightning-button
+                            label={label.save}
+                            variant="brand"
+                            onclick={updateActionPlan}
+                            disabled={saveDisableFlag}
+                        ></lightning-button>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </template>
+
+    <!-- modal start -->
+    <template if:true={ShowModal}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={label.close}
+                        onclick={closeModal}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text={label.close}
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">{label.close}</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                        {label.DeleteActionPlan}
+                    </h2>
+                </header>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>{label.DeleteActionsPrompt}</p>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={deleteModal}>{label.yes}</button>
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>{label.no}</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={undelete}>
+        <div class="toast slds-notify-container" style="height:4rem">
+            <div class="slds-notify_container slds-is-relative">
+                <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
+                    <span class="slds-assistive-text">{label.success_header}</span>
+                    <span
+                        class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top"
+                        title={label.DescriptionOfIcon}
+                    >
+                        <lightning-icon icon-name="utility:success" variant="inverse" size="small"></lightning-icon>
+                    </span>
+                    <div class="slds-notify__content">
+                        <h2 class="slds-text-heading_small ">{label.success_header}</h2>
+                        <h3 class="slds-text-heading_x-small ">
+                            {label.Task} {summary} {label.WasDeleted}.
+                            <a href="javascript:void(0);" onclick={undeleteTask}>{label.Undo}</a>
+                        </h3>
+                    </div>
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-notify__close"
+                        title={label.close}
+                        onclick={closeToast}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text={label.close}
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">{label.close}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

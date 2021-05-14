@@ -1,0 +1,520 @@
+<apex:component controller="GoldSheetSituationAppraisalPDFController" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+    <!--<apex:attribute
+        name="obj"
+        description="This is the object"
+        assignTo="{!goldSheetPDFWrapper}"
+        required="true"
+        type="GoldSheetPDFWrapper"
+    />-->
+
+    <!-- fpor strategic players -->
+    <div style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.SituationalAppraisal}" />
+        </div>
+
+        <div class="lineheight20 marginbottom12 font16 main-heading-bar semibold margintop5">
+            <apex:outputLabel value="{!$Label.StrategicPlayers}" />
+        </div>
+
+        <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.strategicPlayers !=null ,true,false) }">
+            <table style="width:100%;color: #4d4d4f">
+                <tbody>
+                    <tr>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.Name}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.Title}" />
+                        </td>
+                        <td class="font7" width="2%">
+                            <apex:outputLabel />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.Role}" />
+                        </td>
+                        <td class="font7" width="2%">
+                            <apex:outputLabel />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.BuySellPositionNow}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.OurTeamMember}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.Title}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <apex:repeat value="{!goldSheetPDFWrapper.strategicPlayers}" var="strategicPlayersobj">
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+
+                <table style="width:100%">
+                    <tbody>
+                        <tr>
+                            <td class="data-bold-view" width="16%">
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.strategicPlayerName !=null ,true,false) }"
+                                >
+                                    {!strategicPlayersobj.strategicPlayerName}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.strategicPlayerName ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.strategicPlayerTitle !=null ,true,false) }"
+                                >
+                                    {!strategicPlayersobj.strategicPlayerTitle}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.strategicPlayerTitle ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.role !=null ,true,false) }">
+                                    <span>
+                                        <apex:repeat value="{!strategicPlayersobj.rfsMarkerPdfWrapper}" var="role">
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((role=='role'),IF(strategicPlayersobj.rfsMarkerPdfWrapper['role']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((role=='role'),IF(strategicPlayersobj.rfsMarkerPdfWrapper['role']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.role !=null ,true,false) }">
+                                    {!strategicPlayersobj.role}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.role ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.buySellPosition !=null ,true,false) }"
+                                >
+                                    <apex:repeat value="{!strategicPlayersobj.rfsMarkerPdfWrapper}"
+                                        var="buySellPosition"
+                                    >
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((buySellPosition=='buySellPosition'),IF(strategicPlayersobj.rfsMarkerPdfWrapper['buySellPosition']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((buySellPosition=='buySellPosition'),IF(strategicPlayersobj.rfsMarkerPdfWrapper['buySellPosition']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.buySellPosition !=null ,true,false) }"
+                                >
+                                    {!strategicPlayersobj.buySellPosition}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.buySellPosition ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.ourTeamMemberName !=null ,true,false) }"
+                                >
+                                    {!strategicPlayersobj.ourTeamMemberName}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.ourTeamMemberName ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.accountOwnerTitle !=null ,true,false) }"
+                                >
+                                    {!strategicPlayersobj.accountOwnerTitle}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(strategicPlayersobj.accountOwnerTitle ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </apex:repeat>
+        </apex:pageBlock>
+        <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.strategicPlayers ==null ,true,false) }">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!-- for fop trends  -->
+    <div class="margintop20" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.SituationalAppraisal}" />
+        </div>
+        <div class="lineheight20 marginbottom12 font16 semibold main-heading-bar margintop5">
+            <apex:outputLabel value="{!$Label.FieldOfPlayTrendPlural}" />
+        </div>
+        <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.fopTrends !=null ,true,false) }">
+            <div class="margintop10">
+                <apex:repeat value="{!goldSheetPDFWrapper.fopTrends}" var="fopTrendsobj">
+                    <div class="margintop5">
+                        <table style="margin-left: -2px;">
+                            <tr>
+                                <td class="data-bold-view">
+                                    {!fopTrendsobj.trendTitle}
+                                </td>
+                                <td>
+                                    <apex:repeat value="{!fopTrendsobj.rfsMarkerPdfWrapper}" var="TrendTitle">
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((TrendTitle=='TrendTitle'),IF(fopTrendsobj.rfsMarkerPdfWrapper['TrendTitle']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((TrendTitle=='TrendTitle'),IF(fopTrendsobj.rfsMarkerPdfWrapper['TrendTitle']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="margintop5 data-bold-view-normal">
+                            <apex:pageBlock rendered="{! If(fopTrendsobj.trendDescription !=null ,true,false) }">
+                                {!fopTrendsobj.trendDescription}
+                            </apex:pageBlock>
+                            <apex:pageBlock rendered="{! If(fopTrendsobj.trendDescription ==null ,true,false) }">
+                                -
+                            </apex:pageBlock>
+                        </div>
+
+                        <div class="width100 margintop10 ">
+                            <div class="dividerhr"></div>
+                        </div>
+                    </div>
+                </apex:repeat>
+            </div>
+        </apex:pageBlock>
+
+        <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.fopTrends ==null ,true,false) }">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!-- fpor opportunities -->
+    <div class="margintop20" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.SituationalAppraisal}" />
+        </div>
+
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.FopOpportunities}" />
+        </div>
+
+        <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.fopOpportunities !=null ,true,false) }">
+            <table style="width:100%;color: #4d4d4f">
+                <tbody>
+                    <tr>
+                        <td width="2%"></td>
+                        <td width="21%">
+                            <apex:outputLabel value="{!$Label.FopOpportunity}" />
+                        </td>
+                        <td width="2%"></td>
+                        <td width="21%">
+                            <apex:outputLabel value="{!$Label.fopOpportunitykpi}" />
+                        </td>
+                        <td width="2%"></td>
+                        <td width="21%">
+                            <apex:outputLabel value="{!$Label.Owner}" />
+                        </td>
+                        <td width="2%"></td>
+                        <td width="21%"> <apex:outputLabel value="{!$Label.Description}" /> hooooo </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <apex:repeat value="{!goldSheetPDFWrapper.fopOpportunities}" var="fopOpportunityobj">
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+
+                <table style="width:100%">
+                    <tbody>
+                        <tr>
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.title !=null ,true,false) }">
+                                    <span>
+                                        <apex:repeat value="{!fopOpportunityobj.rfsMarkerPdfWrapper}" var="oppTitle">
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((oppTitle=='oppTitle'),IF(fopOpportunityobj.rfsMarkerPdfWrapper['oppTitle']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((oppTitle=='oppTitle'),IF(fopOpportunityobj.rfsMarkerPdfWrapper['oppTitle']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+                            <td width="21%" class="data-bold-view">
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.title !=null ,true,false) }">
+                                    {!fopOpportunityobj.title}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.title ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.kpi !=null ,true,false) }">
+                                    <span>
+                                        <apex:repeat value="{!fopOpportunityobj.rfsMarkerPdfWrapper}" var="kpi">
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((kpi=='kpi'),IF(fopOpportunityobj.rfsMarkerPdfWrapper['kpi']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((kpi=='kpi'),IF(fopOpportunityobj.rfsMarkerPdfWrapper['kpi']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+                            <td width="21%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.kpi !=null ,true,false) }">
+                                    {!fopOpportunityobj.kpi}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.kpi ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.ownerName !=null ,true,false) }">
+                                    <span>
+                                        <apex:repeat value="{!fopOpportunityobj.rfsMarkerPdfWrapper}"
+                                            var="strategicPlayer"
+                                        >
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((strategicPlayer=='strategicPlayer'),IF(fopOpportunityobj.rfsMarkerPdfWrapper['strategicPlayer']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((strategicPlayer=='strategicPlayer'),IF(fopOpportunityobj.rfsMarkerPdfWrapper['strategicPlayer']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+                            <td width="21%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.ownerName !=null ,true,false) }">
+                                    {!fopOpportunityobj.ownerName}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.ownerName ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="2%">
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.description !=null ,true,false) }">
+                                    <span>
+                                        <apex:repeat value="{!fopOpportunityobj.rfsMarkerPdfWrapper}" var="description">
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((description=='description'),IF(fopOpportunityobj.rfsMarkerPdfWrapper['description']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((description=='description'),IF(fopOpportunityobj.rfsMarkerPdfWrapper['description']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </apex:repeat>
+                                    </span>
+                                </apex:pageBlock>
+                            </td>
+                            <td width="21%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.description !=null ,true,false) }">
+                                    {!fopOpportunityobj.description}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(fopOpportunityobj.description ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </apex:repeat>
+        </apex:pageBlock>
+        <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.fopOpportunities ==null ,true,false) }">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!--Strategic Strength Data Start-->
+    <div class="margintop15" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.SituationalAppraisal}" />
+        </div>
+
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.OurStrategicStrengths}" />
+        </div>
+
+        <div class="margintop10">
+            <apex:repeat rendered="{!NOT(goldSheetPDFWrapper.strategicStrengths.empty)}"
+                value="{!goldSheetPDFWrapper.strategicStrengths}"
+                var="strategicStrengthObj"
+            >
+                <div class="margintop10 ">
+                    <div class="margintop20 boldfont colorgray ">
+                        <table style="margin-left: -2px;">
+                            <tr>
+                                <td class="data-bold-view">
+                                    <apex:pageBlock rendered="{! If(strategicStrengthObj.strategicStrength != null ,true,false) }"
+                                    >
+                                        {!strategicStrengthObj.strategicStrength}
+                                    </apex:pageBlock>
+                                </td>
+                                <td>
+                                    <apex:repeat value="{!strategicStrengthObj.rfsMarkerPdfWrapper}"
+                                        var="StrategicStrength"
+                                    >
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((StrategicStrength=='StrategicStrength'),IF(strategicStrengthObj.rfsMarkerPdfWrapper['StrategicStrength']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((StrategicStrength=='StrategicStrength'),IF(strategicStrengthObj.rfsMarkerPdfWrapper['StrategicStrength']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="margintop5 data-bold-view-normal">
+                        <apex:pageBlock rendered="{! If(strategicStrengthObj.ssDescription != null ,true,false) }">
+                            {!strategicStrengthObj.ssDescription}
+                        </apex:pageBlock>
+
+                        <apex:pageBlock rendered="{! If(strategicStrengthObj.ssDescription == null ,true,false) }">
+                            -
+                        </apex:pageBlock>
+                    </div>
+                </div>
+
+                <div class="linegray margintop10" style="width: 100% "></div>
+            </apex:repeat>
+
+            <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.strategicStrengths ==null ,true,false) }">
+                <div class="margintop10 semibold">
+                    <apex:outputLabel value="{!$Label.NodataAdded}" />
+                </div>
+            </apex:pageBlock>
+        </div>
+    </div>
+
+    <!--Critical Vulnerability Data Start-->
+    <div class="margintop15" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.SituationalAppraisal}" />
+        </div>
+
+        <div class="lineheight20 main-heading-bar marginbottom12 font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.OurCriticalVulnerability}" />
+        </div>
+
+        <div class="margintop10 ">
+            <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.criticalVulnerability.title != null,true,false) }">
+                <div class="margintop20 boldfont colorgray ">
+                    <table style="margin-left: -2px;">
+                        <tr>
+                            <td class="data-bold-view">
+                                <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.criticalVulnerability.title != null ,true,false) }"
+                                >
+                                    {!goldSheetPDFWrapper.criticalVulnerability.title}
+                                </apex:pageBlock>
+                            </td>
+                            <td>
+                                <apex:repeat value="{!goldSheetPDFWrapper.criticalVulnerability.rfsMarkerPdfWrapper}"
+                                    var="vulnerablity"
+                                >
+                                    <span>
+                                        <apex:image style="width: 15px;height: 15px"
+                                            url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                            rendered="{!IF((vulnerablity=='vulnerablity'),IF(goldSheetPDFWrapper.criticalVulnerability.rfsMarkerPdfWrapper['vulnerablity']['redFlagSelected']==true,true,false),false)}"
+                                        />
+                                        <apex:image style="width: 15px;height: 15px"
+                                            url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                            rendered="{!IF((vulnerablity=='vulnerablity'),IF(goldSheetPDFWrapper.criticalVulnerability.rfsMarkerPdfWrapper['vulnerablity']['strengthSelected']==true,true,false),false)}"
+                                        />
+                                    </span>
+                                </apex:repeat>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="margintop5 data-bold-view-normal ">
+                    <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.criticalVulnerability.description != null ,true,false) }"
+                    >
+                        {!goldSheetPDFWrapper.criticalVulnerability.description}
+                    </apex:pageBlock>
+
+                    <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.criticalVulnerability.description == null ,true,false) }"
+                    >
+                        -
+                    </apex:pageBlock>
+                </div>
+            </apex:pageBlock>
+
+            <apex:pageBlock rendered="{! If(goldSheetPDFWrapper.criticalVulnerability.title == null ,true,false) }">
+                <div class="margintop5 semibold">
+                    <apex:outputLabel value="{!$Label.NodataAdded}" />
+                </div>
+            </apex:pageBlock>
+        </div>
+    </div>
+</apex:component>

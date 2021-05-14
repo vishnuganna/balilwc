@@ -1,0 +1,56 @@
+.slds-button_neutral:active,
+.slds-button--neutral:active {
+    text-decoration: none !important;
+}
+
+[contentEditable="true"]:empty:not(:focus):before {
+    content: attr(data-text);
+}
+lightning-card[c-competition_competition] {
+    text-decoration: none;
+}
+
+.container-border {
+    border-top: 1px solid #dcdcdc;
+}
+.divClassNew {
+    border-top: none;
+}
+.competitorTypeButtons {
+    display: grid;
+    width: 100%;
+    text-align: left;
+    text-decoration: none !important;
+}
+.competitorpositionButtons {
+    display: grid;
+    width: 100%;
+    text-align: left;
+    text-decoration: none !important;
+}
+.iconClass {
+    fill: red;
+}
+.iconshared {
+    fill: orange;
+}
+.iconfrontrunner {
+    fill: blue;
+}
+.iconalternative {
+    fill: green;
+}
+.btnClicked {
+    background-color: #0070d2;
+    color: white;
+}
+.erroMsg {
+    color: red;
+    font-size: 12px;
+}
+.highlightborder {
+    border-color: red !important;
+}
+.textAreaPosition {
+    position: unset !important;
+}

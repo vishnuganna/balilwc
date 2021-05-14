@@ -1,0 +1,48 @@
+.redflagNonSelectable {
+    cursor: pointer;
+    width: 24px;
+    height: 19px;
+    background-color: white;
+    text-align: center;
+    border-radius: 2px 0px 0px 2px;
+    float: left;
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+    border-left: 1px solid gainsboro;
+    border-right: 0px;
+}
+
+.redflagSelectable {
+    cursor: pointer;
+    width: 24px;
+    height: 19px;
+    background-color: #b30000;
+    text-align: center;
+    border-radius: 3px 0px 0px 3px;
+    float: left;
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+    border-left: 1px solid gainsboro;
+    border-right: 0px;
+}
+
+.strengthNonSelectable {
+    cursor: pointer;
+    width: 24px;
+    height: 19px;
+    background-color: white;
+    text-align: center;
+    border: 1px solid gainsboro;
+    border-radius: 0px 2px 2px 0px;
+    float: left;
+}
+.strengthSelectable {
+    cursor: pointer;
+    width: 24px;
+    height: 19px;
+    background-color: #00b386;
+    text-align: center;
+    border: 1px solid gainsboro;
+    border-radius: 0px 3px 3px 0px;
+    float: left;
+}

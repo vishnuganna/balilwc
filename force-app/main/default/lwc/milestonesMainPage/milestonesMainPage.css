@@ -1,0 +1,25 @@
+.milestoneHeader {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+}
+.sortbyposition {
+    text-align: right;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.textAreaPosition {
+    position: unset !important;
+}
+
+.slds-modal__container {
+    width: 20% !important;
+    max-width: 20% !important;
+    height: 80% !important;
+    max-height: 80% !important;
+}
+
+.milestoneCardSpacing {
+    vertical-align: middle;
+}

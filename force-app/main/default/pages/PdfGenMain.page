@@ -1,0 +1,27 @@
+<apex:page showHeader="false">
+    File is being downloaded. If it doesn't download,
+    <a
+        href="/apex/baseA4?id={!$CurrentPage.parameters.id}"
+        id="lnkDownload"
+        target="_blank"
+        download="PDFTest.pdf"
+        onload="auto_download();"
+    >
+        click here</a
+    >
+    to download file.
+    <a href="/lightning/r/Blue_Sheet__c/{!$CurrentPage.parameters.id}/view" id="backToBluesheet" target="_self">
+        Back to bluesheet</a
+    >
+    <!-- <apex:form>
+            <apex:commandLink action="/apex/baseA4" value="Click here to download filed" id="lnkDownload">
+            <apex:param value="{!$CurrentPage.parameters.id}" assignTo="{!id}"></apex:param>
+            </apex:commandLink>
+        </apex:form> -->
+    <!-- <apex:outputLink target="_blank" id="lnkDownload" value="/apex/baseA4?id={!$CurrentPage.parameters.id}">Click here to download pdf</apex:outputLink> -->
+
+    <script>
+        function auto_download() { document.getElementById('lnkDownload').click();
+        document.getElementById('backToBluesheet').click(); }; window.setTimeout(auto_download, 10);
+    </script>
+</apex:page>

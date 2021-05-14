@@ -1,0 +1,19 @@
+.new-business-rule-title {
+    position: absolute;
+    top: 26px;
+    left: 65px;
+    color: black;
+    line-height: 1.15;
+    font-weight: 400;
+    font-style: normal;
+    font-size: large;
+    text-align: center;
+}
+.def-text {
+    width: 100%;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+.error {
+    color: red;
+}

@@ -1,0 +1,24 @@
+<template>
+    <div class="c-container blueSheetBackground">
+        <lightning-tabset active-tab-value="BlueSheet" style="padding:1%">
+            <lightning-tab label={labels.Overview} value="Overview" onactive={navigateToOpp}></lightning-tab>
+            <lightning-tab default label={labels.BlueSheetLabel} value="BlueSheet">
+                <div class="slds-grid slds-p-right_large  slds-p-right_small slds-size_12-of-12 slds-grid_align-end">
+                    <lightning-button
+                        label={labels.exportToPdf}
+                        onclick={exportToPdf}
+                        class="slds-p-left_medium   slds-m-right_medium"
+                    ></lightning-button>
+                    <template if:true={isCreateable}>
+                        <lightning-button
+                            label={labels.ReturntoLearning}
+                            onclick={openLearningPage}
+                            class="slds-m-right_medium"
+                        ></lightning-button>
+                    </template>
+                </div>
+                <c-bluesheet-landing-page record-id={recordId} object-api-name="Opportunity"></c-bluesheet-landing-page>
+            </lightning-tab>
+        </lightning-tabset>
+    </div>
+</template>

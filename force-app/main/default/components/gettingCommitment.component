@@ -1,0 +1,171 @@
+<apex:component controller="GreenSheetCommitmentandIssuesPDF" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <div class="margintop15" style="padding-right: 70px">
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.GSGetting_Commitment}" />
+        </div>
+
+        <div class="margintop10">
+            <apex:repeat rendered="{!NOT(greenSheetPDFWrapper.gettingCommitment.empty)}"
+                value="{!greenSheetPDFWrapper.gettingCommitment}"
+                var="gcObj"
+            >
+                <!-- Best Action Commitment Start-->
+                <div class="margintop10 ">
+                    <div class="margintop20 boldfont colorgray ">
+                        <table style="margin-left: -2px;">
+                            <tr>
+                                <td>
+                                    <apex:image style="width: 15px;height: 15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'Icon-Best-Action.jpg')}"
+                                    />
+                                </td>
+                                <td class="data-bold-view" style="vertical-align: middle">
+                                    <apex:pageBlock >
+                                        <apex:outputLabel value="{!$Label.GSBest_Action_Commitment}" />
+                                    </apex:pageBlock>
+                                </td>
+                                <td>
+                                    <apex:repeat value="{!gcObj.rfsMarkerPdfWrapper}" var="bestActionCommitment">
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((bestActionCommitment=='bestActionCommitment'),IF(gcObj.rfsMarkerPdfWrapper['bestActionCommitment']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((bestActionCommitment=='bestActionCommitment'),IF(gcObj.rfsMarkerPdfWrapper['bestActionCommitment']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="margintop5 data-bold-view-normal" style="margin-left: 2px;">
+                        <apex:pageBlock rendered="{! If(gcObj.bestActionCommitment != null ,true,false) }">
+                            {!gcObj.bestActionCommitment}
+                        </apex:pageBlock>
+
+                        <apex:pageBlock rendered="{! If(gcObj.bestActionCommitment == null ,true,false) }">
+                            -
+                        </apex:pageBlock>
+                    </div>
+                </div>
+
+                <div class="linegray margintop10" style="width: 100% "></div>
+                <!-- Best Action Commitment End-->
+
+                <!-- Minimum Action Commitment Start-->
+                <div class="margintop10 ">
+                    <div class="margintop20 boldfont colorgray ">
+                        <table style="margin-left: -2px;">
+                            <tr>
+                                <td>
+                                    <apex:image style="width: 15px;height: 15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'Icon-Min-Acceptable-Action.jpg')}"
+                                    />
+                                </td>
+
+                                <td class="data-bold-view" style="vertical-align: middle">
+                                    <apex:pageBlock >
+                                        <apex:outputLabel value="{!$Label.GSMinimum_Acceptance_Comm}" />
+                                    </apex:pageBlock>
+                                </td>
+                                <td>
+                                    <apex:repeat value="{!gcObj.rfsMarkerPdfWrapper}" var="minimumActionCommitment">
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((minimumActionCommitment=='minimumActionCommitment'),IF(gcObj.rfsMarkerPdfWrapper['minimumActionCommitment']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((minimumActionCommitment=='minimumActionCommitment'),IF(gcObj.rfsMarkerPdfWrapper['minimumActionCommitment']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="margintop5 data-bold-view-normal" style="margin-left: 2px;">
+                        <apex:pageBlock rendered="{! If(gcObj.acceptableActionCommitment != null ,true,false) }">
+                            {!gcObj.acceptableActionCommitment}
+                        </apex:pageBlock>
+
+                        <apex:pageBlock rendered="{! If(gcObj.acceptableActionCommitment == null ,true,false) }">
+                            -
+                        </apex:pageBlock>
+                    </div>
+                </div>
+
+                <div class="linegray margintop10" style="width: 100% "></div>
+                <!-- Minimum Action Commitment End-->
+
+                <!-- Commitment Question Start-->
+                <apex:repeat rendered="{!NOT(gcObj.questionWrapperList.empty)}"
+                    value="{!gcObj.questionWrapperList}"
+                    var="quesObj"
+                >
+                    <div class="margintop10 ">
+                        <div class="margintop20 boldfont colorgray ">
+                            <table style="margin-left: -2px;">
+                                <tr>
+                                    <td>
+                                        <apex:image style="width: 15px;height: 15px"
+                                            url="{!URLFOR($Resource.pdf_resource, 'Icon-Question-Post.jpg')}"
+                                        />
+                                    </td>
+
+                                    <td class="data-bold-view" style="vertical-align: middle">
+                                        <apex:pageBlock >
+                                            <apex:outputLabel value="{!$Label.GSCommitment_Question}" />
+                                        </apex:pageBlock>
+                                    </td>
+
+                                    <td>
+                                        <apex:repeat value="{!quesObj.rfsMarkerPdfWrapper}" var="commitmentQuestions">
+                                            <span>
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                    rendered="{!IF((commitmentQuestions=='commitmentQuestions'),IF(quesObj.rfsMarkerPdfWrapper['commitmentQuestions']['redFlagSelected']==true,true,false),false)}"
+                                                />
+                                                <apex:image style="width: 15px;height: 15px"
+                                                    url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                    rendered="{!IF((commitmentQuestions=='commitmentQuestions'),IF(quesObj.rfsMarkerPdfWrapper['commitmentQuestions']['strengthSelected']==true,true,false),false)}"
+                                                />
+                                            </span>
+                                        </apex:repeat>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="margintop5 data-bold-view-normal" style="margin-left: 2px;">
+                            <apex:pageBlock rendered="{! If(quesObj.commitmentQuestion != null ,true,false) }">
+                                {!quesObj.commitmentQuestion}
+                            </apex:pageBlock>
+
+                            <apex:pageBlock rendered="{! If(quesObj.commitmentQuestion == null ,true,false) }">
+                                -
+                            </apex:pageBlock>
+                        </div>
+                    </div>
+
+                    <div class="linegray margintop10" style="width: 100% "></div>
+                </apex:repeat>
+                <!-- Commitment Question End-->
+            </apex:repeat>
+
+            <apex:pageBlock rendered="{!(greenSheetPDFWrapper.gettingCommitment.empty)}">
+                <div class="margintop10 semibold">
+                    <apex:outputLabel value="{!$Label.NodataAdded}" />
+                </div>
+            </apex:pageBlock>
+        </div>
+    </div>
+</apex:component>

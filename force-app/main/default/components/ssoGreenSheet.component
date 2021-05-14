@@ -1,0 +1,246 @@
+<apex:component controller="GreenSheetSSOandCompanyPDF" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <div id="maincontainer">
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.ssoPDF}" />
+        </div>
+        <apex:pageBlock rendered="{!NOT(greenSheetPDFWrapper.opportunitySSO.empty)}">
+            <apex:repeat value="{!GreenSheetPDFWrapper.opportunitySSO}" var="oppObj">
+                <table style=" width:100%; margin-top: 10px;">
+                    <tr>
+                        <td class="tableclass">
+                            <table>
+                                <tr>
+                                    <td style="padding-left: 0px !important">
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td
+                                                    class="boldfont font9  "
+                                                    style="text-align: left;vertical-align: top"
+                                                >
+                                                    <div class="font9 semibold" style="margin-left: -7px;">
+                                                        <apex:outputLabel value="{!$Label.Customer_Timing_for_Priorities}"
+                                                        />
+                                                    </div>
+                                                </td>
+
+                                                <td style="width: 40%"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="margintop5 font9  ">
+                                        <apex:pageBlock rendered="{! If(oppObj.gsSSOWrapper != null ,true,false) }">
+                                            <div style=" margin-left: -5px;">
+                                                <apex:repeat value="{!oppObj.gsSSOWrapper}" var="ssoObj">
+                                                    <apex:pageBlock rendered="{! If(ssoObj.custTimingPriorities !=null ,true,false) }"
+                                                    >
+                                                        {!ssoObj.custTimingPriorities}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If((ssoObj.custTimingPriorities  == null || ssoObj  == null ),true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </apex:repeat>
+                                            </div>
+                                        </apex:pageBlock>
+                                        <apex:pageBlock rendered="{! If(oppObj.gsSSOWrapper == null ,true,false) }">
+                                            -
+                                        </apex:pageBlock>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding-left: 0px !important">
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td
+                                                    class="boldfont font9  "
+                                                    style="text-align: left;vertical-align: top"
+                                                >
+                                                    <div class="font9 semibold " style="margin-left: -7px;">
+                                                        <apex:outputLabel value="{!$Label.Revenue}" />
+                                                    </div>
+                                                </td>
+
+                                                <td style="width: 50%"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="margintop5 font9  ">
+                                        <div style=" margin-left: -5px;">
+                                            <apex:pageBlock rendered="{! If(oppObj.oppRevenue !=null ,true,false) }">
+                                                <apex:outputText value="{!ROUND(oppObj.oppRevenue, 2)}"
+                                                ></apex:outputText>
+                                            </apex:pageBlock>
+                                            <apex:pageBlock rendered="{! If(oppObj.oppRevenue ==null ,true,false) }">
+                                                -
+                                            </apex:pageBlock>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding-left: 0px !important">
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td
+                                                    class="boldfont font9  "
+                                                    style="text-align: left;vertical-align: top"
+                                                >
+                                                    <div class="font9 semibold " style="margin-left: -7px;">
+                                                        <apex:outputLabel value="{!$Label.place_in_sales_funnel}" />
+                                                    </div>
+                                                </td>
+
+                                                <td style="width: 50%"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="margintop5 font9  ">
+                                        <div style=" margin-left: -5px;">
+                                            <apex:pageBlock rendered="{! If(oppObj.oppStage !=null ,true,false) }">
+                                                {!oppObj.oppStage}
+                                            </apex:pageBlock>
+                                            <apex:pageBlock rendered="{! If(oppObj.oppStage ==null ,true,false) }">
+                                                -
+                                            </apex:pageBlock>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding-left: 0px !important">
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td
+                                                    class="boldfont font9  "
+                                                    style="text-align: left;vertical-align: top"
+                                                >
+                                                    <div class="font9 semibold " style="margin-left: -7px;">
+                                                        <apex:outputLabel value="{!$Label.CloseDate}" />
+                                                    </div>
+                                                </td>
+
+                                                <td style="width: 50%"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="margintop5 font9  ">
+                                        <div style=" margin-left: -5px;">
+                                            <apex:pageBlock rendered="{! If(oppObj.oppCloseDate !=null ,true,false) }">
+                                                {!oppObj.oppCloseDate}
+                                            </apex:pageBlock>
+                                            <apex:pageBlock rendered="{! If(oppObj.oppCloseDate ==null ,true,false) }">
+                                                -
+                                            </apex:pageBlock>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td class="tableclass">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td
+                                                    class="boldfont font9  "
+                                                    style="text-align: left;vertical-align: top"
+                                                >
+                                                    <div class="font9 semibold " style="margin-left: -3px;">
+                                                        <apex:outputLabel value="{!$Label.csoPDF}" />
+                                                    </div>
+                                                </td>
+
+                                                <td style="width: 40%"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="margintop5 font9  ">
+                                        <apex:pageBlock rendered="{! If(oppObj.gsSSOWrapper != null ,true,false) }">
+                                            <apex:repeat value="{!oppObj.gsSSOWrapper}" var="ssoObj">
+                                                <apex:pageBlock rendered="{! If(ssoObj.customerStatedObjective !=null ,true,false) }"
+                                                >
+                                                    {!ssoObj.customerStatedObjective}
+                                                </apex:pageBlock>
+                                                <apex:pageBlock rendered="{! If(ssoObj.customerStatedObjective ==null ,true,false) }"
+                                                >
+                                                    -
+                                                </apex:pageBlock>
+                                            </apex:repeat>
+                                        </apex:pageBlock>
+                                        <apex:pageBlock rendered="{! If(oppObj.gsSSOWrapper == null ,true,false) }">
+                                            -
+                                        </apex:pageBlock>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding-left: 0px !important">
+                                        <table style="width:100%">
+                                            <tr>
+                                                <td
+                                                    class="boldfont font9  "
+                                                    style="text-align: left;vertical-align: top"
+                                                >
+                                                    <div class="font9 semibold " style="margin-left: -3px;">
+                                                        <apex:outputLabel value="{!$Label.Evaluation_of_Objective}" />
+                                                    </div>
+                                                </td>
+
+                                                <td style="width: 50%"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="margintop5 font9  ">
+                                        <apex:pageBlock rendered="{! If(oppObj.gsSSOWrapper != null ,true,false) }">
+                                            <apex:repeat value="{!oppObj.gsSSOWrapper}" var="ssoObj">
+                                                <apex:pageBlock rendered="{! If(ssoObj.evaluationOfObjectives !=null ,true,false) }"
+                                                >
+                                                    {!ssoObj.evaluationOfObjectives}
+                                                </apex:pageBlock>
+                                                <apex:pageBlock rendered="{! If(ssoObj.evaluationOfObjectives ==null ,true,false) }"
+                                                >
+                                                    -
+                                                </apex:pageBlock>
+                                            </apex:repeat>
+                                        </apex:pageBlock>
+                                        <apex:pageBlock rendered="{! If(oppObj.gsSSOWrapper == null ,true,false) }">
+                                            -
+                                        </apex:pageBlock>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </apex:repeat>
+        </apex:pageBlock>
+        <apex:pageBlock rendered="{!(greenSheetPDFWrapper.opportunitySSO.empty)}">
+            <div class="margintop10 semibold" style="margin-left: 3px;">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+</apex:component>

@@ -1,0 +1,20 @@
+<template>
+    <div class="slds-grid slds-grid--vertical-align-center slds-grid--align-center">
+        <div class="slds-col slds-size_1-of-6 slds-p-left_large slds-p-right_large">
+            <span class="slds-align_left slds-text-title_bold">
+                {stage}
+            </span>
+            <div class="slds-m-top_x-small slds-m-bottom_x-small"></div>
+            <span class="slds-align_left">
+                {yAxisOptyCount}
+            </span>
+            <div class="slds-m-top_xx-small slds-m-bottom_xx-small"></div>
+            <span class="slds-align_left">
+                {yAxisRevenue}
+            </span>
+        </div>
+        <div class="slds-col slds-size_5-of-6 slds-m-right_medium">
+            <canvas class="bubbleChart canvasSize" lwc:dom="manual"></canvas>
+        </div>
+    </div>
+</template>

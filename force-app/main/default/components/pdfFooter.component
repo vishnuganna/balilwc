@@ -1,0 +1,7 @@
+<apex:component >
+    <table class="footer" style="margin-left: 15px !important;margin-right: 20px !important;">
+        <tr style="width: 80% ;padding:0px !important ">
+            <td style="color: #919191" class="font9">&copy; Korn Ferry 2021.All Rights Reserved. Confidential</td>
+        </tr>
+    </table>
+</apex:component>

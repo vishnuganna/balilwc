@@ -1,0 +1,130 @@
+<template>
+    <template if:true={moduleCompleted}>
+        <div class="slds-p-left_small slds-p-right_medium slds-grid slds-gutters">
+            <article
+                class="slds-card slds-m-bottom_small slds-card_boundary slds-size_1-of-1 slds-p-left_small slds-p-right_small"
+            >
+                <div
+                    slot="title"
+                    class="slds-grid slds-card__header slds-size_12-of-12 slds-grid_vertical-align-center"
+                >
+                    <div class="slds-media__figure slds-col slds-size_2-of-12 slds-float_left">
+                        <span class="slds-avatar slds-avatar_xx-small">
+                            <img style="width: 30px; height: 30px" alt={moduleVideoProgress} src={utilName} />
+                        </span>
+                        <p>{moduleVideoProgress}</p>
+                    </div>
+                    <template if:true={moduleRecord.availBlueSheetButton}>
+                        <div
+                            class="slds-col slds-size_6-of-12 slds-float_left slds-text-heading_x-small slds-text-align--left"
+                        >
+                            <template if:false={noHyperlink}>
+                                <a
+                                    class="slds-text-heading_x-small slds-text-title_bold"
+                                    onclick={showBluesheetButton}
+                                    href={moduleRecord.modulevideoLink}
+                                    target="_blank"
+                                    >{moduleRecord.moduleNumber}: {moduleRecord.moduleTitle}</a
+                                >
+                            </template>
+                            <template if:true={noHyperlink}>
+                                <p class="slds-text-heading_x-small slds-text-title_bold blueTitle">
+                                    {moduleRecord.moduleNumber}: {moduleRecord.moduleTitle}
+                                </p>
+                            </template>
+                            <p class="slds-p-bottom_x-small">{moduleRecord.moduleDesc}</p>
+                            <span class="slds-text-color_weak">{moduleRecord.moduleTime}</span>
+                        </div>
+                        <div
+                            class="slds-col slds-size_4-of-12 slds-float_left slds-text-heading_x-small slds-text-align--left"
+                        >
+                            <lightning-button
+                                variant="brand"
+                                label="Go to Bluesheet"
+                                onclick={goToBluesheet}
+                                disabled={disableBluesheetButton}
+                                class="slds-float_right slds-p-bottom_small
+                            "
+                            >
+                            </lightning-button>
+                        </div>
+                    </template>
+                    <template if:false={moduleRecord.availBlueSheetButton}>
+                        <div
+                            class="slds-col slds-size_10-of-12 slds-float_left slds-text-heading_x-small slds-text-align--left"
+                        >
+                            <a
+                                class="slds-text-heading_x-small slds-text-title_bold"
+                                onclick={showBluesheetButton}
+                                href={moduleRecord.modulevideoLink}
+                                target="_blank"
+                                >{moduleRecord.moduleNumber}: {moduleRecord.moduleTitle}</a
+                            >
+                            <p class="slds-p-bottom_x-small">{moduleRecord.moduleDesc}</p>
+                            <span class="slds-text-color_weak">{moduleRecord.moduleTime}</span>
+                        </div>
+                    </template>
+                </div>
+            </article>
+        </div>
+    </template>
+    <!-- <template if:true={showVideo}>
+        <c-video-player onclosevideo={closeVideoModal} onshowbackprompt={showPrompt}
+            video-url={currentModule.modulevideoLink}>
+        </c-video-player>
+    </template> -->
+    <template if:false={moduleCompleted}>
+        <div class="slds-p-left_small slds-p-right_medium slds-grid slds-gutters">
+            <article
+                class="slds-card slds-m-bottom_small slds-card_boundary slds-size_1-of-1 disabledCard slds-p-left_small slds-p-right_small"
+            >
+                <div
+                    slot="title"
+                    class="slds-grid slds-card__header slds-size_12-of-12 slds-grid_vertical-align-center"
+                >
+                    <div class="slds-media__figure slds-col slds-size_2-of-12 slds-float_left">
+                        <span class="slds-avatar slds-avatar_xx-small">
+                            <img style="width: 30px; height: 30px" alt={moduleVideoProgress} src={moduleDisabled} />
+                        </span>
+                        <p>{moduleVideoProgress}</p>
+                    </div>
+                    <template if:true={moduleRecord.availBlueSheetButton}>
+                        <div
+                            class="slds-col slds-size_6-of-12 slds-float_left slds-text-heading_x-small slds-text-align--left"
+                        >
+                            <label class="slds-text-heading_x-small slds-text-title_bold"
+                                >{moduleRecord.moduleNumber}: {moduleRecord.moduleTitle}</label
+                            >
+                            <p class="slds-p-bottom_x-small">{moduleRecord.moduleDesc}</p>
+                            <span class="slds-text-color_weak">{moduleRecord.moduleTime}</span>
+                        </div>
+                        <div
+                            class="slds-col slds-size_4-of-12 slds-float_left slds-text-heading_x-small slds-text-align--left"
+                        >
+                            <lightning-button
+                                variant="brand"
+                                label="Go to Bluesheet"
+                                onclick={goToBluesheet}
+                                disabled={disableBluesheetButton}
+                                class="slds-float_right slds-p-bottom_small
+                            "
+                            >
+                            </lightning-button>
+                        </div>
+                    </template>
+                    <template if:false={moduleRecord.availBlueSheetButton}>
+                        <div
+                            class="slds-col slds-size_10-of-12 slds-float_left slds-text-heading_x-small slds-text-align--left"
+                        >
+                            <label class="slds-text-heading_x-small slds-text-title_bold"
+                                >{moduleRecord.moduleNumber}: {moduleRecord.moduleTitle}</label
+                            >
+                            <p class="slds-p-bottom_x-small">{moduleRecord.moduleDesc}</p>
+                            <span class="slds-text-color_weak">{moduleRecord.moduleTime}</span>
+                        </div>
+                    </template>
+                </div>
+            </article>
+        </div>
+    </template>
+</template>

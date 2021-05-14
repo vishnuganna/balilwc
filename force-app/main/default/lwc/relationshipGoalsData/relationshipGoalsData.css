@@ -1,0 +1,91 @@
+.divClass {
+    background-color: #f0f0f0;
+}
+
+.star-icon {
+    border-radius: 0px;
+    display: inline-block;
+}
+
+.star-icon.focus,
+.star-icon:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+.vl {
+    border-left: 1px solid #d9d9d9;
+}
+
+.margin0 {
+    margin: 0 !important;
+}
+
+.marginslr {
+    margin-left: 30px;
+    margin-right: 15px;
+}
+
+.wrapTextCls {
+    word-wrap: break-word;
+    margin-left: 5px;
+}
+
+.selectedbutton {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: 1px solid #dddbda;
+    -webkit-transition: border 0.15s linear;
+    transition: border 0.15s linear;
+    background-color: #d9ebf7;
+    border-color: #c2dfff;
+    text-decoration-color: white;
+    color: white;
+}
+.popButton {
+    font-size: 14px;
+    color: black;
+}
+.custom-label {
+    margin-left: 7px;
+}
+.fontweight400 {
+    font-weight: 400;
+}
+.showmoredesc {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    /* The number of lines to be displayed */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.wordbreak {
+    word-break: break-word;
+}
+
+.bluebg {
+    background-color: #0a2b9a;
+    color: white;
+}
+
+.divSmallFont {
+    font-size: x-small;
+}
+
+.mediumFont {
+    font-size: medium;
+}
+
+.nameAndStatusArea {
+    justify-content: space-around;
+}
+.linkbutton {
+    margin-left: 6px;
+}

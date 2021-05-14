@@ -1,0 +1,72 @@
+/* .divClass {
+    background-color: #f0f0f0;
+    border-top: 1px solid #dcdcdc;
+} */
+
+.selectedbutton {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: 1px solid #dddbda;
+    -webkit-transition: border 0.15s linear;
+    transition: border 0.15s linear;
+    background-color: #1b5297;
+    border-color: #c2dfff;
+    text-decoration-color: white;
+    color: white;
+}
+
+.fixheight {
+    height: 100px;
+}
+
+.unselectedButton {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: 1px solid black;
+    -webkit-transition: border 0.15s linear;
+    transition: border 0.15s linear;
+    background-color: #ffffff;
+    border-color: #706e6b;
+    text-decoration-color: white;
+    color: #706e6b;
+}
+
+.svgyes {
+    color: #c9c7c5;
+    size: 16px;
+}
+
+.svgno {
+    color: #c9c7c5;
+    size: 16px;
+}
+
+.toggleAlign {
+    margin-top: 5px;
+    margin-left: 14px;
+    margin-inline-end: -14px;
+}
+
+.toggleDisplay {
+    display: block;
+    margin-top: 5px;
+}
+
+.saveAndCancelBtn {
+    margin-right: 19px;
+}
+
+.divClass {
+    background-color: #f0f0f0;
+    border-top: 1px solid #dcdcdc;
+}

@@ -1,0 +1,119 @@
+<template>
+    <div class="slds-p-left_medium slds-p-right_medium slds-grid slds-gutters">
+        <article class="slds-card  slds-size_1-of-1">
+            <div class="slds-card__body" style="margin-top:0px">
+                <template if:true={noDataPresentFlag}>
+                    <div class="slds-p-bottom_x-small">
+                        <c-summary-view-no-data class="slds-text-medium"></c-summary-view-no-data>
+                    </div>
+                </template>
+                <template if:false={noDataPresentFlag}>
+                    <div class="slds-border_top  strategicPlayerDatatableClass">
+                        <lightning-datatable
+                            name="Dt_OC"
+                            key-field="id"
+                            data={companyList}
+                            show-row-number-column
+                            hide-checkbox-column
+                            columns={columns}
+                            resize-column-disabled
+                            enable-infinite-loading
+                            onrowaction={handleRowAction}
+                        >
+                        </lightning-datatable>
+                    </div>
+                </template>
+            </div>
+        </article>
+    </div>
+
+    <!-- New Record Modal Start-->
+    <template if:true={newrecordFlag}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            class="slds-modal slds-fade-in-open slds-modal_x-small"
+            aria-labelledby="modal-heading-00"
+            aria-modal="true"
+            aria-describedby="modal-content-id-0"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={allLabels.close}
+                        onclick={handleCancel}
+                    >
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">{allLabels.Cancel}</span>
+                    </button>
+                    <h2 id="modal-heading-00" class="slds-modal__title slds-hyphenate">{allLabels.CompanyAttendee}</h2>
+                </header>
+                <div
+                    class="slds-modal__content slds-p-left_medium slds-p-right_medium slds-card_header slds-p-bottom_medium"
+                    id="modal-content-id-0"
+                >
+                    <lightning-card>
+                        <lightning-layout horizontal-align="spread">
+                            <lightning-layout-item size="8">
+                                <label class="fontColor"
+                                    >{allLabels.NameLabel}<abbr class="slds-required" title="required">*</abbr></label
+                                >
+                                <lightning-layout-item class="slds-p-bottom_xx-small" size="8">
+                                    <c-lookup-component
+                                        child-object-api-name={objectForLookup}
+                                        target-field-api-name={lookuptargetField}
+                                        field-label=""
+                                        onvalueselected={handleNameSelected}
+                                        style="font-size: small"
+                                        value={companyName}
+                                    ></c-lookup-component>
+                                </lightning-layout-item>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <div class="slds-m-top_medium"></div>
+
+                        <label class="fontColor"
+                            >{allLabels.TitleLabel}<abbr class="slds-required" title="required">*</abbr></label
+                        >
+                        <lightning-layout>
+                            <lightning-layout-item size="8">
+                                <input
+                                    name="Title_OC"
+                                    type="text"
+                                    id="useTitle"
+                                    placeholder=""
+                                    disabled
+                                    readonly=""
+                                    value={userTitle}
+                                    class="slds-input size-x-small"
+                                />
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-card>
+                </div>
+                <div class="slds-modal__footer slds-align_right slds-theme_default">
+                    <lightning-button
+                        name="Cancel_OC"
+                        label={allLabels.Cancel}
+                        class="slds-p-right_x-small slds-text-small"
+                        variant="neutral"
+                        onclick={handleCancelSave}
+                    ></lightning-button>
+                    <lightning-button
+                        name="Save_OC"
+                        label={allLabels.Save}
+                        class="slds-text-small"
+                        disabled={isSaveDisabled}
+                        variant="brand"
+                        onclick={handleSave}
+                    ></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- New Record Modal End-->
+</template>

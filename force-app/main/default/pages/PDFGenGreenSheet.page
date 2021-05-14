@@ -1,0 +1,21 @@
+<apex:page showHeader="false" standardcontroller="Green_Sheet__c">
+    File is being downloaded. If it doesn't download,
+    <a
+        href="/apex/greensheetA4?id={!$CurrentPage.parameters.id}"
+        id="lnkDownload"
+        target="_blank"
+        download="PDFTest.pdf"
+        onload="auto_download();"
+    >
+        click here</a
+    >
+    to download file.
+    <a href="/lightning/r/Green_Sheet__c/{!$CurrentPage.parameters.id}/view" id="backToGreensheet" target="_self">
+        Back to Greensheet</a
+    >
+
+    <script>
+        function auto_download() { document.getElementById('lnkDownload').click();
+        document.getElementById('backToGreensheet').click(); }; window.setTimeout(auto_download, 10);
+    </script>
+</apex:page>

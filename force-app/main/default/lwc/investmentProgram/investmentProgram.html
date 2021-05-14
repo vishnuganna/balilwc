@@ -1,0 +1,230 @@
+<template>
+    <!-- Default/Summary Mode Start-->
+    <div class="slds-var-p-left_medium slds-var-p-right_medium slds-grid slds-gutters">
+        <article class="slds-card slds-var-m-bottom_large slds-card_boundary slds-size_1-of-1">
+            <!-- <lightning-card class="slds-m-around_none slds-p-around_none"> -->
+            <div
+                slot="title"
+                class="slds-grid slds-card__header slds-size_12-of-12 slds-grid_vertical-align-center cardheader-goldsheet"
+            >
+                <!-- <div class="slds-grid slds-size_12-of-12 slds-p-left_medium slds-p-right_medium"> -->
+                <span class="investmentProgramdisplay slds-col slds-size_8-of-12 slds-float_left"
+                    >{allLabels.InvestmentProgramPlural}
+                    <c-info-navigation nav-url={allLabels.InvestmentProgramURL}></c-info-navigation>
+                </span>
+                <div class="slds-grid slds-size_4-of-12 slds-float_right">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-size_1-of-1 slds-grid_align-end">
+                        <template if:false={noDataPresentFlag}>
+                            <span class="slds-var-m-right_xx-small">{allLabels.sort_by}</span>
+                            <div class="slds-var-m-left_medium slds-var-p-right_small">
+                                <lightning-combobox
+                                    aria-label="hidden"
+                                    value={sortFilter}
+                                    options={options}
+                                    variant="label-hidden"
+                                    onchange={filterTableValues}
+                                ></lightning-combobox>
+                            </div>
+                        </template>
+                        <template if:true={isCreateable}>
+                            <div class={borderstyle}>
+                                <lightning-button
+                                    class="slds-text-small slds-var-p-left_medium"
+                                    slot="actions"
+                                    name="addNew"
+                                    label={allLabels.Add_New}
+                                    variant="neutral"
+                                    onclick={handleAddNew}
+                                ></lightning-button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-card__body slds-border_top">
+                <template if:true={noDataPresentFlag}>
+                    <div class="slds-p-bottom_x-small">
+                        <c-summary-view-no-data></c-summary-view-no-data>
+                    </div> </template
+                ><!--column-widths-mode="auto"-->
+                <template if:false={noDataPresentFlag}>
+                    <div class="fopDatatableClass">
+                        <c-custom-lightining-data-table
+                            key-field="id"
+                            data={records}
+                            show-row-number-column
+                            row-number-offset={rowOffset}
+                            hide-checkbox-column
+                            columns={columns}
+                            resize-column-disabled
+                            enable-infinite-loading
+                            wrap-text-max-lines="3"
+                            onloadmore={loadMoreData}
+                            onrowaction={handleRowInvProgram}
+                        >
+                        </c-custom-lightining-data-table>
+                    </div>
+                </template>
+            </div>
+            <!-- </lightning-card> -->
+        </article>
+    </div>
+    <!-- Default/Summary Mode End-->
+
+    <!-- Modals Start-->
+    <!-- New Record Modal Start-->
+    <template if:true={newRecordModalFlag}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            class="slds-modal slds-fade-in-open slds-modal-small"
+            aria-labelledby="modal-heading-00"
+            aria-modal="true"
+            aria-describedby="modal-content-id-0"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={allLabels.close}
+                        onclick={handleCancel}
+                    >
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">{allLabels.Cancel}</span>
+                    </button>
+                    <h2 id="modal-heading-00" class="slds-modal__title slds-hyphenate">
+                        {allLabels.InvestmentProgramHeader}
+                    </h2>
+                </header>
+                <div
+                    class="slds-modal__content slds-var-p-left_medium slds-var-p-right_medium slds-card_header slds-var-p-bottom_medium"
+                    id="modal-content-id-0"
+                >
+                    <lightning-card>
+                        <lightning-layout horizontal-align="spread">
+                            <lightning-layout-item size="12">
+                                <label
+                                    >{allLabels.InvestmentProgramTitle}<abbr class="slds-required" title="required"
+                                        >*</abbr
+                                    ></label
+                                >
+                                <lightning-layout-item class="slds-var-p-bottom_xx-small" size="12">
+                                    <lightning-input
+                                        name=""
+                                        label=""
+                                        variant="label-hidden"
+                                        aria-label="hidden"
+                                        max-length="80"
+                                        value={gsInvProgramTitle}
+                                        onchange={handlefoInvestmentTitle}
+                                        onkeyup={toggleSave}
+                                    ></lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout>
+                            <template if:true={showMaxLimitErrorTitle}
+                                ><div class="slds-text-color_error">
+                                    {allLabels.Error_Title_Exceeds_80_char}
+                                </div></template
+                            >
+                        </lightning-layout>
+
+                        <lightning-layout class="slds-m-top_medium">
+                            <lightning-layout-item size="4" class="slds-p-right_small">
+                                <div class="slds-m-top_xx-small">
+                                    <c-lookup-component
+                                        child-object-api-name={objectForLookup}
+                                        target-field-api-name={lookuptargetField}
+                                        onvalueselected={handleAssignedToSelected}
+                                        field-label={allLabels.Assigned_To}
+                                        style="font-size: small;"
+                                        value={gsInvProgramAssignedTo}
+                                        class="slds-text-small "
+                                    ></c-lookup-component>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" class="slds-p-right_small">
+                                <lightning-input
+                                    name="Due Date"
+                                    label={allLabels.InvestmentProgramDueDate}
+                                    value={gsInvProgramDueDate}
+                                    onchange={handleDueDateSelected}
+                                    type="date"
+                                    date-style="short"
+                                ></lightning-input>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4">
+                                <lightning-combobox
+                                    name="Status"
+                                    label={allLabels.foInvStatus}
+                                    value={gsInvProgramStatus}
+                                    options={statusPicklist}
+                                    onchange={handleStatusUpdate}
+                                >
+                                </lightning-combobox>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout>
+                            <lightning-layout-item size="12">
+                                <lightning-textarea
+                                    name="Description"
+                                    label={allLabels.focInv_Description}
+                                    value={gsInvProgramDescription}
+                                    onkeyup={handleDescription}
+                                    onchange={handleDescription}
+                                    class="slds-var-m-top_small textAreaPosition"
+                                    max-length="32000"
+                                    style="font-size: small;"
+                                ></lightning-textarea>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout>
+                            <template if:true={showMaxLimitError}
+                                ><div class="slds-text-color_error">
+                                    {allLabels.Description_cannot_exceed_32k_characters}
+                                </div></template
+                            >
+                        </lightning-layout>
+                    </lightning-card>
+                </div>
+                <div class="slds-var-m-bottom_medium slds-theme_default">
+                    <div class="slds-m-bottom_medium slds-align_absolute-center">
+                        <lightning-button
+                            label={allLabels.Cancel}
+                            class="slds-var-p-right_x-small slds-text-small"
+                            variant="neutral"
+                            onclick={handleCancelSave}
+                        ></lightning-button>
+                        <lightning-button
+                            label={allLabels.Save}
+                            class="slds-text-small"
+                            disabled={isSaveDisabled}
+                            variant="brand"
+                            onclick={handleSave}
+                        ></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- New Record Modal End-->
+
+    <!-- Delete Modal Start -->
+    <template if:true={ShowModal}>
+        <c-prompt-modal
+            header-label={allLabels.DeleteInvestmentProgram}
+            body-msg={allLabels.deletePromptInvestmentProgram}
+            positive-response-button={allLabels.Yes}
+            negative-response-button={allLabels.Cancel}
+            close-label={allLabels.close}
+            onpositiveresponse={deleteModal}
+            onnegativeresponse={closeModal}
+        ></c-prompt-modal>
+    </template>
+
+    <!--Delete Modal End-->
+</template>

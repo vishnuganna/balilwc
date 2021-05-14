@@ -1,0 +1,556 @@
+<template>
+    <!--Read Only View-->
+    <div class="">
+        <div class="slds-card__body scroll">
+            <!--Best Action Commitment-->
+
+            <article class="slds-card slds-card_boundary item BestActHeight">
+                <div class="slds-var-p-left_x-small slds-var-p-bottom_small">
+                    <div class="slds-grid slds-var-m-left_small slds-var-m-right_small">
+                        <div class="slds-col slds-size_12-of-12 slds-var-m-top_small slds-var-m-bottom_small">
+                            <div class="slds-size_12-of-12">
+                                <div if:true={isCreateable} class="slds-m-top_medium">
+                                    <template if:false={bestActEditDeleteFlag}>
+                                        <lightning-button
+                                            class="slds-float_right slds-text-small slds-m-medium"
+                                            slot="actions"
+                                            name="addNew"
+                                            label="Create"
+                                            disabled={createDisableBestACTFlag}
+                                            variant="neutral"
+                                            onclick={handleAddNewBestACT}
+                                        ></lightning-button
+                                    ></template>
+                                </div>
+                                <template for:each={greenGettingCommList} for:item="bestAct">
+                                    <template if:true={bestActEditDeleteFlag}>
+                                        <template if:true={isUpdateable}>
+                                            <lightning-button
+                                                key={bestAct.id}
+                                                label={allLabel.edit}
+                                                onclick={handleBestActEdit}
+                                                value={bestAct}
+                                                disabled={editDisableBestACTFlag}
+                                                class="slds-var-p-right_x-small slds-float_right"
+                                            ></lightning-button>
+                                        </template>
+                                        <template if:true={isDeletable}>
+                                            <lightning-button
+                                                key={bestAct.id}
+                                                variant="base"
+                                                label="Delete"
+                                                onclick={handleDeleteModal}
+                                                disabled={deleteDisableBestACTFlag}
+                                                class="slds-var-p-right_x-small slds-float_right"
+                                            ></lightning-button>
+                                        </template>
+                                    </template>
+                                </template>
+                            </div>
+                            <span>
+                                <h3
+                                    class="slds-grid slds-text-heading_small slds-var-p-bottom_small gettingCommitmentHeader"
+                                >
+                                    <span class="slds-var-p-right_small">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="18"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            style="fill: #c9c7c5"
+                                        >
+                                            <path
+                                                d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
+                                            ></path>
+                                        </svg>
+                                    </span>
+                                    {allLabel.GSBest_Action_Commitment}
+                                    <c-info-navigation nav-url={allLabel.GSBestActionURL}></c-info-navigation>
+                                    <template for:each={greenGettingCommList} for:item="bestAct">
+                                        <c-strength-redflag
+                                            key={bestAct.id}
+                                            class="slds-clearfix slds-m-left_x-small"
+                                            rfs-data={bestAct.rfsMarkerWrapper.bestActionCommitment}
+                                            onvalueselected={handleMarkerChange}
+                                            read-only-view="true"
+                                        ></c-strength-redflag>
+                                    </template></h3
+                            ></span>
+                            <br />
+                            <template if:false={newRecordScreenBestACTFlag}>
+                                <c-show-more-show-less-line
+                                    class="slds-var-p-top_small"
+                                    description={bestactiondescriptionvalue}
+                                    no-of-lines="3"
+                                ></c-show-more-show-less-line>
+                            </template>
+                            <template if:true={noBestActDataFlag}> {allLabel.NodataAdded} </template>
+
+                            <!--Create New Record Screen-->
+                            <template if:true={newRecordScreenBestACTFlag}>
+                                <div class="slds-card__body">
+                                    <article class="slds-card slds-card_boundary item">
+                                        <lightning-card class="slds-text-heading_small item">
+                                            <lightning-layout>
+                                                <h3
+                                                    class="slds-var-p-left_small slds-var-p-right_small slds-text-title slds-size_8-of-12 slds-var-p-top_medium"
+                                                >
+                                                    {allLabel.GSCommitment}
+                                                    <c-strength-redflag
+                                                        class="slds-clearfix slds-float_right"
+                                                        rfs-data={rfsDetails.bestActionCommitment}
+                                                        onvalueselected={handleMarkerChange}
+                                                    ></c-strength-redflag>
+                                                </h3>
+                                            </lightning-layout>
+                                            <br />
+
+                                            <lightning-layout>
+                                                <lightning-layout-item
+                                                    class="slds-var-p-left_small slds-var-p-right_small"
+                                                    size="8"
+                                                >
+                                                    <textarea
+                                                        rows="3"
+                                                        name="meetingNotesField"
+                                                        onchange={handleBestACTDesc}
+                                                        onkeyup={handleBestACTChange}
+                                                        placeholder={allLabel.GSBestACTPromptText}
+                                                        class="slds-textarea"
+                                                        maxlength="32000"
+                                                        style="color: black"
+                                                    >
+{bestActCommitment}
+                                                </textarea
+                                                    >
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                            <lightning-layout>
+                                                <template if:true={showMaxLimitError}>
+                                                    <div class="slds-text-color_error slds-var-m-left_small">
+                                                        {allLabel.ErrorMax32kCharacters}
+                                                    </div>
+                                                </template>
+                                            </lightning-layout>
+
+                                            <div class="slds-var-m-top_large slds-align_absolute-center">
+                                                <lightning-button
+                                                    label={allLabel.cancel}
+                                                    class="slds-var-p-right_x-small"
+                                                    variant="neutral"
+                                                    onclick={handleCancelBestACTClick}
+                                                    style="text-decoration: none; font-size: small"
+                                                ></lightning-button>
+                                                <lightning-button
+                                                    label={allLabel.save}
+                                                    variant="brand"
+                                                    onclick={handleSaveBestACTClick}
+                                                    style="font-size: small"
+                                                    disabled={saveDisableBestACTFlag}
+                                                >
+                                                </lightning-button>
+                                            </div>
+                                        </lightning-card>
+                                    </article>
+                                </div>
+                            </template>
+                            <!--/Create New Record Screen-->
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <!--/Best Action Commitment-->
+            <!---Minimum Acceptabe Commitment Question-->
+            <article class="slds-card slds-card_boundary BestActHeight1 item slds-m-bottom_small">
+                <div class="slds-var-p-left_x-small slds-var-p-bottom_small">
+                    <div class="slds-grid slds-var-m-left_small slds-var-m-right_small">
+                        <div class="slds-col slds-size_12-of-12 slds-var-m-top_small slds-var-m-bottom_small">
+                            <div class="slds-size_12-of-12">
+                                <div if:true={isCreateable} class="slds-m-top_medium">
+                                    <template if:false={minActEditDeleteFlag}>
+                                        <lightning-button
+                                            class="slds-float_right slds-text-small slds-m-medium"
+                                            slot="actions"
+                                            name="addNew"
+                                            label={allLabel.Create}
+                                            disabled={createDisableBestACTFlag}
+                                            variant="neutral"
+                                            onclick={handleAddNewMinACT}
+                                        ></lightning-button>
+                                    </template>
+                                </div>
+                                <template for:each={greenGettingCommList} for:item="minAct">
+                                    <template if:true={minActEditDeleteFlag}>
+                                        <template if:true={isUpdateable}>
+                                            <lightning-button
+                                                key={minAct.id}
+                                                label={allLabel.edit}
+                                                onclick={handleMinActEdit}
+                                                value={minAct}
+                                                disabled={editDisableMinACTFlag}
+                                                class="slds-var-p-right_x-small slds-float_right"
+                                            ></lightning-button>
+                                        </template>
+                                        <template if:true={isDeletable}>
+                                            <lightning-button
+                                                key={minAct.id}
+                                                variant="base"
+                                                label={allLabel.Delete}
+                                                onclick={handleDeleteMinActModal}
+                                                disabled={deleteDisableMinACTFlag}
+                                                class="slds-var-p-right_x-small slds-float_right"
+                                            ></lightning-button>
+                                        </template> </template
+                                ></template>
+                            </div>
+
+                            <span>
+                                <h3
+                                    class="slds-grid slds-text-heading_small slds-var-p-bottom_small gettingCommitmentHeader"
+                                >
+                                    <lightning-icon
+                                        icon-name="utility:rating"
+                                        alternative-text={allLabel.Success}
+                                        title={allLabel.DefaultStyle}
+                                        size="x-small"
+                                        class="slds-var-p-right_small rating-color"
+                                    ></lightning-icon>
+                                    {allLabel.GSMinimum_Acceptance_Comm}
+                                    <c-info-navigation
+                                        nav-url={allLabel.GSMinimum_Acceptance_Comm_URL}
+                                    ></c-info-navigation>
+                                    <template for:each={greenGettingCommList} for:item="minAct">
+                                        <c-strength-redflag
+                                            key={minAct.id}
+                                            class="slds-clearfix slds-m-left_x-small"
+                                            rfs-data={minAct.rfsMarkerWrapper.minimumActionCommitment}
+                                            onvalueselected={handleMarkerChange}
+                                            read-only-view="true"
+                                        ></c-strength-redflag>
+                                    </template>
+                                </h3>
+                                <br />
+                                <template if:false={newRecordScreenMinACTFlag}>
+                                    <c-show-more-show-less-line
+                                        class="slds-var-p-top_small"
+                                        description={minactiondescriptionvalue}
+                                        no-of-lines="3"
+                                    ></c-show-more-show-less-line>
+                                </template>
+                                <template if:true={noMinActDataFlag}> {allLabel.NodataAdded} </template>
+                            </span>
+                            <!--Create New Record Screen-->
+                            <template if:true={newRecordScreenMinACTFlag}>
+                                <div class="slds-card__body">
+                                    <article class="slds-card slds-card_boundary item">
+                                        <lightning-card class="slds-text-heading_small item">
+                                            <lightning-layout>
+                                                <h3
+                                                    class="slds-var-p-left_small slds-var-p-bottom_small slds-var-p-right_small slds-text-title slds-size_8-of-12 slds-var-p-top_medium"
+                                                >
+                                                    {allLabel.GSCommitment}
+                                                    <c-strength-redflag
+                                                        class="slds-clearfix slds-float_right"
+                                                        rfs-data={rfsDetails.minimumActionCommitment}
+                                                        onvalueselected={handleMarkerChange}
+                                                    ></c-strength-redflag>
+                                                </h3>
+                                            </lightning-layout>
+                                            <lightning-layout>
+                                                <lightning-layout-item
+                                                    class="slds-var-p-left_small slds-var-p-right_small"
+                                                    size="8"
+                                                >
+                                                    <textarea
+                                                        rows="3"
+                                                        name="meetingNotesField"
+                                                        onchange={handleMinComitDesc}
+                                                        onkeyup={handleMinACTChange}
+                                                        placeholder={allLabel.GSMiniQuestPromptText}
+                                                        class="slds-textarea"
+                                                        maxlength="32000"
+                                                        style="color: black"
+                                                    >
+{minimumActCommitment}</textarea
+                                                    >
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                            <lightning-layout>
+                                                <template if:true={showMaxLimitError}>
+                                                    <div class="slds-text-color_error slds-var-m-left_small">
+                                                        {allLabel.ErrorMax32kCharacters}
+                                                    </div>
+                                                </template>
+                                            </lightning-layout>
+
+                                            <div class="slds-var-m-top_large slds-align_absolute-center">
+                                                <lightning-button
+                                                    label={allLabel.cancel}
+                                                    class="slds-var-p-right_x-small"
+                                                    variant="neutral"
+                                                    onclick={handleCancelMinACTClick}
+                                                    style="text-decoration: none; font-size: small"
+                                                ></lightning-button>
+                                                <lightning-button
+                                                    label={allLabel.save}
+                                                    variant="brand"
+                                                    onclick={handleSaveMinACTClick}
+                                                    style="font-size: small"
+                                                    disabled={saveDisableMinACTFlag}
+                                                >
+                                                </lightning-button>
+                                            </div>
+                                        </lightning-card>
+                                    </article>
+                                </div>
+                            </template>
+                            <!--/Create New Record Screen-->
+                        </div>
+                        <!--<div class="slds-col slds-size_1-of-3 slds-var-m-top_small slds-var-m-bottom_small">
+                            <div class="slds-text-align_right">
+                                <template if:false={minActEditDeleteFlag}>
+                                    <lightning-button
+                                        class="slds-float_right slds-text-small slds-m-medium"
+                                        slot="actions"
+                                        name="addNew"
+                                        label={allLabel.Create}
+                                        disabled={createDisableMinACTFlag}
+                                        variant="neutral"
+                                        onclick={handleAddNewMinACT}
+                                    ></lightning-button>
+                                </template>
+                                <template for:each={greenGettingCommList} for:item="minAct">
+                                    <template if:true={minActEditDeleteFlag}>
+                                        <template if:true={isDeletable}>
+                                            <lightning-button
+                                                key={minAct.id}
+                                                variant="base"
+                                                label={allLabel.Delete}
+                                                onclick={handleDeleteMinActModal}
+                                                class="slds-var-p-right_x-small"
+                                            ></lightning-button>
+                                        </template>
+                                        <template if:true={isUpdateable}>
+                                            <lightning-button
+                                                key={minAct.id}
+                                                label={allLabel.edit}
+                                                onclick={handleMinActEdit}
+                                                value={minAct}
+                                            ></lightning-button>
+                                        </template> </template
+                                ></template>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+                <!---//Minimum Acceptabe Commitment Question-->
+            </article>
+
+            <!-- Summary view commitment question -->
+            <div class="heightCount">
+                <template for:each={temparray} for:item="ques">
+                    <article key={ques.id} class="slds-card slds-card_boundary">
+                        <div class="slds-clearfix">
+                            <div class="slds-grid slds-var-m-left_small slds-var-m-right_small">
+                                <div class="slds-col slds-size_2-of-3 slds-var-m-bottom_small">
+                                    <span class="slds-p-left_xx-small">
+                                        <h3
+                                            style="color: black"
+                                            class="slds-grid slds-var-p-bottom_small slds-var-p-right_small slds-text-title slds-size_8-of-12 slds-var-p-top_medium slds-text-heading_small getting-header-text"
+                                        >
+                                            <lightning-icon
+                                                icon-name="action:question_post_action"
+                                                alternative-text={allLabel.Success}
+                                                title={allLabel.DefaultStyle}
+                                                size="xx-small"
+                                                class="slds-var-p-right_small question-type"
+                                            ></lightning-icon>
+                                            <b>{allLabel.GSCommitment_Question}</b>
+
+                                            <c-strength-redflag
+                                                key={ques.id}
+                                                class="slds-clearfix slds-m-left_x-small"
+                                                rfs-data={ques.rfsMarkerWrapper.commitmentQuestions}
+                                                read-only-view="true"
+                                            ></c-strength-redflag>
+                                        </h3>
+                                        <div class="slds-var-p-left_small">
+                                            <template if:true={ques.commitmentQuestion}>
+                                                <c-show-more-show-less-line
+                                                    description={ques.commitmentQuestion}
+                                                    no-of-lines="3"
+                                                ></c-show-more-show-less-line>
+                                            </template>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-3 slds-var-m-top_small slds-var-m-bottom_small">
+                                    <div class="slds-float_right slds-p-around_x-small">
+                                        <template if:true={isDeletable}>
+                                            <lightning-button
+                                                variant="base"
+                                                label={allLabel.Delete}
+                                                onclick={handleDeleteQuestion}
+                                                disabled={deleteDisableCommQuestFlag}
+                                                class="slds-p-right_x-small"
+                                                slot="actions"
+                                                value={ques.id}
+                                            ></lightning-button>
+                                        </template>
+                                        <template if:true={isUpdateable}>
+                                            <lightning-button
+                                                label={allLabel.edit}
+                                                onclick={handleEditQuestion}
+                                                disabled={editDisableCommQuestFlag}
+                                                slot="actions"
+                                                value={ques}
+                                            ></lightning-button>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </template>
+            </div>
+
+            <!--Create/Edit Commitment Question Record Screen Start-->
+            <template if:true={newRecordScreenCommQuestFlag}>
+                <div class="slds-card__body">
+                    <article class="slds-card slds-card_boundary item">
+                        <!-- hello data 2 -->
+
+                        <!-- add Question text and icon -->
+                        <span>
+                            <h3
+                                class="slds-grid slds-text-heading_small slds-var-m-left_small slds-var-m-top_small gettingCommitmentHeader"
+                            >
+                                <lightning-icon
+                                    icon-name="action:question_post_action"
+                                    alternative-text={allLabel.Success}
+                                    title="default style"
+                                    size="xx-small"
+                                    class="slds-var-p-right_small question-type"
+                                ></lightning-icon>
+
+                                {allLabel.GSCommitment_Question}
+                            </h3></span
+                        >
+                        <!-- End question text and icon -->
+                        <lightning-card class="slds-text-heading_small item slds-var-m-left_small">
+                            <lightning-layout>
+                                <h3
+                                    style="color: black"
+                                    class="slds-var-p-left_small slds-var-p-bottom_small slds-var-p-right_small slds-text-title slds-size_8-of-12"
+                                >
+                                    {allLabel.GSQuestion}
+                                    <c-strength-redflag
+                                        class="slds-clearfix slds-float_right"
+                                        rfs-data={rfsDetails.commitmentQuestions}
+                                        onvalueselected={handleMarkerChange}
+                                    ></c-strength-redflag>
+                                </h3>
+                                <br />
+                            </lightning-layout>
+                            <lightning-layout>
+                                <lightning-layout-item class="slds-var-p-left_small slds-var-p-right_small" size="8">
+                                    <textarea
+                                        rows="3"
+                                        name="questionField"
+                                        onchange={handlecommitQuestDesc}
+                                        onkeyup={handleQuestionChange}
+                                        class="slds-textarea"
+                                        placeholder={allLabel.GSCommitQuestPromptText}
+                                        maxlength="32000"
+                                        style="color: black"
+                                    >
+{question}</textarea
+                                    >
+                                </lightning-layout-item>
+                            </lightning-layout>
+                            <lightning-layout>
+                                <template if:true={showMaxLimitError}>
+                                    <div class="slds-text-color_error slds-var-m-left_small">
+                                        {allLabel.ErrorMax32kCharacters}
+                                    </div>
+                                </template>
+                            </lightning-layout>
+
+                            <div class="slds-var-m-top_large slds-align_absolute-center">
+                                <lightning-button
+                                    label={allLabel.cancel}
+                                    class="slds-var-p-right_x-small"
+                                    variant="neutral"
+                                    onclick={handleCancelCommQuestClick}
+                                    style="text-decoration: none; font-size: small"
+                                ></lightning-button>
+                                <lightning-button
+                                    label={allLabel.save}
+                                    variant="brand"
+                                    onclick={handleSaveCommQuestClick}
+                                    style="font-size: small"
+                                    disabled={saveDisableFlag}
+                                >
+                                </lightning-button>
+                            </div>
+                        </lightning-card>
+                    </article>
+                </div>
+            </template>
+            <!--Create/Edit Commitment Question Record Screen End-->
+
+            <template if:true={isCreateable}>
+                <div class="slds-p-top_small">
+                    <lightning-button
+                        variant="brand"
+                        label={allLabel.GSAdd_Comm_Quest}
+                        disabled={addDisableCommQuestFlag}
+                        onclick={handleAddNewCommQuest}
+                    ></lightning-button>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- Delete Best Action Commitment Modal Start -->
+    <template if:true={ShowDeleteModal}>
+        <c-prompt-modal
+            header-label={allLabel.GSDelete_Commitment}
+            body-msg={allLabel.GSDelete_Commitment_Prompt}
+            positive-response-button={allLabel.Yes}
+            negative-response-button={allLabel.cancel}
+            close-label={allLabel.close}
+            onpositiveresponse={handlebestActDelete}
+            onnegativeresponse={closeModal}
+        ></c-prompt-modal>
+    </template>
+    <!-- Delete Best Action Commitment End -->
+
+    <!-- Delete Min Action Commitment Modal Start -->
+    <template if:true={ShowDeleteMinActModal}>
+        <c-prompt-modal
+            header-label={allLabel.GSDelete_Commitment}
+            body-msg={allLabel.GSDelete_Commitment_Prompt}
+            positive-response-button={allLabel.Yes}
+            negative-response-button={allLabel.cancel}
+            close-label={allLabel.close}
+            onpositiveresponse={handleMinActDelete}
+            onnegativeresponse={closeMinActModal}
+        ></c-prompt-modal>
+    </template>
+    <!-- Delete Min Action Commitment Modal End -->
+
+    <!-- Delete Commitment Question Modal Start -->
+    <template if:true={ShowQuestionDeleteModal}>
+        <c-prompt-modal
+            header-label={allLabel.GSDelete_Commitment}
+            body-msg={allLabel.GSDelete_Commitment_Prompt}
+            positive-response-button={allLabel.Yes}
+            negative-response-button={allLabel.cancel}
+            close-label={allLabel.close}
+            onpositiveresponse={deleteQuestion}
+            onnegativeresponse={closeQuestionDeleteModal}
+        ></c-prompt-modal>
+    </template>
+    <!-- Delete Commitment Question Modal End -->
+</template>

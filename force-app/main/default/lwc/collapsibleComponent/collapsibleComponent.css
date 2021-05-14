@@ -1,0 +1,21 @@
+.hovercls {
+    fill: black;
+}
+
+.hovercls:hover {
+    fill: #0070d2;
+    cursor: pointer;
+}
+
+.hidedisplay {
+    display: none;
+}
+.divClass {
+    background-color: #f0f0f0;
+    border-top: 1px solid #dcdcdc;
+}
+
+.scrollClass {
+    max-height: 1000px;
+    overflow: auto;
+}

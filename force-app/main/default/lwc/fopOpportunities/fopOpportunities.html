@@ -1,0 +1,93 @@
+<template>
+    <div>
+        <article class="slds-card slds-card_boundary">
+            <div if:true={headerFlag} class="slds-m-bottom_large">
+                <lightning-layout>
+                    <lightning-layout-item size="6" class="slds-text-heading_small">
+                        <div class="slds-m-top_medium slds-m-left_small">
+                            <b>{allLabels.fieldOfPlayOpportunities}</b>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6">
+                        <lightning-button
+                            name="AddNew"
+                            label={allLabels.AddNewFoP}
+                            onclick={handleAddNewRecord}
+                            class="slds-float_right slds-m-right_small slds-m-top_small"
+                        ></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <div class="slds-border_bottom slds-m-bottom_small slds-m-top_small"></div>
+            </div>
+            <div class="slds-m-around_medium" if:false={headerFlag}>
+                <div class="slds-text-heading_medium slds-align--absolute-center  ">
+                    {allLabels.fieldOfPlayOpportunities}
+                </div>
+                <div class="slds-border_bottom slds-m-bottom_small slds-m-top_small"></div>
+                <lightning-layout>
+                    <lightning-layout-item size="12">
+                        <div>
+                            <lightning-input
+                                type="text"
+                                label={allLabels.fopOpportunityTitle}
+                                required
+                                name="title"
+                                onchange={hangleTitleChange}
+                            ></lightning-input>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <lightning-layout class="slds-m-top_small">
+                    <lightning-layout-item size="6">
+                        <div class="slds-m-right_large">
+                            <lightning-input
+                                name="KPI"
+                                type="text"
+                                label={allLabels.fopOpportunitykpi}
+                                onchange={handleKIPChange}
+                            ></lightning-input>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6">
+                        <div class="slds-m-left_large slds-m-top_xx-small">
+                            <c-lookup-component
+                                child-object-api-name="Field_of_Play_Opportunity__c"
+                                target-field-api-name="FOP_Owner__c"
+                                field-label="Contact"
+                                onvalueselected={handleContactSelcted}
+                                style="font-size:small;"
+                            ></c-lookup-component>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <div class="slds-form-element slds-m-top_small">
+                    <label class="slds-form-element__label" for="textarea-id-01">{allLabels.Description}</label>
+                    <div class="slds-form-element__control">
+                        <textarea
+                            id="textarea-id-01"
+                            class="slds-textarea"
+                            placeholder={allLabels.PlaceholderText}
+                            onchange={handleDescChange}
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+            <footer class="slds-card__footer slds-theme_default slds-align_absolute-center" if:false={headerFlag}>
+                <div class="">
+                    <lightning-button
+                        label={allLabels.cancel}
+                        variant="neutral"
+                        onclick={handleCancel}
+                    ></lightning-button>
+                    <lightning-button
+                        label={allLabels.save}
+                        variant="brand"
+                        onclick={handleCreateFOPO}
+                        class="slds-m-left_x-small"
+                        disabled={saveEnableFlag}
+                    ></lightning-button>
+                </div>
+            </footer>
+        </article>
+    </div>
+</template>

@@ -1,0 +1,8 @@
+.def-text-link {
+    overflow-wrap: anywhere;
+}
+
+.wrapTextCls {
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+}

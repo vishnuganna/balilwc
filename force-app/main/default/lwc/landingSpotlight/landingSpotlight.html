@@ -1,0 +1,26 @@
+<template>
+    <lightning-card title={labels.Opportunity_Spotlight} icon-name="standard:opportunity">
+        <div style="width: auto;" class="KFSellDashBoardDatatableClass">
+            <template if:true={data}>
+                <lightning-datatable
+                    data={data}
+                    columns={columns}
+                    row-number-offset={rowOffset}
+                    key-field="Id"
+                    class="slds-table_col-bordered"
+                    style="font-size:x-small"
+                    min-column-width="200px"
+                    sorted-by={sortBy}
+                    sorted-direction={sortDirection}
+                    onsort={handleSortdata}
+                    hide-checkbox-column="true"
+                    column-widths-mode="fixed"
+                    enable-infinite-loading
+                    onloadmore={loadMoreData}
+                >
+                </lightning-datatable>
+            </template>
+        </div>
+        <div slot="footer"><a href={reportUrl}>{labels.View_Report}</a></div>
+    </lightning-card>
+</template>

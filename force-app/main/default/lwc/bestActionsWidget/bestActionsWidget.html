@@ -1,0 +1,110 @@
+<template>
+    <div class="slds-theme_default" style="border-radius:5px">
+        <div if:true={showDataFlag}>
+            <div class="container">
+                <img class="img-to-fit" alt="" src={best_action_widget_header_bg} style="width:100%;padding: 8px;" />
+                <div style="position:absolute; top:23px; left:25px;">
+                    <img style="width:28px; height:28px" alt="" src={kf_sell_logo} />
+                </div>
+                <div class="best-action-widget-title">
+                    <span>{label.KFSellActions}</span>
+                </div>
+                <lightning-icon
+                    style="position:absolute; top: 30px; right: 30px;"
+                    icon-name="utility:chevrondown"
+                    size="x-small"
+                    variant="inverse"
+                    title={label.Warning}
+                    onclick={handleToggleSection}
+                >
+                </lightning-icon>
+            </div>
+            <div if:true={noDataFlag} class="slds-m-around_large">
+                <p class="slds-text-heading_small no-pending-action">{label.NoPendingActions}</p>
+            </div>
+            <div if:false={noDataFlag} class="slds-scrollable_y widget-content">
+                <div class="slds-m-around_small">
+                    <template for:each={bestActionData} for:item="item">
+                        <lightning-layout horizontal-align="spread" key={item.recId}>
+                            <lightning-layout-item padding="around-xx-small" class="slds-m-left_xx-small" size="9">
+                                <h3 class="slds-text-heading_small slds-m-bottom_x-small" key={item.recId}>
+                                    <lightning-formatted-rich-text
+                                        value={item.actionTitle}
+                                    ></lightning-formatted-rich-text>
+                                </h3>
+                                <p class="slds-text-body_regular" key={item.recId}>
+                                    <lightning-formatted-rich-text
+                                        value={item.managerRec}
+                                    ></lightning-formatted-rich-text>
+                                </p>
+                                <p>
+                                    <lightning-formatted-url
+                                        value={item.refresherUrl}
+                                        target="_blank"
+                                        label={label.HereAQuickRefresher}
+                                    >
+                                    </lightning-formatted-url>
+                                </p>
+                            </lightning-layout-item>
+                            <!-- bluesheet act now button -->
+                            <template if:true={isCreateable}>
+                                <template if:false={item.isOverviewTabAction}>
+                                    <lightning-layout-item padding="around-small" size="4" class="act-now">
+                                        <template if:false={item.isGreensheetAlert}>
+                                            <lightning-button
+                                                variant="neutral"
+                                                onclick={navigateToBss}
+                                                label={label.ActNow}
+                                                value={item.scrollTo}
+                                            ></lightning-button>
+                                        </template>
+                                    </lightning-layout-item>
+                                </template>
+                            </template>
+                            <!-- greensheet act now button -->
+                            <template if:true={isGreenSheetCreateable}>
+                                <lightning-layout-item padding="around-small" size="4" class="act-now">
+                                    <template if:true={item.isGreensheetAlert}>
+                                        <lightning-button
+                                            variant="neutral"
+                                            onclick={navigateToGreenSheet}
+                                            label={label.ActNow}
+                                            value={item.greenSheetId}
+                                        ></lightning-button>
+                                    </template>
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+                        <div key={item.recId} class="slds-border_bottom slds-m-top_small slds-m-bottom_small "></div>
+                    </template>
+                </div>
+            </div>
+        </div>
+        <div if:false={showDataFlag}>
+            <div class="slds-m-bottom_small container">
+                <img class="img-to-fit" alt="" src={best_action_widget_header_bg} style="width:100%;padding: 8px;" />
+                <div style="position:absolute; top:23px; left:25px;">
+                    <img style="width:28px; height:28px" alt="" src={kf_sell_logo} />
+                </div>
+                <div class="best-action-widget-title">
+                    <span>{label.KFSellActions}</span>
+                </div>
+                <!-- <button class="btnClass" style="position:absolute; top: 30px; left: 415px;">  
+                    <span onclick={handleToggleSection}>
+                        <lightning-icon icon-name="utility:chevronright"
+                                        size="small" variant="inverse" title="Warning"></lightning-icon>
+                    </span>    
+                </button> -->
+                <lightning-icon
+                    style="position:absolute; top: 30px; right: 30px;"
+                    icon-name="utility:chevronright"
+                    size="x-small"
+                    variant="inverse"
+                    title={label.Warning}
+                    onclick={handleToggleSection}
+                >
+                </lightning-icon>
+            </div>
+        </div>
+    </div>
+</template>

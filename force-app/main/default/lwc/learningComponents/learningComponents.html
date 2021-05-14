@@ -1,0 +1,27 @@
+<template>
+    <div
+        class="slds-card custom-box slds-card_boundary slds-align_absolute-center slds-m-around_small slds-grid disableDiv"
+    >
+        <div class="slds-media slds-media_responsive slds-col ">
+            <div class="slds-media__figure slds-col slds-size_1-of-5">
+                <span class="slds-avatar slds-avatar_xx-small">
+                    <img style="width: 30px; height: 30px" alt={lessonStatus} src={utilName} />
+                </span>
+                <p>{lessonStatus}</p>
+            </div>
+            <div class="slds-media__body slds-text-align_left slds-col slds-size_4-of-5">
+                <a onclick={handleLessonClick} class="noanchor"><strong>{lessonTitle}</strong></a>
+                <p class="slds-p-bottom_x-small slds-p-top_xx-small">{lessonDesc}</p>
+                <span class="slds-text-color_weak">{lessonTime}</span>
+            </div>
+        </div>
+    </div>
+    <template if:true={showPopup}>
+        <c-lesson-modal
+            lessonrecord={lessonMap}
+            onhidelessons={hideIntrodcutionsection}
+            onhidelessonandmat={hideLessonAndMat}
+        >
+        </c-lesson-modal>
+    </template>
+</template>

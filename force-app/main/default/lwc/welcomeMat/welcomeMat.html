@@ -1,0 +1,226 @@
+<!--suppress HtmlUnknownTarget, BadExpressionStatementJS -->
+<template>
+    <template if:true={hasEditAccess}>
+        <div class="slds-theme_default">
+            <template if:true={showWelcomeMat}>
+                <section
+                    role="dialog"
+                    tabindex="-1"
+                    aria-modal="true"
+                    aria-describedby="kf_sell_sgj"
+                    class="slds-modal slds-fade-in-open"
+                >
+                    <div
+                        style="
+                        height: 100%;
+                        width: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: rgba(0, 0, 0, 0.6);
+                    "
+                        id="kf_sell_sgj"
+                    >
+                        <div class="container" style="position: relative">
+                            <header class="slds-modal__header">
+                                <button
+                                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                    title={label.closeLabel}
+                                    onclick={closeModal}
+                                >
+                                    <lightning-icon
+                                        icon-name="utility:close"
+                                        alternative-text={label.closeLabel}
+                                        variant="inverse"
+                                        size="small"
+                                    ></lightning-icon>
+                                    <span class="slds-assistive-text">{closeLabel}</span>
+                                </button>
+                            </header>
+                            <div style="position: absolute; top: 0; left: 0; width: 425px; height: 490px">
+                                <div style="position: absolute; top: 0; left: 0">
+                                    <img style="width: 425px; height: 490px" alt="" src={welcome_mat_bg} />
+                                </div>
+                                <div class="slds-align_absolute-center">
+                                    <img class="sgj-title" alt="" src={selfGuidedJourneyKFLogo} />
+                                    <h2 class="sgj-header slds-align_absolute-center">{label.SGJLandingHeader}</h2>
+                                </div>
+                                <div class="sgj-text">
+                                    <br />
+                                    <p>{label.SGJLandingContentL1}</p>
+                                    <p>{label.SGJLandingContentL2}</p>
+                                    <br />
+                                    <p>{label.DoNotShowIfCompleted}</p>
+                                </div>
+                                <div style="position: absolute; top: 424px; left: 120px">
+                                    <lightning-input label="stop-show" type="checkbox" onchange={handleCheckBoxEvent}>
+                                    </lightning-input>
+                                </div>
+                                <div class="do_not_show_text" style="position: absolute; top: 425px; left: 145px">
+                                    <span>{label.DoNotshow}</span>
+                                </div>
+                            </div>
+
+                            <div
+                                class="slds-p-top_small slds-p-bottom_small sgjRightPanel abc slds-grid slds-grid_vertical"
+                            >
+                                <template for:each={sgj} for:item="lesson">
+                                    <c-learning-components
+                                        data-id={lesson.lessonRecordId}
+                                        lesson-object={lesson}
+                                        key={lesson.lessonNameId}
+                                        onreloadmenu={reloadMat}
+                                        onclosewelcomemat={closeModal}
+                                    ></c-learning-components>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </template>
+        </div>
+    </template>
+
+    <template if:false={hasEditAccess}>
+        <div class="slds-theme_default">
+            <template if:true={showWelcomeMat}>
+                <section
+                    role="dialog"
+                    tabindex="-1"
+                    aria-modal="true"
+                    aria-describedby="kf_sell_welcome"
+                    class="slds-modal slds-fade-in-open"
+                >
+                    <div
+                        style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.6)"
+                        id="kf_sell_welcome"
+                    >
+                        <div class="container" style="position: relative">
+                            <div style="position: absolute; top: 0; left: 0; width: 425px; height: 490px">
+                                <div style="position: absolute; top: 0; left: 0">
+                                    <img style="width: 425px; height: 490px;" alt="" src={welcome_mat_bg} />
+                                </div>
+                                <div style="position: absolute; top: 80px; left: 192px">
+                                    <img style="width: 41px; height: 41px" alt="" src={kf_sell_logo} />
+                                </div>
+                                <div class="welcome-title">
+                                    <span>{label.WelcomeKF}</span>
+                                </div>
+                                <div class="welcome-text">
+                                    <span>
+                                        {label.KFSellingTime}
+                                    </span>
+                                </div>
+                                <div class="continue_btn continue_btn_box" style="cursor: pointer">
+                                    <div
+                                        data-id="continue_btn_id"
+                                        class="continue_btn_sub"
+                                        onclick={closeWelcomeMat}
+                                        onmouseover={handleMouseOver}
+                                        onmouseout={handleMouseOut}
+                                        onmousedown={handleMouseDown}
+                                    >
+                                        <div data-id="continue_btn_txt" class="continue_btn_text">
+                                            <p><span>{label.Continue}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="position: absolute; top: 424px; left: 120px;">
+                                    <lightning-input label="stop-show" type="checkbox" onchange={handleCheckBoxEvent}>
+                                    </lightning-input>
+                                </div>
+                                <div class="do_not_show_text" style="position: absolute; top: 425px; left: 145px;">
+                                    <span>{label.DoNotshow}</span>
+                                </div>
+                            </div>
+                            <div
+                                style="position: absolute; top: 0; left: 425px; width: 425px; height: 490px; background-color: rgba(255, 255, 255, 1)"
+                            >
+                                <div class="sell_header" style="position: absolute; top: 20px; left: 25px;">
+                                    <img
+                                        class="sell_header_logo"
+                                        style="position: absolute; top: 20px; left: 30px"
+                                        alt=""
+                                        src={kf_sell_logo}
+                                    />
+                                    <span class="sell_header_text" style="position: absolute; top: 20px; left: 80px">
+                                        {label.KFSellAcquainted}
+                                    </span>
+                                </div>
+                                <div class="sell_links" style="position: absolute; top: 100px; left: 25px">
+                                    <div style="position: absolute; top: 22px; left: 30px; width: 375px">
+                                        <a
+                                            style="text-decoration: none;"
+                                            href="#"
+                                            data-link-type="wm-link-1"
+                                            onclick={handleTutorialLink}
+                                        >
+                                            {label.OpportunityLayout}
+                                        </a>
+                                    </div>
+                                    <div style="position: absolute; top: 55px; left: 30px; width: 375px">
+                                        <a
+                                            style="text-decoration: none"
+                                            href="#"
+                                            data-link-type="wm-link-2"
+                                            onclick={handleTutorialLink}
+                                        >
+                                            {label.StrategicPlan}
+                                        </a>
+                                    </div>
+                                    <div style="position: absolute; top: 89px; left: 30px; width: 375px">
+                                        <a
+                                            style="text-decoration: none"
+                                            href="#"
+                                            data-link-type="wm-link-3"
+                                            onclick={handleTutorialLink}
+                                        >
+                                            {label.KFSellDashboards}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="sell_header" style="position: absolute; top: 250px; left: 25px;">
+                                    <img
+                                        class="sell_header_logo"
+                                        style="position: absolute; top: 20px; left: 30px"
+                                        alt=""
+                                        src={kf_learn_logo}
+                                    />
+                                    <span class="sell_header_text" style="position: absolute; top: 20px; left: 80px">
+                                        {label.KFSellStrategicSelling}
+                                    </span>
+                                </div>
+                                <div
+                                    class="sell_links"
+                                    style="position: absolute; top: 330px; left: 25px; height: 100px"
+                                >
+                                    <div style="position: absolute; top: 22px; left: 30px; width: 375px">
+                                        <a
+                                            style="text-decoration: none;"
+                                            title={label.ClickToOpenKFLearn}
+                                            href="#"
+                                            onclick={openKFLearn}
+                                        >
+                                            {label.KFDigitalLearning}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="question" style="position: absolute; top: 430px; left: 25px">
+                                    <img
+                                        class="question_logo"
+                                        style="position: absolute; top: 18px; left: 5px"
+                                        alt=""
+                                        src={icon_question_mark}
+                                    />
+                                    <div style="position: absolute; top: 18px; left: 30px; width: 375px">
+                                        <span>{label.QuestionsOrConcerns}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </template>
+        </div>
+    </template>
+</template>

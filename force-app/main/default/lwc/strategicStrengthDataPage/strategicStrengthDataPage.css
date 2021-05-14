@@ -1,0 +1,9 @@
+.strategic-strength {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.textAreaPosition {
+    position: unset !important;
+}

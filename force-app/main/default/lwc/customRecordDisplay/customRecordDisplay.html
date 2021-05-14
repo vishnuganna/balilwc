@@ -1,0 +1,112 @@
+<template>
+    <div class="custom-record-container">
+        <div if:true={isRedFlagStrength}>
+            <div if:true={isRedFlagSelected} class="slds-m-top_x-small">
+                <svg
+                    class="red-flag"
+                    version="1.1"
+                    viewBox="0 0 19 19"
+                    width="21px"
+                    height="22px"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <g transform="matrix(1 0 0 1 -540 -585 )">
+                        <path
+                            d="M 1.56521739130435 12.59375  L 1.56521739130435 0.40625  C 1.56521739130435 0.189583333333333  1.38260869565217 0  1.17391304347826 0  L 0.391304347826087 0  C 0.182608695652174 0  0 0.189583333333333  0 0.40625  L 0 12.59375  C 0 12.8104166666667  0.182608695652174 13  0.391304347826087 13  L 1.17391304347826 13  C 1.38260869565217 13  1.56521739130435 12.8104166666667  1.56521739130435 12.59375  Z M 12 1.76041666666667  C 12 1.57083333333333  11.7913043478261 1.43541666666667  11.6086956521739 1.54375  C 7.43478260869565 3.81875  7.90434782608696 -0.839583333333333  2.8695652173913 0.975  C 2.71304347826087 1.02916666666667  2.60869565217391 1.19166666666667  2.60869565217391 1.35416666666667  L 2.60869565217391 7.66458333333333  C 2.60869565217391 7.85416666666667  2.79130434782609 7.98958333333333  2.94782608695652 7.90833333333333  C 7.95652173913043 6.175  7.43478260869565 10.9416666666667  11.7913043478261 8.39583333333333  C 11.9217391304348 8.31458333333333  12 8.17916666666667  12 8.04375  L 12 1.76041666666667  Z "
+                            fill-rule="nonzero"
+                            fill="#c23934"
+                            stroke="none"
+                            transform="matrix(1 0 0 1 540 585 )"
+                        ></path>
+                    </g>
+                </svg>
+            </div>
+
+            <div if:true={isStrengthSelected}>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="18" height="20">
+                    <g class="nc-icon-wrapper" fill="#ffffff">
+                        <g stroke="none" stroke-width="1">
+                            <path
+                                fill="#00b386"
+                                d="M17.571 6c.237 0 .429.192.429.429V17.57a.429.429 0 0 1-.429.429h-.857a.429.429 0 0 1-.428-.429v-4.714H7.714v4.714a.429.429 0 0 1-.428.429h-.857A.429.429 0 0 1 6 17.571V6.43C6 6.192 6.192 6 6.429 6h.857c.236 0 .428.192.428.429v4.714h8.572V6.429c0-.237.192-.429.428-.429h.857zM4.625 8c.207 0 .375.201.375.45v8.1c0 .249-.168.45-.375.45h-.75c-.207 0-.375-.201-.375-.45V13.4H2.375c-.207 0-.375-.201-.375-.45v-.9c0-.249.168-.45.375-.45H3.5V8.45c0-.249.168-.45.375-.45h.75zM22.5 11.6c.276 0 .5.201.5.45v.9c0 .249-.224.45-.5.45H21v3.15c0 .249-.224.45-.5.45h-1c-.276 0-.5-.201-.5-.45v-8.1c0-.249.224-.45.5-.45h1c.276 0 .5.201.5.45v3.15h1.5z"
+                            ></path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div if:true={noneSelected}>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="18" height="20">
+                    <g class="nc-icon-wrapper" fill="#ffffff">
+                        <g stroke="none" stroke-width="1">
+                            <path fill="#ffffff"></path>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+        </div>
+        <template if:true={completedStatus}>
+            <div>
+                <lightning-icon
+                    class="slds-icon-utility-user slds-m-right_x-small slds-line-height_reset slds-icon_container"
+                    icon-name="utility:success"
+                    alternative-text={label.Error}
+                    size="x-small"
+                    variant="success"
+                ></lightning-icon>
+            </div>
+        </template>
+        <template if:true={inProgressStatus}>
+            <div>
+                <lightning-icon
+                    class="slds-icon-utility-user slds-m-right_x-small slds-line-height_reset slds-icon_container"
+                    icon-name="utility:ban"
+                    alternative-text={label.Error}
+                    size="x-small"
+                    variant="warning"
+                ></lightning-icon>
+            </div>
+        </template>
+
+        <div class="slds-m-left_xx-small" if:true={isSource}>
+            <div if:true={sourceText}>
+                <c-show-more-show-less-line
+                    class="field-desc"
+                    description={fieldDescription}
+                    no-of-lines="3"
+                    if:true={showMoreShowLess}
+                >
+                </c-show-more-show-less-line>
+            </div>
+
+            <div class="css-truncate expandable" if:true={sourceUrl}>
+                <div class="css-truncate-target">
+                    <!-- <a href={fieldDescription} target="_blank">
+                        {fieldDescription}</a></div>-->
+                    <lightning-formatted-url
+                        value={fieldDescription}
+                        tooltip={label.UseFullDomainName}
+                        target="_blank"
+                        class="slds-align-top"
+                    ></lightning-formatted-url>
+                </div>
+            </div>
+        </div>
+        <div if:false={isSource}>
+            <div class="slds-var-m-left_xx-small" if:true={fieldDescription}>
+                <c-show-more-show-less-line
+                    class="field-desc"
+                    description={fieldDescription}
+                    no-of-lines="3"
+                    if:true={showMoreShowLess}
+                >
+                </c-show-more-show-less-line>
+                <p class="field-desc" if:false={showMoreShowLess}>{fieldDescription}</p>
+            </div>
+        </div>
+        <div if:false={isRedFlagStrength}>
+            <div class="slds-m-left_xx-small" if:false={fieldDescription}>
+                <p class="field-desc">-</p>
+            </div>
+        </div>
+    </div>
+</template>

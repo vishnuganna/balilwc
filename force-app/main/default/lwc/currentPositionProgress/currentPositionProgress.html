@@ -1,0 +1,107 @@
+<template>
+    <template if:true={moduleData}>
+        <c-go-to-bluesheet-prompts
+            module-data={moduleData}
+            module-learning-completed={moduleLearningCompleted}
+            module-section={moduleSection}
+        ></c-go-to-bluesheet-prompts>
+    </template>
+    <article class="slds-card slds-card_boundary">
+        <lightning-card variant="Narrow">
+            <div slot="title">
+                <b>{labels.currentPositionHeaderLabel}</b>
+                <c-info-navigation nav-url={labels.currentPositionHeaderURL}></c-info-navigation>
+            </div>
+            <hr style="margin:0" />
+            <template if:true={checkReadOnlyAndNoDataAccess}>
+                <c-summary-view-no-data></c-summary-view-no-data>
+            </template>
+            <template if:false={checkReadOnlyAndNoDataAccess} class="slds-text-title_bold slds-m-top_xx-large">
+                <div class="slds-align--absolute-center">
+                    <template if:true={isPlaceholderDisabled}>
+                        <div
+                            style="font-weight:normal;color:darkgrey;font-size: 15px;font-style:italic;position:relative;padding-bottom:10px;padding-top:10px;"
+                        >
+                            {labels.cpScaleLabel}
+                        </div>
+                    </template>
+
+                    <template if:false={isPlaceholderDisabled}>
+                        <div
+                            style="font-weight:normal;color:black;font-size: 20px;  position:relative;padding-bottom:10px;padding-top:10px;"
+                        >
+                            {label}
+                        </div>
+                    </template>
+                    <!-- <div style="color:black;font-size: 25px;position:relative;padding-bottom:10px;padding-top:10px;"> {label} </div>-->
+                </div>
+
+                <center>
+                    <article
+                        class="slds-tile"
+                        style="border:1px solid#cccccc;height:100px;padding-bottom:50px;width:95%;"
+                    >
+                        <img src={imageLink} alt="Trailhead logo" style="width:100%;display:block;" />
+
+                        <div style="padding-top:30px;"></div>
+                        <div class="slds-progress slds-text-color_weak" style="width:90%;">
+                            <ol class="slds-progress__list">
+                                <template for:each={progressLst} for:item="current" for:index="index">
+                                    <template if:true={isUpdateable}>
+                                        <li
+                                            key={current.label}
+                                            id={index}
+                                            onclick={buttonClick}
+                                            class={current.cssClass}
+                                        >
+                                            <button
+                                                class="slds-button slds-progress__marker "
+                                                title={current.title}
+                                                name={current.label}
+                                            >
+                                                <span
+                                                    class="slds-text-color_default"
+                                                    style="font-weight:normal;text-decoration:none !important;position:relative;top:1rem;left:calc(50% + 6px);transform:translateX(-50%);font-size:10.5px;"
+                                                    >{current.label}</span
+                                                >
+                                            </button>
+                                        </li>
+                                    </template>
+                                    <template if:true={readOnly}>
+                                        <li key={current.label} id={index} class={current.cssClass}>
+                                            <button
+                                                class="slds-button slds-progress__marker disabled"
+                                                title={current.title}
+                                                name={current.label}
+                                            >
+                                                <span
+                                                    class="slds-text-color_default"
+                                                    style="font-weight:normal;text-decoration:none !important;position:relative;top:1rem;left:calc(50% + 6px);transform:translateX(-50%);font-size:10.5px;"
+                                                    >{current.label}</span
+                                                >
+                                            </button>
+                                        </li>
+                                    </template>
+                                </template>
+                            </ol>
+                            <div
+                                class="slds-progress-bar slds-progress-bar_x-small"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                                aria-valuenow="0"
+                                role="progressbar"
+                                style="width:100%;"
+                            >
+                                <span class="slds-progress-bar__value " style="width:0% ">
+                                    <span class="slds-assistive-text ">Progress: 0%</span>
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+                </center>
+            </template>
+        </lightning-card>
+    </article>
+
+    <!--testing-->
+</template>

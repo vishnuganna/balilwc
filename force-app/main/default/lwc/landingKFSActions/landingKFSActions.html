@@ -1,0 +1,25 @@
+<template>
+    <lightning-card title={allLabels.KFSellActionBlueSheet_report} icon-name="standard:actions_and_buttons">
+        <div style="width: auto;" class="KFSellDashBoardDatatableClass">
+            <template if:true={data}>
+                <lightning-datatable
+                    data={data}
+                    columns={columns}
+                    row-number-offset={rowOffset}
+                    key-field="Id"
+                    class="slds-table_col-bordered"
+                    style="font-size:x-small"
+                    sorted-by={sortBy}
+                    sorted-direction={sortDirection}
+                    onsort={handleSortdata}
+                    hide-checkbox-column="true"
+                    column-widths-mode="fixed"
+                    enable-infinite-loading
+                    onloadmore={loadMoreData}
+                >
+                </lightning-datatable>
+            </template>
+        </div>
+        <div slot="footer"><a href={reportUrl}>{allLabels.View_Report}</a></div>
+    </lightning-card>
+</template>

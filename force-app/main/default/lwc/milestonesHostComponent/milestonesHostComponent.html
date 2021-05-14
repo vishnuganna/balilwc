@@ -1,0 +1,83 @@
+<template>
+    <article class="slds-card slds-card_boundary">
+        <div>
+            <!--Header-->
+            <header class="slds-card__header">
+                <div class="slds-text-heading_small">
+                    <b>{allLabel.milestonesTitleLabel}</b>
+                </div>
+            </header>
+            <!--/Header-->
+
+            <!--Main Body-->
+            <div class="slds-var-p-left_small slds-var-p-right_small slds-var-p-bottom_x-small divClass">
+                <div class="slds-var-m-bottom_x-small slds-var-m-top_x-small">
+                    <c-milestones-main-page
+                        milestone-number="Milestone 1"
+                        milestone-header-label={allLabel.milestone1TitleLabel}
+                        milestone-header-nav-u-r-l={allLabel.Milestone1_URL}
+                        get-id-from-parent={getIdFromParent}
+                        is-button-disable={isbuttondisable}
+                        onbuttonclicked={hanldleclick}
+                        is-edit-data-disabled={isEditDataDisabled}
+                        is-delete-data-disabled={isDeleteDataDisabled}
+                    >
+                    </c-milestones-main-page>
+                </div>
+                <div class="slds-border_top slds-var-m-bottom_x-small slds-var-m-top_x-small">
+                    <c-milestones-main-page
+                        milestone-number="Milestone 2"
+                        milestone-header-label={allLabel.milestone2TitleLabel}
+                        milestone-header-nav-u-r-l={allLabel.Milestone2_URL}
+                        get-id-from-parent={getIdFromParent}
+                        is-button-disable={isbuttondisable}
+                        onbuttonclicked={hanldleclick}
+                        is-edit-data-disabled={isEditDataDisabled}
+                        is-delete-data-disabled={isDeleteDataDisabled}
+                    >
+                    </c-milestones-main-page>
+                </div>
+                <div class="slds-border_top slds-var-m-bottom_x-small slds-var-m-top_x-small">
+                    <c-milestones-main-page
+                        milestone-number="Milestone 3"
+                        milestone-header-label={allLabel.milestone3TitleLabel}
+                        milestone-header-nav-u-r-l={allLabel.Milestone3_URL}
+                        get-id-from-parent={getIdFromParent}
+                        is-button-disable={isbuttondisable}
+                        onbuttonclicked={hanldleclick}
+                        is-edit-data-disabled={isEditDataDisabled}
+                        is-delete-data-disabled={isDeleteDataDisabled}
+                    >
+                    </c-milestones-main-page>
+                </div>
+                <div class="slds-border_top slds-var-m-bottom_x-small slds-var-m-top_x-small">
+                    <c-milestones-main-page
+                        milestone-number="Milestone 4"
+                        milestone-header-label={allLabel.milestone4TitleLabel}
+                        milestone-header-nav-u-r-l={allLabel.Milestone4_URL}
+                        get-id-from-parent={getIdFromParent}
+                        is-button-disable={isbuttondisable}
+                        onbuttonclicked={hanldleclick}
+                        is-edit-data-disabled={isEditDataDisabled}
+                        is-delete-data-disabled={isDeleteDataDisabled}
+                    >
+                    </c-milestones-main-page>
+                </div>
+                <div class="slds-border_top slds-var-m-bottom_x-small slds-var-m-top_x-small">
+                    <c-milestones-main-page
+                        milestone-number="Milestone 5"
+                        milestone-header-label={allLabel.milestone5TitleLabel}
+                        milestone-header-nav-u-r-l={allLabel.Milestone5_URL}
+                        get-id-from-parent={getIdFromParent}
+                        isstrategic-player={isstrategicPlayerMile}
+                        is-button-disable={isbuttondisable}
+                        onbuttonclicked={hanldleclick}
+                        is-edit-data-disabled={isEditDataDisabled}
+                        is-delete-data-disabled={isDeleteDataDisabled}
+                    ></c-milestones-main-page>
+                </div>
+            </div>
+            <!--/Main Body-->
+        </div>
+    </article>
+</template>

@@ -1,0 +1,47 @@
+<template>
+    <template if:true={moduleData}>
+        <c-go-to-bluesheet-prompts
+            module-data={moduleData}
+            module-learning-completed={moduleLearningCompleted}
+            module-section={moduleSection}
+        ></c-go-to-bluesheet-prompts>
+    </template>
+    <article class="slds-card slds-card_boundary">
+        <div>
+            <!--Header-->
+            <header class="slds-card__header">
+                <div class="slds-text-heading_small">
+                    <b>{allLabel.Summary_of_My_Position}</b>
+                    <c-info-navigation nav-url={allLabel.sumPositionHeaderURL}></c-info-navigation>
+                </div>
+            </header>
+            <!--/Header-->
+
+            <!--Main Body-->
+            <footer if:false={checkNoDataAndReadOnlyAccess} class="slds-p-around_small divClass">
+                <div class="slds-m-bottom_medium">
+                    <c-strengths-main-page
+                        get-id-from-parent={getIdFromParent}
+                        onupdateprogressfromchild={handleProgress}
+                        onfetchdata={handleFetchData}
+                        oncheckmoduleprogress={ShowModuleDependentData}
+                    >
+                    </c-strengths-main-page>
+                </div>
+                <div class="slds-border_top slds-m-bottom_x-small">
+                    <c-red-flags-main-page
+                        get-id-from-parent={getIdFromParent}
+                        onupdateprogressfromchild={handleProgress}
+                        oncheckmoduleprogress={ShowModuleDependentData}
+                    ></c-red-flags-main-page>
+                </div>
+            </footer>
+            <footer if:true={checkNoDataAndReadOnlyAccess}>
+                <div class="slds-border_top">
+                    <c-summary-view-no-data></c-summary-view-no-data>
+                </div>
+            </footer>
+            <!--/Main Body-->
+        </div>
+    </article>
+</template>

@@ -1,0 +1,30 @@
+.divClass {
+    border-top: 1px solid #dcdcdc;
+}
+.topDivClass {
+    border: 1px solid #dcdcdc;
+}
+.btnClickedYes {
+    background-color: #94c31a;
+    color: white;
+}
+.btnClickedUnknown {
+    background-color: #919191;
+    color: white;
+}
+.btnClickedNo {
+    background-color: #e00c50;
+    color: white;
+}
+.btnunClicked {
+    background-color: white;
+    color: black;
+}
+.scoreDiv {
+    background-color: white;
+    color: black;
+}
+
+.container-border {
+    border-top: 1px solid #dcdcdc;
+}

@@ -1,0 +1,123 @@
+<apex:component controller="GreenSheetBIandVBRCredPDF" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <div class="margintop15" style="padding-right: 70px">
+        <div class="lineheight20 marginbottom12 main-heading-bar font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.buyingInfluence}" />
+        </div>
+
+        <div class="margintop10">
+            <apex:repeat rendered="{!NOT(greenSheetPDFWrapper.greenSheetBuyingInfluence.empty)}"
+                value="{!greenSheetPDFWrapper.greenSheetBuyingInfluence}"
+                var="biObj"
+            >
+                <div class="margintop12">
+                    <table style="width:100%; margin-left: -2px;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 50%;text-align: left;">
+                                    <span class="boldfont font9">
+                                        <apex:pageBlock rendered="{! If(biObj.contactName != null ,true,false) }">
+                                            <div class="boldfont capitalword font9 marginleft15">
+                                                {!biObj.contactName}, {!biObj.title}
+                                            </div>
+                                        </apex:pageBlock>
+                                    </span>
+                                </td>
+                                <td style="width: 40%;text-align: right;">
+                                    <span class="boldfont font9">
+                                        <apex:pageBlock rendered="{! If((biObj.state != null && biObj.country !=null) ,true,false) }"
+                                        >
+                                            <div class="boldfont capitalword font9 "
+                                                >{!biObj.state}, {!biObj.country}
+                                            </div>
+                                        </apex:pageBlock>
+                                        <apex:pageBlock rendered="{! If((biObj.state == null && biObj.country == null) ,true,false) }"
+                                        >
+                                            <div class="boldfont capitalword font9 ">- </div>
+                                        </apex:pageBlock>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="linegray marginbottom12" style="width: 100% "></div>
+                <div>
+                    <table style="width:100%; margin-left: -1px">
+                        <tbody>
+                            <tr>
+                                <td class="boldfont colorgray font9">
+                                    <apex:outputLabel value="{!$Label.buyingInfluenceRoles}"
+                                        style="width: 35%;text-align: left;vertical-align: top;"
+                                    />
+                                    <apex:repeat value="{!biObj.rfsMarkerPdfWrapper}" var="BuyingInfluenceRole">
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((BuyingInfluenceRole=='BuyingInfluenceRole'),IF(biObj.rfsMarkerPdfWrapper['BuyingInfluenceRole']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((BuyingInfluenceRole=='BuyingInfluenceRole'),IF(biObj.rfsMarkerPdfWrapper['BuyingInfluenceRole']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </td>
+                                <td class="boldfont colorgray font9" style="width: 65%;text-align: left;">
+                                    <apex:outputLabel value="{!$Label.Concept}" style="vertical-align: top;" />
+                                    <apex:repeat value="{!biObj.rfsMarkerPdfWrapper}" var="conceptBI">
+                                        <span>
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'redFlag.jpg')}"
+                                                rendered="{!IF((conceptBI=='conceptBI'),IF(biObj.rfsMarkerPdfWrapper['conceptBI']['redFlagSelected']==true,true,false),false)}"
+                                            />
+                                            <apex:image style="width: 15px;height: 15px"
+                                                url="{!URLFOR($Resource.pdf_resource, 'barbell.jpg')}"
+                                                rendered="{!IF((conceptBI=='conceptBI'),IF(biObj.rfsMarkerPdfWrapper['conceptBI']['strengthSelected']==true,true,false),false)}"
+                                            />
+                                        </span>
+                                    </apex:repeat>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table style="width:100%; margin-left: -16px">
+                        <tbody>
+                            <tr>
+                                <td class="colorgray font9" style="width: 35%;text-align: left;">
+                                    <apex:pageBlock rendered="{! If(biObj.buyingInfluenceRole !=null ,true,false) }">
+                                        <div class=" colorgray margintop5 font9" style=" margin-left: 15px;"
+                                            >{!biObj.buyingInfluenceRole}
+                                        </div>
+                                    </apex:pageBlock>
+                                    <apex:pageBlock rendered="{! If(biObj.buyingInfluenceRole ==null ,true,false) }">
+                                        <div class=" colorgray margintop5 font9" style=" margin-left: 15px;">- </div>
+                                    </apex:pageBlock>
+                                </td>
+                                <td class="colorgray font9" style="width: 65%;text-align: left;">
+                                    <apex:pageBlock rendered="{! If(biObj.concept !=null ,true,false) }">
+                                        <div class=" colorgray margintop5 font9" style=" margin-left: 15px;"
+                                            >{!biObj.concept}
+                                        </div>
+                                    </apex:pageBlock>
+                                    <apex:pageBlock rendered="{! If(biObj.concept ==null ,true,false) }">
+                                        <div class=" colorgray margintop5 font9" style=" margin-left: 15px;">- </div>
+                                    </apex:pageBlock>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </apex:repeat>
+
+            <apex:pageBlock rendered="{!(greenSheetPDFWrapper.greenSheetBuyingInfluence.empty)}">
+                <div class="margintop10 semibold">
+                    <apex:outputLabel value="{!$Label.NodataAdded}" />
+                </div>
+            </apex:pageBlock>
+        </div>
+    </div>
+</apex:component>

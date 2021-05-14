@@ -1,0 +1,16 @@
+.stop-investment {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.textAreaPosition {
+    position: unset !important;
+}
+.fontColor {
+    font-size: 0.75rem;
+    color: rgb(62, 62, 60);
+}
+.borderColor {
+    border-top: 1px solid rgb(221, 219, 218);
+}

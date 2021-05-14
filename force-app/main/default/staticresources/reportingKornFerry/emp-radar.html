@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+<head>
+<title>Employee Radar Chart | Professional Development</title>
+<script src="js/Chart.bundle.min.js"></script>
+<script src="js/utils.js"></script>
+<style>
+canvas {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+</style>
+</head>
+
+<body>
+<div style="width: 100%">
+<canvas id="canvas"></canvas>
+</div>
+<script>
+
+//Chart JS Doughnut chart configuration
+var config = {
+	type: 'radar',
+	data: {		
+		labels: ['Balance',	'Structure', 'Collaboration', 'Independence', 'Power', 'Challenge'],
+		datasets: [{
+			label: 'Identity Drivers',
+			data: [	5, 8, 5, 3, 6, 4
+			],
+			backgroundColor: 'rgb(126,139,228, .8)',
+			borderColor: 'rgb(126,139,228)',
+			pointBackgroundColor: 'rgb(126,139,228, .8)'
+
+		}],
+	},
+	options: {
+		scale: {
+    ticks: {
+      beginAtZero: true,
+      min: 0,
+      max: 10,
+      stepSize: 2
+    },
+    pointLabels: {
+      fontSize: 12
+    }
+  },
+  legend: {
+    position: 'bottom'
+  }
+
+	}
+};
+
+window.onload = function () {
+	var ctx = document.getElementById('canvas').getContext('2d');
+	Chart.defaults.global.defaultFontFamily = "'Proxima Nova', 'Salesforce Sans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+	window.myRadar = new Chart(ctx, config);
+};
+
+</script>
+</body>
+
+</html>

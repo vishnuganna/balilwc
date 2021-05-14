@@ -1,0 +1,468 @@
+<apex:component controller="GoldSheetActionPlanTabPDFController" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <!--action plan section-->
+    <div style="padding-right: 70px">
+        <div class="margintop20" style="padding-right: 70px">
+            <div class="lineheight20 capitalword">
+                <apex:outputLabel value="{!$Label.actionPlan}" />
+            </div>
+
+            <div class="lineheight20 main-heading-bar marginbottom12 font16 semibold margintop5">
+                <apex:outputLabel value="{!$Label.Actions}" />
+            </div>
+        </div>
+
+        <apex:pageBlock rendered="{!NOT(goldSheetActionPlanPDFWrapper.actionsList.empty)}">
+            <table style="width: 100%; color: #4d4d4f">
+                <tbody>
+                    <tr>
+                        <td class="font7" width="25%">
+                            <apex:outputLabel value="{!$Label.ActionHeaderPDF}" />
+                        </td>
+                        <td class="font7" width="25%">
+                            <apex:outputLabel value="{!$Label.ActionDescription}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.ActionWho}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.ActionWhen}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.ActionStatus}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="width100">
+                <div class="dividerhr"></div>
+            </div>
+
+            <apex:repeat value="{!goldSheetActionPlanPDFWrapper.actionsList}" var="actionData">
+                <table style="width: 100%">
+                    <tbody>
+                        <tr>
+                            <td class="data-bold-view-normal" width="25%">
+                                <apex:pageBlock rendered="{! If(actionData.gsActionTitle != null ,true,false) }">
+                                    {!actionData.gsActionTitle}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(actionData.gsActionTitle ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td class="data-bold-view-normal" width="25%">
+                                <apex:pageBlock rendered="{! If(actionData.gsActionDescription !=null ,true,false) }">
+                                    {!actionData.gsActionDescription}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(actionData.gsActionDescription ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(actionData.gsActionAssignedToName !=null ,true,false) }"
+                                >
+                                    {!actionData.gsActionAssignedToName}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(actionData.gsActionAssignedToName ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td class="data-bold-view-normal" width="16%">
+                                <apex:pageBlock rendered="{! If(actionData.gsActionDueDateString !=null ,true,false) }">
+                                    {!actionData.gsActionDueDateString}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(actionData.gsActionDueDateString ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <span style="vertical-align: top">
+                                    <apex:image style="width: 10px; height: 10px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'icon-status-incomplete.jpg')}"
+                                        rendered="{! If(actionData.gsActionStatus == 'Incomplete',true,false) }"
+                                    />
+                                    <apex:image style="width: 15px; height: 15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'icon-status-complete.jpg')}"
+                                        rendered="{! If(actionData.gsActionStatus == 'Complete',true,false) }"
+                                    />
+                                </span>
+                                <span style="margin-left: 10px"> {!actionData.gsActionStatus}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+            </apex:repeat>
+        </apex:pageBlock>
+
+        <apex:pageBlock rendered="{!(goldSheetActionPlanPDFWrapper.actionsList.empty)}">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!--Information needed section-->
+    <div style="padding-right: 70px">
+        <div class="margintop20" style="padding-right: 70px">
+            <div class="lineheight20 capitalword">
+                <apex:outputLabel value="{!$Label.actionPlan}" />
+            </div>
+
+            <div class="lineheight20 main-heading-bar marginbottom12 font16 semibold margintop5">
+                <apex:outputLabel value="{!$Label.infomationNeeded}" />
+            </div>
+        </div>
+
+        <apex:pageBlock rendered="{!NOT(goldSheetActionPlanPDFWrapper.informationNeededList.empty)}">
+            <table style="width: 100%; color: #4d4d4f">
+                <tbody>
+                    <tr>
+                        <td class="font7" width="16.60%">
+                            <apex:outputLabel value="{!$Label.infomationNeeded}" />
+                        </td>
+                        <td class="font7" width="16.60%">
+                            <apex:outputLabel value="{!$Label.ActionDescription}" />
+                        </td>
+                        <td class="font7" width="16.60%">
+                            <apex:outputLabel value="{!$Label.infomationNeededSource}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.ActionWho}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.ActionWhen}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.ActionStatus}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="width100">
+                <div class="dividerhr"></div>
+            </div>
+
+            <apex:repeat value="{!goldSheetActionPlanPDFWrapper.informationNeededList}" var="informationNeededData">
+                <table style="width: 100%" class="revenue-target">
+                    <tbody>
+                        <tr>
+                            <td class="data-bold-view" width="16.60%">
+                                <apex:pageBlock rendered="{! If(informationNeededData.gsInformationNeededTitle != null ,true,false) }"
+                                >
+                                    {!informationNeededData.gsInformationNeededTitle}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(informationNeededData.gsInformationNeededTitle ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td class="data-bold-view-normal" width="16.60%">
+                                <apex:pageBlock rendered="{! If(informationNeededData.gsInformationNeededDescription != null ,true,false) }"
+                                >
+                                    {!informationNeededData.gsInformationNeededDescription}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(informationNeededData.gsInformationNeededDescription ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td class="data-bold-view-normal" width="16.60%">
+                                <apex:pageBlock rendered="{! If(informationNeededData.gsInformationNeededSource != null ,true,false) }"
+                                >
+                                    {!informationNeededData.gsInformationNeededSource}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(informationNeededData.gsInformationNeededSource ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(informationNeededData.gsInformationNeededAssignedToName != null ,true,false) }"
+                                >
+                                    {!informationNeededData.gsInformationNeededAssignedToName}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(informationNeededData.gsInformationNeededAssignedToName ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td class="data-bold-view-normal" width="16%">
+                                <apex:pageBlock rendered="{! If(informationNeededData.gsInformationNeededDueDateString != null ,true,false) }"
+                                >
+                                    {!informationNeededData.gsInformationNeededDueDateString}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(informationNeededData.gsInformationNeededDueDateString ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <span style="vertical-align: top">
+                                    <apex:image style="width: 15px; height: 15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'icon-status-incomplete.jpg')}"
+                                        rendered="{! If(informationNeededData.gsInformationNeededStatus == 'Incomplete',true,false) }"
+                                    />
+                                    <apex:image style="width: 15px; height: 15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'icon-status-complete.jpg')}"
+                                        rendered="{! If(informationNeededData.gsInformationNeededStatus == 'Complete',true,false) }"
+                                    />
+                                </span>
+                                <span> {!informationNeededData.gsInformationNeededStatus}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+            </apex:repeat>
+        </apex:pageBlock>
+
+        <apex:pageBlock rendered="{!(goldSheetActionPlanPDFWrapper.informationNeededList.empty)}">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!--Invest Programme section-->
+    <div style="padding-right: 70px">
+        <div class="margintop20" style="padding-right: 70px">
+            <div class="lineheight20 capitalword">
+                <apex:outputLabel value="{!$Label.actionPlan}" />
+            </div>
+
+            <div class="lineheight20 main-heading-bar marginbottom12 font16 semibold margintop5">
+                <apex:outputLabel value="{!$Label.investmentPrograms}" />
+            </div>
+        </div>
+
+        <apex:pageBlock rendered="{!NOT(goldSheetActionPlanPDFWrapper.investmentProgramList.empty)}">
+            <table style="width: 100%; color: #4d4d4f" class="revenue-target">
+                <tbody>
+                    <tr>
+                        <td class="font7" width="25%">
+                            <apex:outputLabel value="{!$Label.investmentPrograms}" />
+                        </td>
+                        <td class="font7" width="25%">
+                            <apex:outputLabel value="{!$Label.ActionDescription}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.ActionWho}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.ActionWhen}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.ActionStatus}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="width100">
+                <div class="dividerhr"></div>
+            </div>
+
+            <apex:repeat value="{!goldSheetActionPlanPDFWrapper.investmentProgramList}" var="investmentProgramData">
+                <table style="width: 100%" class="revenue-target">
+                    <tbody>
+                        <tr>
+                            <td class="data-bold-view" width="25%">
+                                <apex:pageBlock rendered="{! If(investmentProgramData.gsInvProgramTitle != null ,true,false) }"
+                                >
+                                    {!investmentProgramData.gsInvProgramTitle}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(investmentProgramData.gsInvProgramTitle ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="25%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(investmentProgramData.gsInvProgramDescription != null ,true,false) }"
+                                >
+                                    {!investmentProgramData.gsInvProgramDescription}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(investmentProgramData.gsInvProgramDescription ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(investmentProgramData.gsActionAssignedToName != null ,true,false) }"
+                                >
+                                    {!investmentProgramData.gsActionAssignedToName}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(investmentProgramData.gsActionAssignedToName ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td class="data-bold-view-normal" width="16%">
+                                <apex:pageBlock rendered="{! If(investmentProgramData.gsInvProgramDueDateString != null ,true,false) }"
+                                >
+                                    {!investmentProgramData.gsInvProgramDueDateString}
+                                </apex:pageBlock>
+                                <apex:pageBlock rendered="{! If(investmentProgramData.gsInvProgramDueDateString ==null ,true,false) }"
+                                >
+                                    af2w224 -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <span style="vertical-align: top">
+                                    <apex:image style="width: 15px; height: 15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'icon-status-incomplete.jpg')}"
+                                        rendered="{! If(investmentProgramData.gsInvProgramStatus == 'Incomplete',true,false) }"
+                                    />
+                                    <apex:image style="width: 15px; height: 15px"
+                                        url="{!URLFOR($Resource.pdf_resource, 'icon-status-complete.jpg')}"
+                                        rendered="{! If(investmentProgramData.gsInvProgramStatus == 'Complete',true,false) }"
+                                    />
+                                </span>
+                                <span> {!investmentProgramData.gsInvProgramStatus}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+            </apex:repeat>
+        </apex:pageBlock>
+
+        <apex:pageBlock rendered="{!goldSheetActionPlanPDFWrapper.investmentProgramList.size==0}">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!--Milestones Data Start-->
+    <div class="margintop15" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.actionPlan}" />
+        </div>
+
+        <div class="lineheight20 main-heading-bar marginbottom12 font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.MilestonesTitle}" />
+        </div>
+
+        <div class="margintop10">
+            <!--Milestone 1 data start -->
+            <div class="width100 margintop20 capitalword boldfont">
+                <apex:outputLabel value="{!$Label.Milestone1Title}" />
+            </div>
+
+            <apex:pageBlock rendered="{!IF((goldSheetActionPlanPDFWrapper.milestoneWrapperList['Milestone1']) != null ,true,false)}"
+            >
+                <c:milestone obj="{!goldSheetActionPlanPDFWrapper}" milestone="Milestone1" />
+            </apex:pageBlock>
+
+            <apex:pageBlock rendered="{!IF((goldSheetActionPlanPDFWrapper.milestoneWrapperList['Milestone1']) == null ,true,false)}"
+            >
+                <div class="width100">
+                    <div class="dividerhr linegray margintop5 marginbottom12"></div>
+                </div>
+                -
+            </apex:pageBlock>
+            <!--Milestone 1 data end -->
+
+            <!--Milestone 2 data start -->
+            <div class="width100 margintop20 capitalword boldfont">
+                <apex:outputLabel value="{!$Label.Milestone2Title}" />
+            </div>
+
+            <apex:pageBlock rendered="{!IF((goldSheetActionPlanPDFWrapper.milestoneWrapperList['Milestone2']) != null ,true,false)}"
+            >
+                <c:milestone obj="{!goldSheetActionPlanPDFWrapper}" milestone="Milestone2" />
+            </apex:pageBlock>
+
+            <apex:pageBlock rendered="{!IF((goldSheetActionPlanPDFWrapper.milestoneWrapperList['Milestone2']) == null ,true,false)}"
+            >
+                <div class="width100">
+                    <div class="dividerhr linegray margintop5 marginbottom12"></div>
+                </div>
+                -
+            </apex:pageBlock>
+            <!--Milestone 2 data end -->
+
+            <!--Milestone 3 data start -->
+            <div class="width100 margintop20 capitalword boldfont">
+                <apex:outputLabel value="{!$Label.Milestone3Title}" />
+            </div>
+
+            <apex:pageBlock rendered="{!IF((goldSheetActionPlanPDFWrapper.milestoneWrapperList['Milestone1']) != null ,true,false)}"
+            >
+                <c:milestone obj="{!goldSheetActionPlanPDFWrapper}" milestone="Milestone3" />
+            </apex:pageBlock>
+
+            <apex:pageBlock rendered="{!IF((goldSheetActionPlanPDFWrapper.milestoneWrapperList['Milestone3']) == null ,true,false)}"
+            >
+                <div class="width100">
+                    <div class="dividerhr linegray margintop5 marginbottom12"></div>
+                </div>
+                -
+            </apex:pageBlock>
+            <!--Milestone 3 data end -->
+
+            <!--Milestone 4 data start -->
+            <div class="width100 margintop20 capitalword boldfont">
+                <apex:outputLabel value="{!$Label.Milestone4Title}" />
+            </div>
+
+            <apex:pageBlock rendered="{!IF((goldSheetActionPlanPDFWrapper.milestoneWrapperList['Milestone4']) != null ,true,false)}"
+            >
+                <c:milestone obj="{!goldSheetActionPlanPDFWrapper}" milestone="Milestone4" />
+            </apex:pageBlock>
+
+            <apex:pageBlock rendered="{!IF((goldSheetActionPlanPDFWrapper.milestoneWrapperList['Milestone4']) == null ,true,false)}"
+            >
+                <div class="width100">
+                    <div class="dividerhr linegray margintop5 marginbottom12"></div>
+                </div>
+                -
+            </apex:pageBlock>
+            <!--Milestone 4 data end -->
+
+            <!--Milestone 5 data start -->
+            <div class="width100 margintop20 capitalword boldfont">
+                <apex:outputLabel value="{!$Label.Milestone5Title}" />
+            </div>
+
+            <apex:pageBlock rendered="{!IF((goldSheetActionPlanPDFWrapper.milestoneWrapperList['Milestone5']) != null ,true,false)}"
+            >
+                <c:milestone obj="{!goldSheetActionPlanPDFWrapper}" milestone="Milestone5" />
+            </apex:pageBlock>
+
+            <apex:pageBlock rendered="{!IF((goldSheetActionPlanPDFWrapper.milestoneWrapperList['Milestone5']) == null ,true,false)}"
+            >
+                <div class="width100">
+                    <div class="dividerhr linegray margintop5 marginbottom12"></div>
+                </div>
+                -
+            </apex:pageBlock>
+            <!--Milestone 5 data end -->
+        </div>
+    </div>
+    <!--Milestones Data End-->
+</apex:component>

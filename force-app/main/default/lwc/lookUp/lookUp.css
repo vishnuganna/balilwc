@@ -1,0 +1,13 @@
+.selectedOption {
+    width: 99.5%;
+    position: absolute;
+    z-index: 10;
+}
+
+.targetOption {
+    position: relative;
+}
+
+.search-result_left-pad {
+    padding-left: 35px !important;
+}

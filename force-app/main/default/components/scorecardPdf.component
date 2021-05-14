@@ -1,0 +1,176 @@
+<apex:component allowDML="true" controller="BlueSheetPDFController">
+    <!-- <apex:stylesheet value="{!URLFOR($Page.cssPdfPage)}" /> -->
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <span class="topHeaaderScoreCard">
+        <apex:outputLabel value="{!$Label.Scorecard}" />
+    </span>
+    <div class="topHeaaderScoreCardDes">
+        <apex:outputLabel value="{!$Label.Strategic_Selling_Scorecard_Last_Scored}" />
+        <span style="margin-left: 5px">
+            <apex:outputText value="{0,date,MM/dd/yy}">
+                <apex:param value="{!blueSheetPDFWrapper.blueSheet.bluesheetScorecardLastUpdated}" />
+            </apex:outputText>
+        </span>
+    </div>
+
+    <div class="width100 margintop10">
+        <div class="dividerhrV2"></div>
+    </div>
+
+    <div class="margintop32">
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 25%;position: relative">
+                    <table class="scoreArea">
+                        <tr>
+                            <td style="width: 35% ;position: relative">
+                                <div class="socreBgSC">
+                                    <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.scoreCard.totalPoints != null ,true,false) }"
+                                    >
+                                        {!blueSheetPDFWrapper.scoreCard.totalPoints}
+                                    </apex:pageBlock>
+                                </div>
+                                <apex:image style="width: 50px;"
+                                    url="{!URLFOR($Resource.pdf_resource, 'round_bg.PNG')}"
+                                    rendered="{! If(blueSheetPDFWrapper.scoreCard.totalPoints != null ,true,false) }"
+                                />
+                            </td>
+                            <td>
+                                <div class="scoreText"
+                                    >Total Score (out of {!blueSheetPDFWrapper.scoreCard.totalPoints} )</div
+                                >
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 25%;position: relative">
+                    <table class="scoreArea">
+                        <tr>
+                            <td style="width: 35% ;position: relative">
+                                <div class="socreBgSCBlack">
+                                    <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.scoreCard.businessScore != null ,true,false) }"
+                                    >
+                                        {!blueSheetPDFWrapper.scoreCard.businessScore}
+                                    </apex:pageBlock>
+                                </div>
+                                <apex:image style="width: 50px;"
+                                    url="{!URLFOR($Resource.pdf_resource, 'round_no_bg.PNG')}"
+                                    rendered="{! If(blueSheetPDFWrapper.scoreCard.businessScore != null ,true,false) }"
+                                />
+                            </td>
+                            <td>
+                                <div class="scoreText"><apex:outputLabel value="{!$Label.businessCriteria}"/></div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 25%;position: relative">
+                    <table class="scoreArea">
+                        <tr>
+                            <td style="width: 35% ;position: relative">
+                                <div class="socreBgSCBlack">
+                                    <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.scoreCard.opportunityScore != null ,true,false) }"
+                                    >
+                                        {!blueSheetPDFWrapper.scoreCard.opportunityScore}
+                                    </apex:pageBlock>
+                                </div>
+                                <apex:image style="width: 50px;"
+                                    url="{!URLFOR($Resource.pdf_resource, 'round_no_bg.PNG')}"
+                                    rendered="{! If(blueSheetPDFWrapper.scoreCard.opportunityScore != null ,true,false) }"
+                                />
+                            </td>
+                            <td>
+                                <div class="scoreText"><apex:outputLabel value="{!$Label.opportunityCriteria}"/></div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 25%; "> </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="oppheadding">
+        <apex:outputLabel value="{!$Label.opportunityCriteria}" />
+    </div>
+
+    <apex:repeat rendered="{!NOT(blueSheetPDFWrapper.scoreCard.templateCriteria.empty)}"
+        value="{!blueSheetPDFWrapper.scoreCard.templateCriteria}"
+        var="scorecardobj"
+    >
+        <apex:pageBlock rendered="{! If(scorecardobj.isOpptySection == true ,true,false) }">
+            <div class="width100 margintop5">
+                <div class="dividerhrV2"></div>
+            </div>
+            <table style="width: 100%;margin-bottom: 10px;">
+                <tr>
+                    <td style="width:85%">
+                        <div style="width: 85%" class="textHeadding">{!scorecardobj.title}</div>
+                        <div style="width: 85%" class="textDes">{!scorecardobj.criteriaDef}</div>
+                    </td>
+
+                    <td class="colorgray" style="width:10%;vertical-align: middle;">
+                        <div class="yesColumn">
+                            {!scorecardobj.scoreValue}
+                        </div>
+                    </td>
+
+                    <td class="pointValue" style="padding-right: 10px">
+                        <apex:outputText value="{0, number, integer}">
+                            <apex:param value="{!scorecardobj.currentScore}" />
+                        </apex:outputText>
+                    </td>
+                </tr>
+            </table>
+        </apex:pageBlock>
+    </apex:repeat>
+
+    <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.scoreCard.templateCriteria ==null ,true,false) }">
+        <div class="margintop10 semibold">
+            <apex:outputLabel value="{!$Label.NodataAdded}" />
+        </div>
+    </apex:pageBlock>
+
+    <div class="businessheadding">
+        <apex:outputLabel value="{!$Label.businessCriteria}" />
+    </div>
+
+    <apex:repeat rendered="{!NOT(blueSheetPDFWrapper.scoreCard.templateCriteria.empty)}"
+        value="{!blueSheetPDFWrapper.scoreCard.templateCriteria}"
+        var="scorecardobj"
+    >
+        <apex:pageBlock rendered="{! If(scorecardobj.isOpptySection == false ,true,false) }">
+            <div class="width100 margintop5">
+                <div class="dividerhr"></div>
+            </div>
+
+            <table style="width: 100%;margin-bottom: 10px;">
+                <tr>
+                    <td style="width:85%">
+                        <div style="width: 85%" class="textHeadding">{!scorecardobj.title}</div>
+                        <div style="width: 85%" class="textDes">{!scorecardobj.criteriaDef}</div>
+                    </td>
+
+                    <td class="colorgray" style="width:10%;vertical-align: middle;">
+                        <div class="yesColumn">
+                            {!scorecardobj.scoreValue}
+                        </div>
+                    </td>
+
+                    <td class="pointValue" style="padding-right: 10px">
+                        <apex:outputText value="{0, number, integer}">
+                            <apex:param value="{!scorecardobj.currentScore}" />
+                        </apex:outputText>
+                    </td>
+                </tr>
+            </table>
+        </apex:pageBlock>
+    </apex:repeat>
+
+    <apex:pageBlock rendered="{! If(blueSheetPDFWrapper.scoreCard.templateCriteria ==null ,true,false) }">
+        <div class="margintop10 semibold">
+            <apex:outputLabel value="{!$Label.NodataAdded}" />
+        </div>
+    </apex:pageBlock>
+</apex:component>

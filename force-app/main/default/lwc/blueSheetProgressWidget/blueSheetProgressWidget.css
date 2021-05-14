@@ -1,0 +1,58 @@
+.container {
+    position: relative;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #dddbda;
+    background-color: white;
+}
+
+.blueSheetBanner {
+    width: 100%;
+    position: relative;
+    height: 100%;
+}
+
+.blueSheetText {
+    font-size: medium;
+    position: absolute;
+    left: 15%;
+    top: 40px;
+    font-size: large;
+    transform: translateY(-50%);
+}
+
+.blueSheetSymbol {
+    position: absolute;
+    top: 42px;
+    left: 5%;
+    transform: translateY(-50%);
+}
+.blueSheetIcon {
+    position: absolute;
+    top: 40px;
+    font-size: large;
+    left: 90%;
+    transform: translateY(-50%);
+}
+.toggleAccordion {
+    background-color: white;
+}
+.divEachItem {
+    border-bottom: 1px solid #dddbda;
+}
+.defaultMessageClass {
+    color: black;
+    padding-top: 1em;
+}
+.eachItemColor {
+    color: black;
+}
+.elementName {
+    font-size: small;
+    font-weight: 500;
+}
+.elementStatus {
+    font-size: small;
+    color: #555555;
+}

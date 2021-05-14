@@ -1,0 +1,35 @@
+.divClass {
+    border-top: 1px solid #dcdcdc;
+}
+
+.divClassForNonBorder {
+    background-color: #f0f0f0;
+    border-top: none;
+}
+
+.competitorTypeButtons {
+    display: grid;
+    width: 100%;
+    text-align: left;
+    text-decoration: none !important;
+}
+.textAreaPosition {
+    position: unset !important;
+    display: inline-flex !important;
+}
+.buttonsLabelsGap {
+    margin-bottom: 9px;
+    margin-left: 10px;
+}
+.erroMsg {
+    color: red;
+    font-size: 12px;
+    margin-left: 10px;
+}
+.hrSection {
+    border-bottom: 1px solid var(--lwc-colorBorder, rgb(221, 219, 218));
+}
+.divClass {
+    background-color: #fff !important;
+    border-top: 1px solid #dcdcdc;
+}

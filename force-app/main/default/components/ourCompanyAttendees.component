@@ -1,0 +1,63 @@
+<apex:component controller="GreenSheetSSOandCompanyPDF" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <!-- Our Company Attendees -->
+    <div style="padding-right: 70px">
+        <div class="lineheight20 marginbottom12 font16 main-heading-bar semibold margintop5">
+            <apex:outputLabel value="{!$Label.OurCompanyAttendees}" />
+        </div>
+
+        <apex:pageBlock rendered="{!NOT(GreenSheetPDFWrapper.ourCompanyAttendee.empty)}">
+            <table style="width:100%;color: #4d4d4f">
+                <tbody>
+                    <tr>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.Name}" />
+                        </td>
+                        <td class="font7" width="16%">
+                            <apex:outputLabel value="{!$Label.Title}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <apex:repeat value="{!GreenSheetPDFWrapper.ourCompanyAttendee}" var="ourCompanyAttendeeobj">
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+
+                <table style="width:100%">
+                    <tbody>
+                        <tr>
+                            <td class="data-bold-view" width="16%">
+                                <apex:pageBlock rendered="{! If(ourCompanyAttendeeobj.name !=null ,true,false) }">
+                                    {!ourCompanyAttendeeobj.name}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(ourCompanyAttendeeobj.name ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="16%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(ourCompanyAttendeeobj.title !=null ,true,false) }">
+                                    {!ourCompanyAttendeeobj.title}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(ourCompanyAttendeeobj.title ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </apex:repeat>
+        </apex:pageBlock>
+
+        <apex:pageBlock rendered="{!(GreenSheetPDFWrapper.ourCompanyAttendee.empty)}">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+</apex:component>

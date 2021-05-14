@@ -1,0 +1,637 @@
+<template>
+    <!--Read only View-->
+    <template if:false={showEditView}>
+        <template if:false={showEditView}>
+            <div key={item.id} class="divClass">
+                <div class="slds-card__body margin0">
+                    <article class="slds-card slds-card_boundary item slds-m-left_xx-small">
+                        <div class="slds-p-left_x-small">
+                            <article if:true={isExpandableView}>
+                                <div class="slds-grid">
+                                    <div class="slds-grid slds-size_2-of-3 slds-m-top_small slds-m-bottom_small">
+                                        <lightning-icon
+                                            style="color: black"
+                                            icon-name="utility:chevronright"
+                                            size="x-small"
+                                            onclick={handleToggleSection}
+                                        >
+                                        </lightning-icon>
+
+                                        <h3 class="slds-text-heading_small wrapTextCls" key={item.id}>
+                                            {item.goalName}
+                                        </h3>
+                                    </div>
+                                    <div
+                                        class="slds-grid slds-size_1-of-3 slds-m-top_small slds-m-bottom_small slds-grid_align-end"
+                                    >
+                                        <div class="slds-m-right_large">
+                                            <lightning-icon
+                                                icon-name={utilitysetting}
+                                                alternative-text={label.Success}
+                                                size="xx-small"
+                                                variant={variantColor}
+                                                title={label.DefaultStyle}
+                                            ></lightning-icon>
+                                            &nbsp;{item.goalStatus}
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <div if:false={isExpandableView}>
+                                <div class="slds-grid slds-m-right_small">
+                                    <div class="slds-grid slds-size_2-of-3 slds-m-top_small slds-m-bottom_small">
+                                        <lightning-icon
+                                            style="color: black"
+                                            icon-name="utility:chevrondown"
+                                            size="x-small"
+                                            onclick={handleToggleSection}
+                                        >
+                                        </lightning-icon>
+                                        <h3 class="slds-text-heading_small wrapTextCls" key={item.id}>
+                                            {item.goalName}
+                                        </h3>
+                                    </div>
+                                    <div
+                                        class="slds-grid slds-size_1-of-3 slds-m-top_small slds-m-bottom_small slds-grid_align-end"
+                                    >
+                                        <div class="slds-grid slds-text-align--right slds-grid_align-center">
+                                            <!-- this is the icon -->
+                                            <div class="slds-grid slds-grid_vertical-align-center marginslr">
+                                                <lightning-icon
+                                                    icon-name={utilitysetting}
+                                                    alternative-text={label.Success}
+                                                    size="xx-small"
+                                                    variant={variantColor}
+                                                    title={label.DefaultStyle}
+                                                ></lightning-icon>
+                                                <span class="slds-m-left_small">{item.goalStatus}</span>
+                                            </div>
+
+                                            <div class="vl"></div>
+
+                                            <template if:true={isDeletable}>
+                                                <lightning-button
+                                                    variant="base"
+                                                    label={label.deleteLabel}
+                                                    title={label.DeleteRecord}
+                                                    onclick={handleDelete}
+                                                    class="marginslr"
+                                                ></lightning-button>
+                                            </template>
+                                            <template if:true={isUpdateable}>
+                                                <lightning-button
+                                                    label={label.editLabel}
+                                                    title={label.EditRecord}
+                                                    onclick={handleEdit}
+                                                ></lightning-button>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="slds-grid slds-m-top_small slds-m-bottom_small slds-m-left_small slds-m-right_small"
+                                >
+                                    <div class="slds-grid slds-size_2-of-3">
+                                        <c-show-more-show-less-line description={item.description} no-of-lines="3">
+                                        </c-show-more-show-less-line>
+                                    </div>
+                                </div>
+                                <!--924 starts-->
+                                <label
+                                    if:true={displayedActivityWrappers}
+                                    class="slds-m-top_medium slds-m-bottom_medium slds-m-left_small"
+                                    >{label.RelatedActivities}</label
+                                >
+                                <div class="slds-var-m-left_small slds-border_top"></div>
+                                <div>
+                                    <!-- For the display of records, previos value of currentActivities was changed to displayedActivityWrappers-->
+                                    <template for:each={displayedActivityWrappers} for:item="relatedact">
+                                        <lightning-layout
+                                            key={relatedact.activityId}
+                                            class="slds-m-left_x-large slds-border_bottom slds-p-bottom_small slds-p-top_x-small"
+                                        >
+                                            <lightning-layout-item size="5" class="slds-p-right_small">
+                                                <div class="slds-m-top_small slds-float_left slds-size_1-of-1">
+                                                    <div class="divSmallFont">{relatedact.objectLabel}</div>
+
+                                                    <div class="slds-m-top_xx-small">
+                                                        <b class="mediumFont">{relatedact.title}</b>
+                                                    </div>
+                                                    <div class="slds-m-top_xx-small">
+                                                        <c-show-more-show-less
+                                                            text-display={relatedact.description}
+                                                        ></c-show-more-show-less>
+                                                    </div>
+                                                    <template if:false={relatedact.isFocusStop}>
+                                                        <div
+                                                            class="slds-grid slds-size_1-of-1 slds-m-top_small slds-m-bottom_small"
+                                                        >
+                                                            <template if:true={relatedact.Source}>
+                                                                <div class="slds-grid slds-size_6-of-12">
+                                                                    <div class="slds-col">
+                                                                        <div>Source</div>
+                                                                        <div class="slds-m-top_xx-small wordbreak">
+                                                                            {relatedact.Source}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </template>
+
+                                                            <div class="slds-grid slds-size_6-of-12 slds-p-left_small">
+                                                                <div class="slds-col">
+                                                                    <div>Who</div>
+                                                                    <div
+                                                                        class="slds-m-top_xx-small"
+                                                                        style="color: #0070d2"
+                                                                    >
+                                                                        {relatedact.Who}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </lightning-layout-item>
+                                            <template if:true={relatedact.isFocusStop}>
+                                                <template if:true={relatedact.Amount}>
+                                                    <lightning-layout-item size="4" class="slds-p-right_small">
+                                                        <div class="slds-m-top_small slds-float_left">
+                                                            <div class="divSmallFont">{label.Amount}</div>
+
+                                                            <div class="slds-m-top_xx-small">
+                                                                <lightning-formatted-number
+                                                                    value={relatedact.Amount}
+                                                                    format-style="currency"
+                                                                >
+                                                                </lightning-formatted-number>
+                                                            </div>
+                                                        </div>
+                                                    </lightning-layout-item>
+                                                </template>
+                                                <!----><template if:false={relatedact.Amount}>
+                                                    <lightning-layout-item size="4" class="slds-p-right_small">
+                                                        <div class="slds-m-top_small slds-float_left">
+                                                            {label.foInvAmount}
+                                                            <div class="slds-m-top_xx-small">-</div>
+                                                        </div>
+                                                    </lightning-layout-item>
+                                                </template>
+                                            </template>
+                                            <template if:false={relatedact.isFocusStop}>
+                                                <template if:true={relatedact.DueDate}>
+                                                    <lightning-layout-item size="4" class="slds-p-right_small">
+                                                        <div class="slds-m-top_small slds-float_left">
+                                                            {label.InvestmentProgramDueDate}
+                                                            <div class="slds-m-top_xx-small">{relatedact.DueDate}</div>
+                                                        </div>
+                                                    </lightning-layout-item>
+                                                </template>
+                                                <template if:false={relatedact.DueDate}>
+                                                    <lightning-layout-item size="4" class="slds-p-right_small">
+                                                        <div class="slds-m-top_small slds-float_left">
+                                                            {label.InvestmentProgramDueDate}
+                                                            <div class="slds-m-top_xx-small">-</div>
+                                                        </div>
+                                                    </lightning-layout-item>
+                                                </template>
+                                            </template>
+                                            <lightning-layout-item
+                                                size="2"
+                                                class="slds-p-right_small slds-m-left_x-large"
+                                            >
+                                                <div class="slds-m-top_small slds-float_left">
+                                                    <lightning-icon
+                                                        icon-name="utility:success"
+                                                        alternative-text={label.Success}
+                                                        size="xx-small"
+                                                        variant={relatedact.variantRAColor}
+                                                        title={label.DefaultStyle}
+                                                    ></lightning-icon>
+
+                                                    &nbsp;{relatedact.raStatus}
+                                                </div>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </template>
+    </template>
+
+    <!--Edit View-->
+    <template if:true={showEditView}>
+        <div class="slds-box slds-size--9-of-10 slds-theme_default slds-m-bottom_medium">
+            <fieldset class="slds-form-element slds-form-element_compound">
+                <!-- <div class="slds-form-element__control">-->
+                <div class="slds-form-element__row slds-grid slds-wrap slds-size_8-of-12">
+                    <div class="slds-size_8-of-12 nameAndStatusArea">
+                        <!--<div class="slds-form-element slds-m-top_xx-small">
+                                <div class="slds-form-element__control">-->
+                        <label class="slds-form-element__label custom-label"
+                            >{label.GoalName} <abbr class="slds-required" title="required">*</abbr></label
+                        >
+                        <lightning-input
+                            type="text"
+                            label=""
+                            variant="label-hidden"
+                            aria-label="hidden"
+                            name="goalName"
+                            placeholder={label.AddGoalName}
+                            onchange={validateInputs}
+                            max-length="81"
+                            value={goalName}
+                            required
+                        ></lightning-input>
+                        <!-- </div>
+                            </div>-->
+                    </div>
+                    <div class="slds-form-element__row slds-size_1-of-12"></div>
+
+                    <div class="slds-form-element__row slds-size_3-of-12">
+                        <!-- <div class="slds-size_1-of-1">
+                            <div class="slds-form-element slds-m-top_xx-small">
+                                <div class="slds-form-element__control">-->
+                        <lightning-combobox
+                            name="goalStatus"
+                            label={label.GoalStatus}
+                            value={goalStatusValue}
+                            placeholder=" "
+                            options={goalStatusPicklistValues}
+                            onchange={handleGoalStatusPicklistValue}
+                            class="picklist"
+                        >
+                        </lightning-combobox>
+
+                        <!--  </div>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="slds-size_8-of-12">
+                    <lightning-layout>
+                        <lightning-layout-item class="slds-p-right_small slds-p-top_small" size="12">
+                            <lightning-textarea
+                                name="Description"
+                                placeholder={label.AddDescription}
+                                label={label.Description}
+                                onchange={validateInputs}
+                                value={description}
+                                max-length="32001"
+                            ></lightning-textarea>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                <!-- </fieldset>-->
+                <!-- <div class="slds-form-element__row">
+                        <div class="slds-size_1-of-3">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <lightning-textarea
+                                    name="Description"
+                                    placeholder="Add Description"
+                                    label={label.Description}
+                                    onchange={validateInputs}
+                                    value={item.description}
+                                    max-length="32000"
+                                ></lightning-textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                <!-- For the display of records, previos value of currentActivities was changed to displayedActivityWrappers-->
+                <template if:true={displayedActivityWrappers}>
+                    <label class="slds-m-top_medium slds-m-bottom_medium">{label.RelatedActivities}</label>
+                    <div class="slds-m-top_small slds-m-bottom_small slds-border_top">
+                        <!-- For the display of records, previos value of currentActivities was changed to displayedActivityWrappers-->
+                        <template for:each={displayedActivityWrappers} for:item="relatedact">
+                            <lightning-layout key={relatedact.id} class="slds-border_bottom">
+                                <lightning-layout-item size="4" class="slds-p-right_small">
+                                    <div class="slds-m-top_small slds-float_left">
+                                        {relatedact.objectLabel}
+                                        <div class="slds-m-top_xx-small">
+                                            <b>{relatedact.title}</b>
+                                        </div>
+                                        <div class="slds-m-top_xx-small showmoredesc">{relatedact.description}</div>
+                                    </div>
+                                </lightning-layout-item>
+                                <template if:true={relatedact.isFocusStop}>
+                                    <template if:true={relatedact.Amount}>
+                                        <lightning-layout-item size="3" class="slds-p-right_small">
+                                            <div class="slds-m-top_small slds-float_left">
+                                                {label.foInvAmount}
+                                                <div class="slds-m-top_xx-small">
+                                                    <lightning-formatted-number
+                                                        value={relatedact.Amount}
+                                                        format-style="currency"
+                                                    >
+                                                    </lightning-formatted-number>
+                                                </div>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </template>
+                                    <template if:false={relatedact.Amount}>
+                                        <lightning-layout-item size="3" class="slds-p-right_small">
+                                            <div class="slds-m-top_small slds-float_left">
+                                                {label.foInvAmount}
+                                                <div class="slds-m-top_xx-small">-</div>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </template>
+                                </template>
+                                <template if:false={relatedact.isFocusStop}>
+                                    <template if:true={relatedact.DueDate}>
+                                        <lightning-layout-item size="3" class="slds-p-right_small">
+                                            <div class="slds-m-top_small slds-float_left">
+                                                {label.InvestmentProgramDueDate}
+                                                <div class="slds-m-top_xx-small">{relatedact.DueDate}</div>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </template>
+                                    <template if:false={relatedact.DueDate}>
+                                        <lightning-layout-item size="3" class="slds-p-right_small">
+                                            <div class="slds-m-top_small slds-float_left">
+                                                {label.InvestmentProgramDueDate}
+                                                <div class="slds-m-top_xx-small">-</div>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </template>
+                                </template>
+                                <lightning-layout-item size="3" class="slds-p-right_small">
+                                    <div class="slds-m-top_small slds-float_left">
+                                        {label.ActionStatus}
+                                        <div class="slds-m-top_xx-small">
+                                            <lightning-icon
+                                                icon-name="utility:settings"
+                                                alternative-text={label.Success}
+                                                size="xx-small"
+                                                variant={relatedact.variantRAColor}
+                                                title={label.DefaultStyle}
+                                            ></lightning-icon>
+                                            &nbsp;{relatedact.raStatus}
+                                        </div>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item
+                                    size="2"
+                                    class="slds-m-top_xx-small slds-m-left_large slds-grid_vertical-align-center"
+                                >
+                                    <lightning-button
+                                        variant="base"
+                                        label={label.Remove}
+                                        title={label.Remove}
+                                        data-id={relatedact.activityId}
+                                        onclick={removeActivity}
+                                        class="marginslr"
+                                    ></lightning-button>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </template>
+                    </div>
+                </template>
+                <template if:true={isUpdateable}>
+                    <lightning-button
+                        class="linkbutton"
+                        label={label.LinkRelatedActivity}
+                        variant="neutral"
+                        onclick={handleLinkedPopOpen}
+                    ></lightning-button>
+                </template>
+                <div class="slds-align_absolute-center">
+                    <lightning-button label={label.cancel} variant="neutral" onclick={handleCancel}></lightning-button>
+                    &nbsp; &nbsp;
+                    <lightning-button
+                        disabled={isButtonDisabled}
+                        label={label.save}
+                        variant="brand"
+                        onclick={updateRelationshipGoal}
+                    ></lightning-button>
+                </div>
+                <!-- </div>-->
+            </fieldset>
+        </div>
+    </template>
+
+    <!-- modal start -->
+    <template if:true={ShowModal}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={label.close}
+                        onclick={closeModal}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text={label.close}
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">{label.close}</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate fontweight400">
+                        {label.DeleteRelationshipGoal}
+                    </h2>
+                </header>
+                <!-- modal body start -->
+                <div
+                    class="slds-modal__content slds-grid slds-grid_align-center slds-p-around_medium"
+                    id="modal-content-id-1"
+                >
+                    <p>{label.AreYouSureYouWantToDelete}</p>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>{label.cancel}</button>
+                    <button class="slds-button slds-button_neutral bluebg" onclick={deleteModal}>{label.yes}</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={isModalOpen}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            class="slds-modal slds-fade-in-open slds-modal_small"
+            aria-labelledby="modal-heading-00"
+            aria-modal="true"
+            aria-describedby="modal-content-id-0"
+        >
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-00" class="slds-modal__title slds-hyphenate">
+                        {label.LinkRelatedActivities}
+                    </h2>
+                </header>
+                <div
+                    class="slds-modal__content slds-p-left_medium slds-p-right_medium slds-card_header slds-p-bottom_medium"
+                    id="modal-content-id-0"
+                >
+                    <br /><br />
+                    <label class="slds-form-element__label" for="text-input-id-1">
+                        {label.SelectActivityType}
+                        <abbr class="slds-required" title="required">* </abbr></label
+                    >
+                    <br />
+                    <div class="first">
+                        <button
+                            class={focusCss}
+                            data-target-value="Focus Investment"
+                            data-target-id="Focus Investment"
+                            data-target-class="SelectActivityType"
+                            onclick={handleRelatedActivitiesButtonClick}
+                            data-target-selected={focusSelected}
+                        >
+                            <label class="slds-button__label" style="font-size: 14px; color: black">
+                                <span>{label.FocusInvestment}</span>
+                            </label>
+                        </button>
+                        <!--lightning-button
+                                label="Focus Investment"
+                                variant="neutral"
+                                class="popButton"
+                                
+                            ></lightning-button-->
+                        &nbsp;&nbsp;
+                        <button
+                            class={stopCss}
+                            data-target-value="Stop Investment"
+                            data-target-id="Stop Investment"
+                            data-target-class="SelectActivityType"
+                            onclick={handleRelatedActivitiesButtonClick}
+                            data-target-selected={stopSelected}
+                        >
+                            <label class="slds-button__label" style="font-size: 14px; color: black">
+                                <span>{label.StopInvestmentHeader}</span>
+                            </label>
+                        </button>
+                        <!--lightning-button
+                                label="Stop Investment"
+                                variant="neutral"
+                                class="popButton"
+                                
+                            ></lightning-button-->
+                        &nbsp;&nbsp;
+                        <button
+                            class={actionCss}
+                            data-target-value="Action"
+                            data-target-id="Action"
+                            data-target-class="SelectActivityType"
+                            onclick={handleRelatedActivitiesButtonClick}
+                            data-target-selected={actionSelected}
+                        >
+                            <label class="slds-button__label" style="font-size: 14px; color: black">
+                                <span>{label.ActionHeader}</span>
+                            </label>
+                        </button>
+                        <!--lightning-button
+                            label="Action"
+                            variant="neutral"
+                            class="popButton"
+                            
+                        ></lightning-button-->
+                        &nbsp;&nbsp;
+                        <button
+                            class={informationCss}
+                            data-target-value="Information Needed"
+                            data-target-id="Information Needed"
+                            data-target-class="SelectActivityType"
+                            onclick={handleRelatedActivitiesButtonClick}
+                            data-target-selected={infoSelected}
+                        >
+                            <label class="slds-button__label" style="font-size: 14px; color: black">
+                                <span>{label.InformationNeededDisplay}</span>
+                            </label>
+                        </button>
+                        <!--lightning-button
+                            label="Information Needed"
+                            variant="neutral"
+                            class="popButton"
+                            
+                        ></lightning-button-->
+                        &nbsp;&nbsp;
+                        <!--lightning-button
+                            label="Investment Program"
+                            variant="neutral"
+                            class="popButton"
+                            
+                        ></lightning-button-->
+                        <button
+                            class={investmentCss}
+                            data-target-value="Investment Program"
+                            data-target-id="Investment Program"
+                            data-target-class="SelectActivityType"
+                            onclick={handleRelatedActivitiesButtonClick}
+                            data-target-selected={investSelected}
+                        >
+                            <label class="slds-button__label" style="font-size: 14px; color: black">
+                                <span>{label.InvestmentProgram}</span>
+                            </label>
+                        </button>
+                    </div>
+                    <br />
+                    <template if:true={isValidate}>
+                        <p style="color: red">{label.SelectOneOrMoreActivityTypes}</p>
+                    </template>
+                    <br />
+                    <div>
+                        <lightning-input
+                            name="enter-search"
+                            label={label.FilterByKeyword}
+                            type="search"
+                            style="width: 365px"
+                            value={actvityName}
+                            onkeyup={handleOnSearchChange}
+                        ></lightning-input>
+                    </div>
+                    <br />
+                    <div style="height: 240px">
+                        <template if:true={hasDatatableRecords}>
+                            <c-custom-lightining-data-table
+                                key-field="id"
+                                data={datatableRecords}
+                                columns={columns}
+                                wrap-text-max-lines="2"
+                                onrowselection={getRowData}
+                            >
+                            </c-custom-lightining-data-table>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="slds-modal__footer slds-align_right slds-theme_default">
+                    <div class="slds-align_absolute-center">
+                        <lightning-button
+                            label={label.cancel}
+                            variant="neutral"
+                            onclick={handleLinkedPopClose}
+                        ></lightning-button>
+                        &nbsp; &nbsp;
+                        <lightning-button
+                            label={label.save}
+                            variant="brand"
+                            onclick={handleRelatedActivitiesSave}
+                            disabled={isSaveDisabled}
+                        ></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

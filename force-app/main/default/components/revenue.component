@@ -1,0 +1,427 @@
+<apex:component controller="GoldSheetRevenueTabPDFController" allowDML="true">
+    <apex:styleSheet value="{!URLFOR($Resource.pdf_resource, 'stylesheets/pdf.css')}" />
+
+    <!--Revenue target section-->
+    <div class="margintop20" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.Revenue}" />
+        </div>
+
+        <div class="lineheight20 marginbottom12 font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.RevenueTargetsOfRevenue}" />
+        </div>
+
+        <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets !=null ,true,false) }">
+            <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper !=null ,true,false) }"
+            >
+                <table class="revenue-target" style="width:100%;color: #4d4d4f">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table align="right" width="100%" class="margintop10">
+                                    <tr>
+                                        <td class="font7 "
+                                            >{!goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.tabType}</td
+                                        >
+                                    </tr>
+                                </table>
+                            </td>
+
+                            <tr
+                                ><td>
+                                    <table align="left" width="100%">
+                                        <tr>
+                                            <td style="width:16%">
+                                                <div class="semibold">Low</div>
+
+                                                <div class="data-bold-view-normal">
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyLowTarget !=null && goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyLowTarget != 0 ,true,false) }"
+                                                    >
+                                                        <span class="dollars"></span>
+                                                        {!goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyLowTarget}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyLowTarget == null || goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyLowTarget ==0,true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </div>
+                                            </td>
+
+                                            <td style="width:16%">
+                                                <div class="semibold">Realistic</div>
+
+                                                <div class="data-bold-view-normal">
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyRealisticTarget !=null  && goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyRealisticTarget != 0,true,false) }"
+                                                    >
+                                                        <span class="dollars"></span
+                                                        >{!goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyRealisticTarget}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyRealisticTarget == null || goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyRealisticTarget == 0 ,true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </div>
+                                            </td>
+
+                                            <td style="width:16%">
+                                                <div class="semibold">High</div>
+
+                                                <div class="data-bold-view-normal">
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyHighTarget !=null  && goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyHighTarget != 0,true,false) }"
+                                                    >
+                                                        <span class="dollars"></span
+                                                        >{!goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyHighTarget}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyHighTarget == null || goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyHighTarget == 0 ,true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </div>
+                                            </td>
+                                            <td class="data-bold-view-normal">
+                                                <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyAssumptions !=null,true,false) }"
+                                                >
+                                                    {!goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyAssumptions}
+                                                </apex:pageBlock>
+
+                                                <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.currentYearWrapper.cyAssumptions == null,true,false) }"
+                                                >
+                                                    -
+                                                </apex:pageBlock>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </apex:pageBlock>
+            <!-- For Next Year -->
+            <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper !=null ,true,false) }"
+            >
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+                <table class="revenue-target" style="width:100%;color: #4d4d4f">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table align="left" width="100%">
+                                    <tr>
+                                        <td class="font7"
+                                            >{!goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.tabType}</td
+                                        >
+                                    </tr>
+                                </table>
+                            </td>
+
+                            <tr
+                                ><td>
+                                    <table align="left" width="100%">
+                                        <tr>
+                                            <td style="width:16%">
+                                                <div class="semibold">Low</div>
+                                                <div class="data-bold-view-normal">
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyLowTarget !=null && goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyLowTarget != 0,true,false) }"
+                                                    >
+                                                        <span class="dollars"></span>
+                                                        {!goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyLowTarget}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyLowTarget == null && goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyLowTarget == 0,true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </div>
+                                            </td>
+
+                                            <td style="width:16%">
+                                                <div class="semibold">Realistic</div>
+                                                <div class="data-bold-view-normal">
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyRealisticTarget !=null && goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyRealisticTarget != 0,true,false) }"
+                                                    >
+                                                        <span class="dollars"></span>
+                                                        {!goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyRealisticTarget}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyRealisticTarget == null || goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyRealisticTarget == 0,true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </div>
+                                            </td>
+                                            <td style="width:16%">
+                                                <div class="semibold">High</div>
+                                                <div class="data-bold-view-normal">
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyHighTarget !=null && goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyHighTarget != 0,true,false) }"
+                                                    >
+                                                        <span class="dollars"></span>
+                                                        {!goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyHighTarget}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyHighTarget == null || goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyHighTarget == 0,true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="data-bold-view-normal">
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyAssumptions !=null ,true,false) }"
+                                                    >
+                                                        {!goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyAssumptions}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.newYearWrapper.cyAssumptions == null ,true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </div></td
+                                            >
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </apex:pageBlock>
+
+            <!-- For Custom Year -->
+            <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper !=null ,true,false) }"
+            >
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+                <table class="revenue-target" style="width:100%;color: #4d4d4f">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table align="left" width="100%">
+                                    <tr>
+                                        <td class="font7">
+                                            <apex:outputText value="{0,date,MM'/'dd'/'yy}">
+                                                <apex:param value="{!goldSheetRevenuePDFWrapper.revenueTargets.customDate}"
+                                                />
+                                            </apex:outputText>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                            <tr
+                                ><td>
+                                    <table align="left" width="100%">
+                                        <tr>
+                                            <td style="width:16%">
+                                                <div class="semibold">Low</div>
+                                                <div class="data-bold-view-normal">
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyLowTarget !=null && goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyLowTarget != 0,true,false) }"
+                                                    >
+                                                        <span class="dollars"></span>
+                                                        {!goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyLowTarget}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyLowTarget == null || goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyLowTarget == 0 ,true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </div>
+                                            </td>
+
+                                            <td style="width:16%">
+                                                <div class="semibold">Realistic</div>
+                                                <div class="data-bold-view-normal">
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyRealisticTarget !=null && goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyRealisticTarget != 0,true,false) }"
+                                                    >
+                                                        <span class="dollars"></span>
+                                                        {!goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyRealisticTarget}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyRealisticTarget == null || goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyRealisticTarget == 0,true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </div>
+                                            </td>
+                                            <td style="width:16%">
+                                                <div class="semibold">High</div>
+                                                <div class="data-bold-view-normal">
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyHighTarget !=null && goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyHighTarget != 0 ,true,false) }"
+                                                    >
+                                                        <span class="dollars"></span>
+                                                        {!goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyHighTarget}
+                                                    </apex:pageBlock>
+
+                                                    <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyHighTarget == null || goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyHighTarget == 0,true,false) }"
+                                                    >
+                                                        -
+                                                    </apex:pageBlock>
+                                                </div>
+                                            </td>
+                                            <td class="data-bold-view-normal">
+                                                <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyAssumptions !=null ,true,false) }"
+                                                >
+                                                    {!goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyAssumptions}
+                                                </apex:pageBlock>
+
+                                                <apex:pageBlock rendered="{! If(goldSheetRevenuePDFWrapper.revenueTargets.customDateWrapper.cyAssumptions == null ,true,false) }"
+                                                >
+                                                    -
+                                                </apex:pageBlock>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </apex:pageBlock>
+        </apex:pageBlock>
+
+        <apex:pageBlock rendered="{!(goldSheetRevenuePDFWrapper.goldSheetSSOData.empty)}">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+
+    <!--SSO section-->
+    <div class="margintop20" style="padding-right: 70px">
+        <div class="lineheight20 capitalword">
+            <apex:outputLabel value="{!$Label.Revenue}" />
+        </div>
+
+        <div class="lineheight20 marginbottom12 font16 semibold margintop5">
+            <apex:outputLabel value="{!$Label.SingleSalesObjectiveRevenue}" />
+        </div>
+
+        <apex:pageBlock rendered="{!NOT(goldSheetRevenuePDFWrapper.goldSheetSSOData.empty)}">
+            <table style="width:100%;color: #4d4d4f">
+                <tbody>
+                    <tr>
+                        <td class="font7" width="20%">
+                            <apex:outputLabel value="{!$Label.OpportunityName}" />
+                        </td>
+                        <td class="font7" width="2%">
+                            <apex:outputLabel />
+                        </td>
+                        <td class="font7" width="20%">
+                            <apex:outputLabel value="{!$Label.Account}" />
+                        </td>
+                        <td class="font7" width="2%">
+                            <apex:outputLabel />
+                        </td>
+                        <td class="font7" width="20%">
+                            <apex:outputLabel value="{!$Label.Stage}" />
+                        </td>
+                        <td class="font7" width="2%">
+                            <apex:outputLabel />
+                        </td>
+                        <td class="font7" width="14%">
+                            <apex:outputLabel value="{!$Label.CloseDate}" />
+                        </td>
+                        <td class="font7 alignright" width="20%">
+                            <apex:outputLabel value="{!$Label.ExpectedRevenue}" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <apex:repeat value="{!goldSheetRevenuePDFWrapper.goldSheetSSOData}" var="goldSheetSSODataObj">
+                <div class="width100">
+                    <div class="dividerhr"></div>
+                </div>
+
+                <table style="width:100%">
+                    <tbody>
+                        <tr>
+                            <td class="data-bold-view" width="20%">
+                                <apex:pageBlock rendered="{! If(goldSheetSSODataObj.opportunityName !=null ,true,false) }"
+                                >
+                                    {!goldSheetSSODataObj.opportunityName}
+                                </apex:pageBlock>
+                            </td>
+
+                            <td class="font7" width="2%">
+                                <apex:outputLabel />
+                            </td>
+
+                            <td width="20%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(goldSheetSSODataObj.accountName !=null ,true,false) }">
+                                    {!goldSheetSSODataObj.accountName}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(goldSheetSSODataObj.accountName ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td class="font7" width="2%">
+                                <apex:outputLabel />
+                            </td>
+
+                            <td width="20%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(goldSheetSSODataObj.stageName !=null ,true,false) }">
+                                    {!goldSheetSSODataObj.stageName}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(goldSheetSSODataObj.stageName ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td class="font7" width="2%">
+                                <apex:outputLabel />
+                            </td>
+
+                            <td width="14%" class="data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(goldSheetSSODataObj.closeDate !=null ,true,false) }">
+                                    {!goldSheetSSODataObj.closeDate}
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(goldSheetSSODataObj.closeDate ==null ,true,false) }">
+                                    -
+                                </apex:pageBlock>
+                            </td>
+
+                            <td width="20%" class="alignright data-bold-view-normal">
+                                <apex:pageBlock rendered="{! If(goldSheetSSODataObj.expectedRevenue !=null ,true,false) }"
+                                >
+                                    <apex:outputText value="{0, number, currency}">
+                                        <apex:param value="{!goldSheetSSODataObj.expectedRevenue}" />
+                                    </apex:outputText>
+                                </apex:pageBlock>
+
+                                <apex:pageBlock rendered="{! If(goldSheetSSODataObj.expectedRevenue ==null ,true,false) }"
+                                >
+                                    -
+                                </apex:pageBlock>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </apex:repeat>
+            <div class="width100">
+                <div class="dividerhr"></div>
+            </div>
+            <div class="margintopsso semibold capitalword alignright letterspacingrevenue lineheight16">
+                <apex:outputLabel value="{!$Label.TotalExpected}" />: &nbsp; &nbsp;
+                <apex:outputText value="{0, number, currency}">
+                    <apex:param value="{!goldSheetRevenuePDFWrapper.expectedRevenueTotal}" />
+                </apex:outputText>
+            </div>
+        </apex:pageBlock>
+
+        <apex:pageBlock rendered="{!(goldSheetRevenuePDFWrapper.goldSheetSSOData.empty)}">
+            <div class="margintop10 semibold">
+                <apex:outputLabel value="{!$Label.NodataAdded}" />
+            </div>
+        </apex:pageBlock>
+    </div>
+</apex:component>

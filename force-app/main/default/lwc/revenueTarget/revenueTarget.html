@@ -1,0 +1,387 @@
+<template>
+    <!--read only and saved state-->
+    <!--<template if:true={showSavedState}>-->
+    <div class="slds-p-left_medium slds-p-right_medium slds-grid slds-gutters">
+        <article class="slds-card slds-card_boundary slds-m-bottom_large slds-size_1-of-1">
+            <div slot="title" class="slds-grid slds-card__header slds-grid_vertical-align-center cardheader-goldsheet">
+                <div class="slds-col slds-size_2-of-3">
+                    <span class="cardlabels-goldsheet"
+                        >{allLabels.RevenueTargets}
+                        <c-info-navigation nav-url={allLabels.RevenueTargetHeaderLink}></c-info-navigation>
+                    </span>
+                </div>
+
+                <div class="slds-col slds-size_1-of-3">
+                    <div class="slds-clearfix slds-text-small slds-float_right">
+                        <template if:true={showEditButton}>
+                            <lightning-button
+                                label={allLabels.Edit}
+                                title={allLabels.Edit}
+                                onclick={handleEdit}
+                                disabled={disableEdit}
+                            ></lightning-button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <template if:true={showSavedState}>
+                <div class="slds-m-top_x-small slds-m-bottom_x-small" style="border-top: 1px solid #dcdcdc;">
+                    <table
+                        class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_col-bordered slds-m-bottom_medium"
+                    >
+                        <thead>
+                            <tr class="slds-line-height_reset slds-border_bottom">
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.CurrentYear}>
+                                        {allLabels.CurrentYear}
+                                    </div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title={allLabels.NextYear}>{allLabels.NextYear}</div>
+                                </th>
+                                <th class="" scope="col">
+                                    <div class="slds-truncate" title="allLabels.CustomDate}">
+                                        <template if:false={revenueTargetData.customDate}>
+                                            {allLabels.CustomDate}
+                                        </template>
+                                        <template if:true={revenueTargetData.customDate}>
+                                            {customDateValue}
+                                        </template>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="slds-hint-parent">
+                                <th data-label={allLabels.CurrentYear} scope="row">
+                                    <div class="slds-truncate slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_1-of-3">
+                                            {allLabels.low}
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            {allLabels.Realistic}
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            {allLabels.high}
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-label={allLabels.NextYear} scope="row">
+                                    <div class="slds-truncate slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_1-of-3">
+                                            {allLabels.low}
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            {allLabels.Realistic}
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            {allLabels.high}
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-label={allLabels.CustomDate} scope="row">
+                                    <div class="slds-truncate slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_1-of-3">
+                                            {allLabels.low}
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            {allLabels.Realistic}
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            {allLabels.high}
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr class="slds-hint-parent slds-border_bottom">
+                                <th data-label={allLabels.CurrentYear} scope="row">
+                                    <div class="slds-truncate slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <template if:true={currentYearData}>
+                                                <template if:true={currentYearData.cyLowTarget}>
+                                                    <lightning-formatted-number
+                                                        value={currentYearData.cyLowTarget}
+                                                        format-style="currency"
+                                                    >
+                                                    </lightning-formatted-number>
+                                                </template>
+                                                <template if:false={currentYearData.cyLowTarget}>
+                                                    -
+                                                </template>
+                                            </template>
+                                            <template if:false={currentYearData}>
+                                                -
+                                            </template>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <template if:true={currentYearData}>
+                                                <template if:true={currentYearData.cyRealisticTarget}>
+                                                    <lightning-formatted-number
+                                                        value={currentYearData.cyRealisticTarget}
+                                                        format-style="currency"
+                                                    >
+                                                    </lightning-formatted-number>
+                                                </template>
+                                                <template if:false={currentYearData.cyRealisticTarget}>
+                                                    -
+                                                </template>
+                                            </template>
+                                            <template if:false={currentYearData}>
+                                                -
+                                            </template>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <template if:true={currentYearData}>
+                                                <template if:true={currentYearData.cyHighTarget}>
+                                                    <lightning-formatted-number
+                                                        value={currentYearData.cyHighTarget}
+                                                        format-style="currency"
+                                                    >
+                                                    </lightning-formatted-number>
+                                                </template>
+                                                <template if:false={currentYearData.cyHighTarget}>
+                                                    -
+                                                </template>
+                                            </template>
+                                            <template if:false={currentYearData}>
+                                                -
+                                            </template>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-label={allLabels.NextYear} scope="row">
+                                    <div class="slds-truncate slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <template if:true={NextYearData}>
+                                                <template if:true={NextYearData.cyLowTarget}>
+                                                    <lightning-formatted-number
+                                                        value={NextYearData.cyLowTarget}
+                                                        format-style="currency"
+                                                    >
+                                                    </lightning-formatted-number>
+                                                </template>
+                                                <template if:false={NextYearData.cyLowTarget}>
+                                                    -
+                                                </template>
+                                            </template>
+                                            <template if:false={NextYearData}>
+                                                -
+                                            </template>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <template if:true={NextYearData}>
+                                                <template if:true={NextYearData.cyRealisticTarget}>
+                                                    <lightning-formatted-number
+                                                        value={NextYearData.cyRealisticTarget}
+                                                        format-style="currency"
+                                                    >
+                                                    </lightning-formatted-number>
+                                                </template>
+                                                <template if:false={NextYearData.cyRealisticTarget}>
+                                                    -
+                                                </template>
+                                            </template>
+                                            <template if:false={NextYearData}>
+                                                -
+                                            </template>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <template if:true={NextYearData}>
+                                                <template if:true={NextYearData.cyHighTarget}>
+                                                    <lightning-formatted-number
+                                                        value={NextYearData.cyHighTarget}
+                                                        format-style="currency"
+                                                    >
+                                                    </lightning-formatted-number>
+                                                </template>
+                                                <template if:false={NextYearData.cyHighTarget}>
+                                                    -
+                                                </template>
+                                            </template>
+                                            <template if:false={NextYearData}>
+                                                -
+                                            </template>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th data-label={allLabels.CustomDate} scope="row">
+                                    <div class="slds-truncate slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <template if:true={customYearData}>
+                                                <template if:true={customYearData.cyLowTarget}>
+                                                    <lightning-formatted-number
+                                                        value={customYearData.cyLowTarget}
+                                                        format-style="currency"
+                                                    >
+                                                    </lightning-formatted-number>
+                                                </template>
+                                                <template if:false={customYearData.cyLowTarget}>
+                                                    -
+                                                </template>
+                                            </template>
+                                            <template if:false={customYearData}>
+                                                -
+                                            </template>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <template if:true={customYearData}>
+                                                <template if:true={customYearData.cyRealisticTarget}>
+                                                    <lightning-formatted-number
+                                                        value={customYearData.cyRealisticTarget}
+                                                        format-style="currency"
+                                                    >
+                                                    </lightning-formatted-number>
+                                                </template>
+                                                <template if:false={customYearData.cyRealisticTarget}>
+                                                    -
+                                                </template>
+                                            </template>
+                                            <template if:false={customYearData}>
+                                                -
+                                            </template>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <template if:true={customYearData}>
+                                                <template if:true={customYearData.cyHighTarget}>
+                                                    <lightning-formatted-number
+                                                        value={customYearData.cyHighTarget}
+                                                        format-style="currency"
+                                                    >
+                                                    </lightning-formatted-number>
+                                                </template>
+                                                <template if:false={customYearData.cyHighTarget}>
+                                                    -
+                                                </template>
+                                            </template>
+                                            <template if:false={customYearData}>
+                                                -
+                                            </template>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!--End default/saved and read only State-->
+                    <template if:true={hasRevenueTargetData}>
+                        <template if:true={toogleAccordion}>
+                            <div class="slds-m-left_medium slds-text-link accordiondiv" onclick={handleToogleAccordion}>
+                                {allLabels.ShowAssumptions}
+                                <lightning-icon
+                                    icon-name="utility:chevronright"
+                                    size="xx-small"
+                                    variant="brand"
+                                ></lightning-icon>
+                            </div>
+                        </template>
+                        <template if:false={toogleAccordion}>
+                            <div class="slds-m-left_medium slds-text-link accordiondiv" onclick={handleToogleAccordion}>
+                                {allLabels.HideAssumptions}
+                                <lightning-icon
+                                    variant="brand"
+                                    icon-name="utility:chevrondown"
+                                    size="xx-small"
+                                ></lightning-icon>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-m-top_medium">
+                                <div class="slds-col slds-size_1-of-3">
+                                    <div class="slds-text-title_bold">{allLabels.CurrentYear}</div>
+                                    <div class="slds-m-top_small slds-text-body_regular wrapTextCls">
+                                        <template if:true={currentYearData}>
+                                            {currentYearData.cyAssumptions}
+                                        </template>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-3">
+                                    <div class="slds-text-title_bold">{allLabels.NextYear}</div>
+                                    <div class="slds-m-top_small slds-text-body_regular wrapTextCls">
+                                        <template if:true={NextYearData}>
+                                            {NextYearData.cyAssumptions}
+                                        </template>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-3">
+                                    <template if:false={revenueTargetData.customDate}>
+                                        <div class="slds-text-title_bold">{allLabels.CustomDate}</div>
+                                    </template>
+                                    <template if:true={revenueTargetData.customDate}>
+                                        <div class="slds-text-title_bold">{customDateValue}</div>
+                                    </template>
+                                    <div class="slds-m-top_small slds-text-body_regular wrapTextCls">
+                                        <template if:true={customYearData}>
+                                            {customYearData.cyAssumptions}
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </template>
+            <template if:true={showEditView}>
+                <div class="slds-border_top slds-m-top_x-small slds-p-left_small  slds-p-right_small">
+                    <header class="slds-modal__header" style="border-bottom: none;"></header>
+                    <div>
+                        <lightning-tabset variant="scoped">
+                            <lightning-tab label={allLabels.CurrentYear}>
+                                <c-revenue-target-inline-tab item={currentYearData}></c-revenue-target-inline-tab>
+                            </lightning-tab>
+                            <lightning-tab label={allLabels.NextYear}>
+                                <c-revenue-target-next-year-tab item={NextYearData}></c-revenue-target-next-year-tab>
+                            </lightning-tab>
+                            <template if:false={revenueTargetData.customDate}>
+                                <lightning-tab label={allLabels.CustomDate}>
+                                    <c-revenue-target-custom-year-tab
+                                        item={customYearData}
+                                        customyeardate={revenueTargetData.customDate}
+                                    ></c-revenue-target-custom-year-tab>
+                                </lightning-tab>
+                            </template>
+                            <template if:true={revenueTargetData.customDate}>
+                                <lightning-tab label={customDateValue}>
+                                    <c-revenue-target-custom-year-tab
+                                        item={customYearData}
+                                        customyeardate={revenueTargetData.customDate}
+                                    ></c-revenue-target-custom-year-tab>
+                                </lightning-tab>
+                            </template>
+                        </lightning-tabset>
+                    </div>
+                    <div class="slds-modal__footer slds-align_right slds-theme_default" style="border-top: none;">
+                        <lightning-button
+                            label={allLabels.Cancel}
+                            class="slds-p-right_x-small slds-text-small"
+                            variant="neutral"
+                            onclick={handleCancel}
+                        ></lightning-button>
+                        <lightning-button
+                            label={allLabels.Save}
+                            class="slds-text-small"
+                            aria-disabled={isSaveDisabled}
+                            disabled={isSaveDisabled}
+                            variant="brand"
+                            onclick={handleSave}
+                        ></lightning-button>
+                    </div>
+                </div>
+            </template>
+        </article>
+    </div>
+    <!--</template
+    >--><!--end of read only and saved state-->
+    <!--Edit Mode-->
+
+    <!-- end of Edit modal-->
+    <template if:true={ShowCancelModal}>
+        <c-prompt-modal
+            header-label={allLabels.Cancel}
+            body-msg={allLabels.CancelRevenueTarget}
+            positive-response-button={allLabels.Yes}
+            negative-response-button={allLabels.no}
+            close-label={allLabels.Close}
+            onpositiveresponse={handleConfirmCancel}
+            onnegativeresponse={handleDonotCancel}
+        ></c-prompt-modal>
+    </template>
+</template>

@@ -1,0 +1,18 @@
+.showmore {
+    color: #0070d2;
+}
+
+.showmoredesc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    width: 100%;
+    line-height: 16px;
+    /* The number of lines to be displayed */
+    -webkit-box-orient: vertical;
+    overflow-wrap: anywhere;
+}
+
+.pointer {
+    cursor: pointer;
+}

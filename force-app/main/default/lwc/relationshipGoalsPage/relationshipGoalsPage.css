@@ -1,0 +1,58 @@
+/* .divClass {
+    background-color: #f0f0f0;
+    border-top: 1px solid #dcdcdc;
+} */
+
+.title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.selectedbutton {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: 1px solid #dddbda;
+    -webkit-transition: border 0.15s linear;
+    transition: border 0.15s linear;
+    background-color: #d9ebf7;
+    border-color: #c2dfff;
+    text-decoration-color: white;
+    color: white;
+}
+.adjustScroll {
+    max-height: 700px;
+    /* overflow: auto; */
+    overflow-x: hidden;
+}
+.popButton {
+    font-size: 14px;
+    color: black;
+}
+.Button {
+    color: rgb(95, 182, 233);
+}
+.custom-label {
+    margin-left: 7px;
+}
+
+.showmoredesc {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    /* The number of lines to be displayed */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.regularText {
+    font-family: "ArialMT", "Arial", sans-serif;
+    font-style: normal;
+    color: #080707;
+    margin-bottom: 11px;
+    margin-top: 18px;
+}

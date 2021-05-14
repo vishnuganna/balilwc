@@ -1,0 +1,16 @@
+<template>
+    <div class="slds-text-body_regular textAreaReadOnly scrollPosition wrapTextCls">
+        {showLessTextDisplay}
+        <template if:true={showLessTextDisplay}>
+            <template if:true={ShowMoreText}>
+                <a style="text-decoration: none;" onclick={handleShowMore}>...{label.showMore}</a>
+            </template>
+            <template if:true={showText}>
+                {showMoreTextDisplay}
+            </template>
+            <template if:true={ShowLessText}>
+                <a style="text-decoration: none;" onclick={handleShowLess}> &nbsp; {label.showLess}</a>
+            </template>
+        </template>
+    </div>
+</template>

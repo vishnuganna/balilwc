@@ -1,0 +1,332 @@
+<template>
+    <!--Read Only View-->
+    <template if:true={readOnlyView}>
+        <div key={item.id}>
+            <div class="">
+                <article class="">
+                    <div class="slds-m-left_small slds-m-right_small">
+                        <div class="slds-grid slds-gutters slds-m-top_small">
+                            <div class="slds-col slds-size_1-of-1">
+                                <span>
+                                    <h3
+                                        key={item.id}
+                                        class="slds-p-bottom_xx-small slds-text-title"
+                                        style="float: left;
+                                  margin-right: 4px;"
+                                    >
+                                        {label.Customer_Timing_for_Priorities}<c-info-navigation
+                                            nav-url={label.sSoCustTimingPriorities}
+                                        ></c-info-navigation>
+                                    </h3>
+                                    <div>
+                                        <c-strength-redflag
+                                            class="slds-clearfix"
+                                            rfs-data={rfsDetails.CustomerTimingforPriorities}
+                                            onvalueselected={handleMarkerChange}
+                                            read-only-view={readOnlyView}
+                                        ></c-strength-redflag>
+                                    </div>
+                                    <template if:true={item.custTimingPriorities}>
+                                        <p key={item.id} class="slds-text-body_regular">{item.custTimingPriorities}</p>
+                                    </template>
+                                    <template if:false={item.custTimingPriorities}>
+                                        <p key={item.id} class="slds-text-body_regular">-</p>
+                                    </template>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-gutters slds-m-top_small slds-m-bottom_small">
+                            <div class="slds-col slds-size_1-of-2">
+                                <span>
+                                    <h3
+                                        key={item.id}
+                                        class="slds-p-bottom_xx-small slds-text-title"
+                                        style="float: left;
+                                  margin-right: 4px;"
+                                    >
+                                        {label.Customer_Stated_Objective}<c-info-navigation
+                                            nav-url={label.sSoCustomerStatedURL}
+                                        ></c-info-navigation>
+                                    </h3>
+                                    <div>
+                                        <c-strength-redflag
+                                            class="slds-clearfix"
+                                            rfs-data={rfsDetails.CustomersStatedObjectives}
+                                            onvalueselected={handleMarkerChange}
+                                            read-only-view={readOnlyView}
+                                        ></c-strength-redflag>
+                                    </div>
+                                    <template if:true={customerStatedObjective}>
+                                        <c-show-more-show-less text-display={customerStatedObjective}>
+                                        </c-show-more-show-less>
+                                    </template>
+                                    <template if:false={item.customerStatedObjective}>
+                                        <p key={item.id} class="slds-text-body_regular">-</p>
+                                    </template>
+                                </span>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <span>
+                                    <h3
+                                        key={item.id}
+                                        class="slds-p-bottom_xx-small slds-text-title"
+                                        style="float: left;
+                                  margin-right: 4px;"
+                                    >
+                                        {label.Evaluation_of_Objective}
+                                    </h3>
+                                    <div>
+                                        <c-strength-redflag
+                                            class="slds-clearfix"
+                                            rfs-data={rfsDetails.EvaluationofObjectives}
+                                            onvalueselected={handleMarkerChange}
+                                            read-only-view={readOnlyView}
+                                        ></c-strength-redflag>
+                                    </div>
+                                    <template if:true={evaluationofObjective}>
+                                        <c-show-more-show-less text-display={evaluationofObjective}>
+                                        </c-show-more-show-less>
+                                    </template>
+                                    <template if:false={item.evaluationOfObjectives}>
+                                        <p key={item.id} class="slds-text-body_regular">-</p>
+                                    </template>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </template>
+    <!--/Read Only View-->
+
+    <!--Edit View-->
+    <template if:false={readOnlyView}>
+        <div class="slds-card__body slds-card__body_inner item">
+            <!--Button Bar-->
+            <article class="slds-card slds-card_boundary item">
+                <div class="slds-p-around_medium">
+                    <div class="slds-p-left_x-small item" style="margin-bottom: 2px;">
+                        <label
+                            class="slds-form-element__label"
+                            style="margin-right: 11%;
+            float: left;"
+                            >{label.Customer_Timing_for_Priorities}<c-info-navigation
+                                nav-url={label.sSoCustTimingPriorities}
+                            ></c-info-navigation
+                        ></label>
+                    </div>
+                    <div style="margin:6px 0 4px">
+                        <c-strength-redflag
+                            class="slds-clearfix"
+                            rfs-data={rfsDetails.CustomerTimingforPriorities}
+                            onvalueselected={handleMarkerChange}
+                        ></c-strength-redflag>
+                    </div>
+                    <div class="slds-p-left_x-small item slds-m-bottom_medium">
+                        <div class="slds-checkbox_button-group item">
+                            <span class="slds-button slds-checkbox_button">
+                                <input
+                                    type="checkbox"
+                                    id="unique-id-urgent"
+                                    value="Urgent"
+                                    name="checkbox"
+                                    checked={urgentCheck}
+                                    onchange={handlePrioritues}
+                                />
+                                <label class="slds-checkbox_button__label" for="unique-id-urgent">
+                                    <span class="slds-checkbox_faux">{label.Urgent}</span>
+                                </label>
+                            </span>
+                        </div>
+                        <div class="slds-checkbox_button-group item slds-m-left_x-small">
+                            <span class="slds-button slds-checkbox_button">
+                                <input
+                                    type="checkbox"
+                                    id="unique-id-active"
+                                    value="Active"
+                                    name="checkbox"
+                                    checked={activeCheck}
+                                    onchange={handlePrioritues}
+                                />
+                                <label class="slds-checkbox_button__label" for="unique-id-active">
+                                    <span class="slds-checkbox_faux">{label.Active}</span>
+                                </label>
+                            </span>
+                        </div>
+                        <div class="slds-checkbox_button-group item slds-m-left_x-small">
+                            <span class="slds-button slds-checkbox_button">
+                                <input
+                                    type="checkbox"
+                                    id="unique-id-work-it-in"
+                                    value="Work It In"
+                                    name="checkbox"
+                                    checked={workCheck}
+                                    onchange={handlePrioritues}
+                                />
+                                <label class="slds-checkbox_button__label" for="unique-id-work-it-in">
+                                    <span class="slds-checkbox_faux">{label.Work_It_In}</span>
+                                </label>
+                            </span>
+                        </div>
+                        <div class="slds-checkbox_button-group item slds-m-left_x-small">
+                            <span class="slds-button slds-checkbox_button">
+                                <input
+                                    type="checkbox"
+                                    id="unique-id-later"
+                                    value="Later"
+                                    name="checkbox"
+                                    checked={laterCheck}
+                                    onchange={handlePrioritues}
+                                />
+                                <label class="slds-checkbox_button__label" for="unique-id-later">
+                                    <span class="slds-checkbox_faux item">{label.Later}</span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                    <!--/Button Bar-->
+
+                    <fieldset class="slds-form-element slds-form-element_compound">
+                        <div class="slds-form-element__control">
+                            <div class="slds-form-element__row">
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <div style="float: left;">
+                                            <h3 class="slds-p-bottom_xx-small slds-text-title">
+                                                {label.Customer_Stated_Objective}<c-info-navigation
+                                                    nav-url={label.sSoCustomerStatedURL}
+                                                ></c-info-navigation>
+                                            </h3>
+                                        </div>
+                                        <div>
+                                            <c-strength-redflag
+                                                class="slds-clearfix slds-float_right"
+                                                style="margin-bottom: 4px;"
+                                                rfs-data={rfsDetails.CustomersStatedObjectives}
+                                                onvalueselected={handleMarkerChange}
+                                            ></c-strength-redflag>
+                                        </div>
+                                        <div class="slds-form-element__control textAreaPosition">
+                                            <textarea
+                                                id="textarea-id-01"
+                                                rows="5"
+                                                name="CustomerStatedObjective"
+                                                onkeyup={handleMaxLimitErrorCSO}
+                                                onchange={handleCSOChange}
+                                                class="slds-textarea"
+                                                maxlength="32000"
+                                                style="color: black"
+                                                placeholder="A threat the customer wants to resolve, or an opportunity the customer wants to capitalize on."
+                                            >
+{customerStatedObjective}</textarea
+                                            >
+                                            <!--lightning-textarea name="CustomerStatedObjective" rows=5 value={customerStatedObjective} onchange={handleCSOChange} placeholder="A threat the customer wants to resolve, or an opportunity the customer wants to capitalize on" label="Customer Stated Objective" max-length=10 onkeyup={handleMaxLimitErrorCSO}></lightning-textarea-->
+                                            <template if:true={showMaxLimitErrorCSO}>
+                                                <div class="slds-text-color_error">{label.maxLimitError}</div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-size_1-of-2">
+                                    <div class="slds-form-element">
+                                        <div style="float: left;">
+                                            <h3 class="slds-p-bottom_xx-small slds-text-title">
+                                                {label.Evaluation_of_Objective}
+                                            </h3>
+                                        </div>
+                                        <div>
+                                            <c-strength-redflag
+                                                class="slds-clearfix slds-float_right"
+                                                style="margin-bottom: 4px;"
+                                                rfs-data={rfsDetails.EvaluationofObjectives}
+                                                onvalueselected={handleMarkerChange}
+                                            ></c-strength-redflag>
+                                        </div>
+                                        <div class="slds-form-element__control textAreaPosition">
+                                            <textarea
+                                                id="textarea-id-02"
+                                                rows="5"
+                                                name="EvaluationofObjective"
+                                                onkeyup={handleMaxLimitErrorEOF}
+                                                onchange={handleEOFChange}
+                                                class="slds-textarea"
+                                                maxlength="32000"
+                                                style="color: black"
+                                                placeholder="Examining the customer's stated objective for opportunities to add value and insight that exceed the customer's expectations."
+                                            >
+{evaluationofObjective}</textarea
+                                            >
+                                            <!--lightning-textarea name="EvaluationofObjective" rows=5 value={evaluationofObjective} onchange={handleEOFChange} placeholder="Examining the customer's stated objective for opportunities to add value and insight that exceed the customer's expectations" label="Evaluation of Objective" max-length=10 onkeyup={handleMaxLimitErrorEOF}></lightning-textarea-->
+                                            <template if:true={showMaxLimitErrorEOF}>
+                                                <div class="slds-text-color_error">{label.maxLimitError}</div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="slds-align_absolute-center slds-m-top_small">
+                        <lightning-button
+                            label={label.cancel}
+                            variant="neutral"
+                            onclick={handleCancel}
+                        ></lightning-button>
+                        <lightning-button
+                            label={label.save}
+                            variant="brand"
+                            onclick={saveEditSSO}
+                            class="slds-m-left_x-small"
+                        ></lightning-button>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </template>
+    <!--/Edit View-->
+
+    <!--Modal For Delete-->
+    <template if:true={ShowModal}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            aria-labelledby="modal-heading-01"
+            aria-modal="true"
+            aria-describedby="modal-content-id-1"
+            class="slds-modal slds-fade-in-open"
+        >
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title={label.close}
+                        onclick={closeModal}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text={label.close}
+                            variant="inverse"
+                            size="small"
+                        ></lightning-icon>
+                        <span class="slds-assistive-text">{label.close}</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{label.Delete_SSO}</h2>
+                </header>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium slds-text-align--center" id="modal-content-id-1">
+                    <p>{label.deleteCustomerTimingAndStatedObjectiveMessage}</p>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={handleDelete}>{label.yes}</button>
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>{label.no}</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!--/Modal For Delete-->
+</template>
